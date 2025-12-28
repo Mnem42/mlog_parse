@@ -1,8 +1,8 @@
-use lazy_static::lazy_static;
 use regex::Regex;
 use std::fmt::{self, Display, Write};
 use std::num::{IntErrorKind, ParseIntError};
 use std::str::FromStr;
+use std::sync::LazyLock;
 use strum::EnumString;
 
 use super::instr_gen::gen_instructions;
@@ -37,7 +37,7 @@ pub struct Rgba {
 
 impl Default for Rgba {
     fn default() -> Self {
-        Rgba {
+        Self {
             r: 0,
             g: 0,
             b: 0,
@@ -67,8 +67,8 @@ impl FromStr for Rgba {
             };
             u8::from_str_radix(channel, 16)
         };
-        let mut color = Rgba::default();
-        let Rgba { r, g, b, a } = &mut color;
+        let mut color = Self::default();
+        let Self { r, g, b, a } = &mut color;
         for channel in [r, g, b] {
             *channel = get_channel()?;
         }
@@ -76,13 +76,13 @@ impl FromStr for Rgba {
             Err(err) if *err.kind() == IntErrorKind::Empty => {}
             Err(err) => return Err(err),
             Ok(alpha) => *a = alpha,
-        };
+        }
         Ok(color)
     }
 }
 
 /// A conditional. [reference](https://github.com/Anuken/Mindustry/blob/master/core/src/mindustry/logic/ConditionOp.java)
-#[derive(Debug, PartialEq, EnumString)]
+#[derive(Debug, PartialEq, Eq, EnumString)]
 pub enum ConditionOp {
     /// Equality (==)
     #[strum(serialize = "equal")]
@@ -132,26 +132,25 @@ impl fmt::Display for ConditionOp {
 impl fmt::Display for Argument<'_> {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         match self {
-            Self::Number(x) => write!(f, "{}", x),
-            Self::String(x) => write!(f, "\"{}\"", x),
-            Self::Variable(x) => write!(f, "{}", x),
-            Self::Colour(x) => write!(f, "%{}", x),
+            Self::Number(x) => write!(f, "{x}"),
+            Self::String(x) => write!(f, "\"{x}\""),
+            Self::Variable(x) => write!(f, "{x}"),
+            Self::Colour(x) => write!(f, "%{x}"),
         }
     }
 }
 
-lazy_static! {
-    static ref HEX_REGEX: regex::Regex = Regex::new("^[+-]?0x[0-9a-fA-F]+$").unwrap();
-    static ref BIN_REGEX: regex::Regex = Regex::new("^[+-]?0b[01]+$").unwrap();
-    static ref COLOUR_REGEX: regex::Regex =
-        Regex::new("^%[0-9a-fA-F]{6}(?:[0-9a-fA-F]{2})?$").unwrap();
-}
+static HEX_REGEX: LazyLock<Regex> = LazyLock::new(|| Regex::new("^[+-]?0x[0-9a-fA-F]+$").unwrap());
+static BIN_REGEX: LazyLock<Regex> = LazyLock::new(|| Regex::new("^[+-]?0b[01]+$").unwrap());
+static COLOUR_REGEX: LazyLock<Regex> =
+    LazyLock::new(|| Regex::new("^%[0-9a-fA-F]{6}(?:[0-9a-fA-F]{2})?$").unwrap());
 
 impl<'s> From<&'s str> for Argument<'s> {
     fn from(value: &'s str) -> Self {
         if let Ok(x) = value.parse() {
-            Argument::Number(x)
-        } else if value.starts_with('"') && value.ends_with('"') {
+            return Argument::Number(x);
+        }
+        if value.starts_with('"') && value.ends_with('"') {
             Argument::String(&value[1..value.len() - 1])
         } else if COLOUR_REGEX.is_match(value) {
             Argument::Colour(value[1..].parse().unwrap())

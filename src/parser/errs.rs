@@ -15,7 +15,7 @@ impl fmt::Display for StatementParseError<'_> {
             f,
             "{}",
             match self {
-                Self::MissingJumpLabel(x) => format!("The jump label {} is missing", x),
+                Self::MissingJumpLabel(x) => format!("The jump label {x} is missing"),
                 Self::InvalidInstruction(x) =>
                     format!("The instruction \"{}\" is invalid", x.join(",")),
             }

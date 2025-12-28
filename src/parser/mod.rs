@@ -1,6 +1,5 @@
-use lazy_static::lazy_static;
 use regex::Regex;
-use std::collections::HashMap;
+use std::{collections::HashMap, sync::LazyLock};
 
 /// Error handling
 pub mod errs;
@@ -30,12 +29,12 @@ fn parse_nradix_literal(text: &str, radix: u32) -> i64 {
     }
 }
 
-lazy_static! {
-    static ref JUMPLABEL_REGEX: regex::Regex = Regex::new(r#"^\s*?[[:word:]]+:"#).unwrap();
-}
+static JUMPLABEL_REGEX: LazyLock<Regex> =
+    LazyLock::new(|| Regex::new(r"^\s*?[[:word:]]+:").unwrap());
 
 impl<'a> Lexer<'a> {
     /// Create a new lexer
+    #[must_use]
     pub fn new(str: &'a str) -> Self {
         let mut lines = Vec::new();
         let mut jump_labels = HashMap::new();
