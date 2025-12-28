@@ -8,15 +8,15 @@ use super::parse_nradix_literal;
 
 /// An argument
 #[derive(Debug, PartialEq)]
-pub enum Argument {
+pub enum Argument<'a> {
     /// A numeric argument
     Number(f64),
     /// A literal string
-    String(String),
+    String(&'a str),
     /// A variable usage
-    Variable(String),
+    Variable(&'a str),
     /// A colour
-    Colour(String),
+    Colour(&'a str),
 }
 
 /// A conditional. [reference](https://github.com/Anuken/Mindustry/blob/master/core/src/mindustry/logic/ConditionOp.java)
@@ -67,7 +67,7 @@ impl fmt::Display for ConditionOp {
     }
 }
 
-impl fmt::Display for Argument {
+impl fmt::Display for Argument<'_> {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         match self {
             Self::Number(x) => write!(f, "{}", x),
@@ -85,20 +85,20 @@ lazy_static! {
         Regex::new("^%[09a-fA-F]{6}(?:[09a-fA-F]{2})?$").unwrap();
 }
 
-impl From<&str> for Argument {
-    fn from(value: &str) -> Self {
+impl<'s> From<&'s str> for Argument<'s> {
+    fn from(value: &'s str) -> Self {
         if let Ok(x) = value.parse() {
             Argument::Number(x)
         } else if value.starts_with('"') && value.ends_with('"') {
-            Argument::String(value[1..value.len() - 1].to_string())
+            Argument::String(&value[1..value.len() - 1])
         } else if COLOUR_REGEX.is_match(value) {
-            Argument::Colour(value.strip_prefix("%").unwrap().to_string())
+            Argument::Colour(value.strip_prefix("%").unwrap())
         } else if HEX_REGEX.is_match(value) {
             Argument::Number(parse_nradix_literal(value, 16) as f64)
         } else if BIN_REGEX.is_match(value) {
             Argument::Number(parse_nradix_literal(value, 2) as f64)
         } else {
-            Argument::Variable(value.to_string())
+            Argument::Variable(value)
         }
     }
 }

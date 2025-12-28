@@ -59,8 +59,8 @@ impl<'a> Lexer<'a> {
     }
 }
 
-impl Iterator for Lexer<'_> {
-    type Item = Result<Statement, StatementParseError>;
+impl<'s> Iterator for Lexer<'s> {
+    type Item = Result<Statement<'s>, StatementParseError>;
 
     fn next(&mut self) -> Option<Self::Item> {
         let (_, line) = self.lines.get(self.index)?;

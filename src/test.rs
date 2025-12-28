@@ -19,7 +19,7 @@ mod parser {
             [
                 Statement::Set {
                     o: "test".to_string(),
-                    i: Argument::String("12".to_string())
+                    i: Argument::String("12")
                 },
                 Statement::Set {
                     o: "testb".to_string(),
@@ -65,11 +65,11 @@ mod parser {
                 Statement::OpMul {
                     c: "c".to_string(),
                     a: Argument::Number(8.0),
-                    b: Argument::Variable("a".to_string())
+                    b: Argument::Variable("a")
                 },
                 Statement::OpDiv {
                     c: "d".to_string(),
-                    a: Argument::Variable("b".to_string()),
+                    a: Argument::Variable("b"),
                     b: Argument::Number(74.0)
                 },
             ]
@@ -97,7 +97,7 @@ mod parser {
                 Statement::Jump {
                     index: 2,
                     cond: ConditionOp::GreaterThan,
-                    lhs: Some(Argument::Variable("a".to_string()),),
+                    lhs: Some(Argument::Variable("a"),),
                     rhs: Some(Argument::Number(2.0),),
                 },
                 Statement::Noop,
@@ -114,11 +114,11 @@ mod parser {
                 Statement::OpMul {
                     c: "c".to_string(),
                     a: Argument::Number(8.0),
-                    b: Argument::Variable("a".to_string())
+                    b: Argument::Variable("a")
                 },
                 Statement::OpDiv {
                     c: "d".to_string(),
-                    a: Argument::Variable("b".to_string()),
+                    a: Argument::Variable("b"),
                     b: Argument::Number(74.0)
                 },
                 Statement::Jump {
