@@ -2,10 +2,10 @@
 
 #![warn(missing_docs)]
 
-/// Utility functions
-mod util;
 /// The main parser
 pub mod parser;
+/// Utility functions
+mod util;
 
 #[cfg(test)]
 mod test;
