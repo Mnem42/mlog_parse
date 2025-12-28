@@ -5,7 +5,7 @@ mod parser {
 
     #[test]
     fn single_input() {
-        const SRC: &'static str = r#"
+        const SRC: &str = r#"
             set test "12" # A comment
             set testb 3.14159 # PI
             set testc 0xDEADBEEF # dead beef
@@ -23,6 +23,7 @@ mod parser {
                 },
                 Statement::Set {
                     o: "testb".to_string(),
+                    #[expect(clippy::approx_constant)]
                     i: Argument::Number(3.14159)
                 },
                 Statement::Set {
@@ -39,7 +40,7 @@ mod parser {
 
     #[test]
     fn operation() {
-        const SRC: &'static str = r#"
+        const SRC: &str = r#"
             op add a 12 -0x05
             op sub b -0b01 5
             op mul c  0x08 a
@@ -77,7 +78,7 @@ mod parser {
 
     #[test]
     fn ops_with_jump() {
-        const SRC: &'static str = r#"
+        const SRC: &str = r#"
             jl1:
                 jump 2 greaterThan a 2
                 nop

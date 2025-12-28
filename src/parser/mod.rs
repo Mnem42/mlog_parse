@@ -4,7 +4,7 @@ use std::collections::HashMap;
 
 /// Error handling
 pub mod errs;
- mod instr_gen;
+mod instr_gen;
 /// Instructions
 pub mod instructions;
 

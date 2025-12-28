@@ -16,7 +16,7 @@ pub enum Argument {
     /// A variable usage
     Variable(String),
     /// A colour
-    Colour(String)
+    Colour(String),
 }
 
 /// A conditional. [reference](https://github.com/Anuken/Mindustry/blob/master/core/src/mindustry/logic/ConditionOp.java)
@@ -73,7 +73,7 @@ impl fmt::Display for Argument {
             Self::Number(x) => write!(f, "{}", x),
             Self::String(x) => write!(f, "\"{}\"", x),
             Self::Variable(x) => write!(f, "{}", x),
-            Self::Colour(x) => write!(f, "%{}", x)
+            Self::Colour(x) => write!(f, "%{}", x),
         }
     }
 }
@@ -81,7 +81,8 @@ impl fmt::Display for Argument {
 lazy_static! {
     static ref HEX_REGEX: regex::Regex = Regex::new("^[+-]?0x[0-9a-fA-F]+$").unwrap();
     static ref BIN_REGEX: regex::Regex = Regex::new("^[+-]?0b[01]+$").unwrap();
-    static ref COLOUR_REGEX: regex::Regex = Regex::new("^%[09a-fA-F]{6}(?:[09a-fA-F]{2})?$").unwrap();
+    static ref COLOUR_REGEX: regex::Regex =
+        Regex::new("^%[09a-fA-F]{6}(?:[09a-fA-F]{2})?$").unwrap();
 }
 
 impl From<&str> for Argument {
@@ -90,7 +91,7 @@ impl From<&str> for Argument {
             Argument::Number(x)
         } else if value.starts_with('"') && value.ends_with('"') {
             Argument::String(value[1..value.len() - 1].to_string())
-        } else if COLOUR_REGEX.is_match(value){
+        } else if COLOUR_REGEX.is_match(value) {
             Argument::Colour(value.strip_prefix("%").unwrap().to_string())
         } else if HEX_REGEX.is_match(value) {
             Argument::Number(parse_nradix_literal(value, 16) as f64)
@@ -123,7 +124,7 @@ gen_instructions! {
         DrawFlush("drawflush") = "Flush draw buffer to provided display"
     ---
 
-    2i0o: 
+    2i0o:
         DrawTranslate("draw" "translate") = "Translate everything in the print buffer"
         DrawRotate("draw" "rotate") = "Rotate everything in the print buffer"
         DrawScale("draw" "scale") = "Scale everything in the print buffer"

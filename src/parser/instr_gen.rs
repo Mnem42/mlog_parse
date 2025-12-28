@@ -13,6 +13,7 @@ macro_rules! gen_instructions {
 
         /// An mlog statement
         #[derive(Debug, PartialEq)]
+        #[allow(clippy::empty_docs)]
         pub enum $name {
             /// A jump instruction
             Jump {
@@ -69,6 +70,7 @@ macro_rules! gen_instructions {
 
         impl $name {
             /// Parse a set of whitespace split tokens into an instruction
+            #[allow(unreachable_patterns)]
             pub fn parse(v: &[&str], jump_labels: &HashMap<&str, usize>) -> Result<Self, StatementParseError> {
                 match v {
                     ["jump", index, cond_str, lhs, rhs, ..] if ConditionOp::try_from(*cond_str).is_ok() => {
