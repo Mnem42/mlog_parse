@@ -4,12 +4,14 @@ use std::{str::Lines };
 use lazy_static::lazy_static;
 use regex::Regex;
 
+/// Instructions
 pub mod instructions;
+/// Error handling
+pub mod errs;
 pub(self) mod instr_gen;
 
 use instructions::Statement;
-
-use crate::parser::instr_gen::InstructionParseError;
+use errs::InstructionParseError;
 
 /// A lexer for mindustry logic.
 pub struct Lexer<'a> {

@@ -1,7 +1,10 @@
+//! A parser for mindustry logic.
+
 #![warn(missing_docs)]
 
-// pub mod lexer;
+/// Utility functions
 mod util;
+/// The main parser
 pub mod parser;
 
 #[cfg(test)]

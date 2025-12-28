@@ -1,20 +1,3 @@
-use std::{error::Error, fmt};
-
-#[derive(Debug)]
-pub enum InstructionParseError {
-    MissingJumpLabel(String)
-}
-
-impl fmt::Display for InstructionParseError {
-    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        write!(f, "{}", match self {
-            Self::MissingJumpLabel(x) => format!("The jump label {} is missing", x)
-        })
-    }
-}
-
-impl Error for InstructionParseError {}
-
 macro_rules! gen_instructions {
     (
         $name:ident,
@@ -22,7 +5,7 @@ macro_rules! gen_instructions {
         2input: $($ident_2i:ident ($($name_2i:literal)*) = $desc_2i:literal)*---
     ) => {
         use std::collections::HashMap;
-        use super::instr_gen::InstructionParseError;
+        use super::errs::InstructionParseError;
 
         /// An mlog statement
         #[derive(Debug, PartialEq)]

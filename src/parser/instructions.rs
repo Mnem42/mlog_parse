@@ -46,21 +46,6 @@ pub enum ConditionOp {
     Always
 }
 
-/*impl TryFrom<String> for ConditionOp {
-    fn try_from(value: String) -> Result<Self, Self::Error> {
-        match self {
-            "equal" => Self::Equal,
-            "notEqual" => Self::NotEqual,
-            "lessThan" => Self::LessThan,
-            "lessThanEq" => Self::LessThanEq,
-            "greaterThan" => Self::GreaterThan,
-            "greaterThanEq" => Self::GreaterThanEq,
-            "strictEqual" => Self::StrictEqual,
-            "always" => Self::Always,
-        }
-    }
-}*/
-
 impl fmt::Display for ConditionOp {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         write!(f, "{}", match self {
