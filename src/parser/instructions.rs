@@ -113,13 +113,21 @@ gen_instructions! {
         UCPayloadDrop("ucontrol" "payDrop") = "Unit drop payload"
         UCPayloadEnter("ucontrol" "payEnter") = "Unit enter payload containing block"
         UCUnbind("ucontrol" "unbind") = "Unit unbind"
+
+        DrawReset("draw" "reset") = ""
     ---
 
     1i0o:
         DrawCol("draw" "col") = "Set draw colour"
+        DrawStroke("draw" "stroke") = "Set draw stroke size"
+        DrawFlush("drawflush") = "Flush draw buffer to provided display"
     ---
 
-    2i0o: ---
+    2i0o: 
+        DrawTranslate("draw" "translate") = "Translate everything in the print buffer"
+        DrawRotate("draw" "rotate") = "Rotate everything in the print buffer"
+        DrawScale("draw" "scale") = "Scale everything in the print buffer"
+    ---
 
     1i1o:
         Set("set") = "Set variable"

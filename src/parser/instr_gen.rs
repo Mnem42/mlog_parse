@@ -119,7 +119,7 @@ macro_rules! gen_instructions {
                     $([$($name_1i1o),*, o, i, ..] if matches!(Argument::from(*o), Argument::Variable(_)) => {
                         Ok($name::$ident_1i1o { o: o.to_string(), i: Argument::from(*i) })
                     },)*
-                    $([$($name_2i0o),*, a, b, ..] if matches!(Argument::from(*c), Argument::Variable(_)) => {
+                    $([$($name_2i0o),*, a, b, ..] => {
                         Ok($name::$ident_2i0o { a: Argument::from(*a), b: Argument::from(*b) })
                     },)*
                     $([$($name_1i0o),*, arg, ..] => {
