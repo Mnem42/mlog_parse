@@ -5,6 +5,8 @@ use std::{error::Error, fmt};
 pub enum StatementParseError {
     /// Missing jump label
     MissingJumpLabel(String),
+    /// Invalid instruction
+    InvalidInstruction(Vec<String>)
 }
 
 impl fmt::Display for StatementParseError {
@@ -14,6 +16,7 @@ impl fmt::Display for StatementParseError {
             "{}",
             match self {
                 Self::MissingJumpLabel(x) => format!("The jump label {} is missing", x),
+                Self::InvalidInstruction(x) => format!("The instruction \"{}\" is invalid", x.join(","))
             }
         )
     }

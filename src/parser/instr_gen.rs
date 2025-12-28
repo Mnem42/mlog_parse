@@ -1,8 +1,12 @@
 macro_rules! gen_instructions {
     (
         $name:ident,
-        1input: $($ident_1i:ident ($($name_1i:literal)*) = $desc_1i:literal)*---
-        2input: $($ident_2i:ident ($($name_2i:literal)*) = $desc_2i:literal)*---
+        0i0o: $($ident_0i0o:ident ($($name_0i0o:literal)*) = $desc_0i0o:literal)*---
+        1i0o: $($ident_1i0o:ident ($($name_1i0o:literal)*) = $desc_1i0o:literal)*---
+        2i0o: $($ident_2i0o:ident ($($name_2i0o:literal)*) = $desc_2i0o:literal)*---
+
+        1i1o: $($ident_1i1o:ident ($($name_1i1o:literal)*) = $desc_1i1o:literal)*---
+        2i1o: $($ident_2i1o:ident ($($name_2i1o:literal)*) = $desc_2i1o:literal)*---
     ) => {
         use std::collections::HashMap;
         use super::errs::StatementParseError;
@@ -10,9 +14,6 @@ macro_rules! gen_instructions {
         /// An mlog statement
         #[derive(Debug, PartialEq)]
         pub enum $name {
-            /// A no-op
-            Noop,
-
             /// A jump instruction
             Jump {
                 /// The index to jump to
@@ -25,18 +26,37 @@ macro_rules! gen_instructions {
                 rhs: Option<Argument>
             },
             $(
-                #[doc = $desc_1i]
-                $ident_1i {
+                #[doc = $desc_0i0o]
+                $ident_0i0o,
+            )*
+            $(
+                #[doc = $desc_1i0o]
+                $ident_1i0o {
+                    /// The argument
+                    arg: Argument
+                },
+            )*
+            $(
+                #[doc = $desc_1i1o]
+                $ident_1i1o {
                     /// The output variable name
                     o: String,
                     /// The input argument
                     i: Argument
                 },
-
             )*
             $(
-                #[doc = $desc_2i]
-                $ident_2i {
+                #[doc = $desc_2i0o]
+                $ident_2i0o {
+                    /// Argument A
+                    a: Argument,
+                    /// Argument B
+                    b: Argument
+                },
+            )*
+            $(
+                #[doc = $desc_2i1o]
+                $ident_2i1o {
                     /// The output variable name
                     c: String,
                     /// The LHS
@@ -93,12 +113,20 @@ macro_rules! gen_instructions {
                             })
                         }
                     },
-                    ["nop", ..] => Ok($name::Noop),
-                    $([$($name_1i),*, o, i, ..] if matches!(Argument::from(*o), Argument::Variable(_)) => {
-                        Ok($name::$ident_1i { o: o.to_string(), i: Argument::from(*i) })
+                    $([$($name_2i1o),*, c, a, b, ..] if matches!(Argument::from(*c), Argument::Variable(_)) => {
+                        Ok($name::$ident_2i1o { c: c.to_string(), a: Argument::from(*a), b: Argument::from(*b) })
                     },)*
-                    $([$($name_2i),*, c, a, b, ..] if matches!(Argument::from(*c), Argument::Variable(_)) => {
-                        Ok($name::$ident_2i { c: c.to_string(), a: Argument::from(*a), b: Argument::from(*b) })
+                    $([$($name_1i1o),*, o, i, ..] if matches!(Argument::from(*o), Argument::Variable(_)) => {
+                        Ok($name::$ident_1i1o { o: o.to_string(), i: Argument::from(*i) })
+                    },)*
+                    $([$($name_2i0o),*, a, b, ..] if matches!(Argument::from(*c), Argument::Variable(_)) => {
+                        Ok($name::$ident_2i0o { a: Argument::from(*a), b: Argument::from(*b) })
+                    },)*
+                    $([$($name_1i0o),*, arg, ..] => {
+                        Ok($name::$ident_1i0o { arg: Argument::from(*arg) })
+                    },)*
+                    $([$($name_0i0o),*, ..] => {
+                        Ok($name::$ident_0i0o {})
                     },)*
                     _ => unimplemented!()
                 }
@@ -110,12 +138,20 @@ macro_rules! gen_instructions {
                 match self {
                     $name::Jump { index, cond, lhs: None, rhs: None } => write!(f, "jump {} {}", index, cond),
                     $name::Jump { index, cond, lhs: Some(lhs), rhs: Some(rhs) } => write!(f, "jump {} {} {} {}", index, cond, lhs, rhs),
-                    $name::Noop => write!(f, "nop"),
-                    $($name::$ident_1i { o, i } => {
-                        write!(f, "{} {} {}", concat!("" $(, $name_1i ,)" "*), o, i)
+                    $($name::$ident_0i0o => {
+                        write!(f, "{}", concat!("" $(, $name_0i0o ,)" "*))
                     },)*
-                    $($name::$ident_2i { c, b, a } => {
-                        write!(f, "{} {} {} {}", concat!("" $(, $name_2i ,)" "*), c, b, a)
+                    $($name::$ident_1i0o { arg } => {
+                        write!(f, "{} {}", concat!("" $(, $name_1i0o ,)" "*), arg)
+                    },)*
+                    $($name::$ident_2i0o { a, b } => {
+                        write!(f, "{} {} {}", concat!("" $(, $name_2i0o ,)" "*), a, b)
+                    },)*
+                    $($name::$ident_1i1o { o, i } => {
+                        write!(f, "{} {} {}", concat!("" $(, $name_1i1o ,)" "*), o, i)
+                    },)*
+                    $($name::$ident_2i1o { c, b, a } => {
+                        write!(f, "{} {} {} {}", concat!("" $(, $name_2i1o ,)" "*), c, b, a)
                     },)*
                     _ => unreachable!()
                 }

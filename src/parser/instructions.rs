@@ -15,6 +15,8 @@ pub enum Argument {
     String(String),
     /// A variable usage
     Variable(String),
+    /// A colour
+    Colour(String)
 }
 
 /// A conditional. [reference](https://github.com/Anuken/Mindustry/blob/master/core/src/mindustry/logic/ConditionOp.java)
@@ -69,40 +71,61 @@ impl fmt::Display for Argument {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         match self {
             Self::Number(x) => write!(f, "{}", x),
-            Self::String(x) => write!(f, "{}", x),
+            Self::String(x) => write!(f, "\"{}\"", x),
             Self::Variable(x) => write!(f, "{}", x),
+            Self::Colour(x) => write!(f, "%{}", x)
         }
     }
 }
 
 lazy_static! {
-    static ref HEX_REGEX: regex::Regex = Regex::new("[+-]?0x[0-9a-fA-F]+").unwrap();
-    static ref BIN_REGEX: regex::Regex = Regex::new("[+-]?0b[01]+").unwrap();
+    static ref HEX_REGEX: regex::Regex = Regex::new("^[+-]?0x[0-9a-fA-F]+$").unwrap();
+    static ref BIN_REGEX: regex::Regex = Regex::new("^[+-]?0b[01]+$").unwrap();
+    static ref COLOUR_REGEX: regex::Regex = Regex::new("^%[09a-fA-F]{6}(?:[09a-fA-F]{2})?$").unwrap();
 }
 
 impl From<&str> for Argument {
     fn from(value: &str) -> Self {
         if let Ok(x) = value.parse() {
             Argument::Number(x)
+        } else if value.starts_with('"') && value.ends_with('"') {
+            Argument::String(value[1..value.len() - 1].to_string())
+        } else if COLOUR_REGEX.is_match(value){
+            Argument::Colour(value.strip_prefix("%").unwrap().to_string())
         } else if HEX_REGEX.is_match(value) {
             Argument::Number(parse_nradix_literal(value, 16) as f64)
         } else if BIN_REGEX.is_match(value) {
             Argument::Number(parse_nradix_literal(value, 2) as f64)
-        } else if value.starts_with('"') && value.ends_with('"') {
-            Argument::String(value[1..value.len() - 1].to_string())
         } else {
             Argument::Variable(value.to_string())
         }
     }
 }
 
-gen_instructions!(
+gen_instructions! {
     Statement,
-    1input:
+    0i0o:
+        Noop("nop") = "No-op"
+
+        UCIdle("ucontrol" "unbind") = "Unit idle"
+        UCStop("ucontrol" "stop") = "Unit stop"
+        UCAutoPathfind("ucontrol" "autoPathFind") = "Unit auto pathfind"
+        UCPayloadDrop("ucontrol" "payDrop") = "Unit drop payload"
+        UCPayloadEnter("ucontrol" "payEnter") = "Unit enter payload containing block"
+        UCUnbind("ucontrol" "unbind") = "Unit unbind"
+    ---
+
+    1i0o:
+        DrawCol("draw" "col") = "Set draw colour"
+    ---
+
+    2i0o: ---
+
+    1i1o:
         Set("set") = "Set variable"
     ---
 
-    2input:
+    2i1o:
         OpAdd("op" "add") = "Addition"
         OpSub("op" "sub") = "Subtraction"
         OpMul("op" "mul") = "Multiplication"
@@ -115,5 +138,8 @@ gen_instructions!(
 
         OpEq("op" "equal") = "Equality check"
         OpNot("op" "notEqual") = "Inequality check"
+
+        OpRead("read") = "Read from memory cell"
+        OpWrite("write") = "Write to memory cell"
     ---
-);
+}
