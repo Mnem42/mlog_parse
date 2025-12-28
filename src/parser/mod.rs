@@ -13,7 +13,7 @@ use instructions::Statement;
 
 /// A lexer for mindustry logic.
 pub struct Lexer<'a> {
-    lines: Vec<(&'a str, usize)>,
+    lines: Vec<(usize, &'a str)>,
     jump_labels: HashMap<&'a str, usize>,
     index: usize,
 }
@@ -24,10 +24,9 @@ fn parse_nradix_literal(text: &str, radix: u32) -> i64 {
 
     match chars.next().unwrap() {
         sign @ ('+' | '-') => {
-            let value: String = chars.skip(2).collect();
-            i64::from_str_radix(&value, radix).unwrap() * if sign == '-' { -1 } else { 1 }
+            i64::from_str_radix(&text[3..], radix).unwrap() * if sign == '-' { -1 } else { 1 }
         }
-        _ => i64::from_str_radix(&(chars.skip(1).collect::<String>()), radix).unwrap(),
+        _ => i64::from_str_radix(&text[2..], radix).unwrap(),
     }
 }
 
@@ -38,18 +37,19 @@ lazy_static! {
 impl<'a> Lexer<'a> {
     /// Create a new lexer
     pub fn new(str: &'a str) -> Self {
-        let (jumps, lines): (Vec<_>, Vec<_>) = str
+        let mut lines = Vec::new();
+        let mut jump_labels = HashMap::new();
+        for (idx, line) in str
             .lines()
             .enumerate()
-            .map(|(i, x)| (x, i))
-            .filter(|(x, _)| x.contains(|x: char| !x.is_whitespace()))
-            .partition(|(x, _)| JUMPLABEL_REGEX.is_match(x));
-
-        let jump_labels = HashMap::from_iter(
-            jumps
-                .into_iter()
-                .map(|(x, i)| (x.trim().strip_suffix(":").unwrap(), i)),
-        );
+            .filter(|(_, x)| x.contains(|x: char| !x.is_whitespace()))
+        {
+            if JUMPLABEL_REGEX.is_match(line) {
+                jump_labels.insert(line.trim().strip_suffix(":").unwrap(), idx);
+            } else {
+                lines.push((idx, line));
+            }
+        }
 
         Self {
             lines,
@@ -63,7 +63,7 @@ impl Iterator for Lexer<'_> {
     type Item = Result<Statement, StatementParseError>;
 
     fn next(&mut self) -> Option<Self::Item> {
-        let (line, _) = self.lines.get(self.index)?;
+        let (_, line) = self.lines.get(self.index)?;
         let split: Vec<_> = line.split_whitespace().collect();
 
         self.index += 1;
