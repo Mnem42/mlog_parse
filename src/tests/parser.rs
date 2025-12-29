@@ -123,8 +123,18 @@ fn ops_with_jump() {
             },
             Statement::OpDiv {
                 c: "d",
-                a: Argument::Colour(Rgba { r: 171, g: 205, b: 239, a: 255 }),
-                b: Argument::Colour(Rgba { r: 1, g: 35, b: 69, a: 103 })
+                a: Argument::Colour(Rgba {
+                    r: 171,
+                    g: 205,
+                    b: 239,
+                    a: 255
+                }),
+                b: Argument::Colour(Rgba {
+                    r: 1,
+                    g: 35,
+                    b: 69,
+                    a: 103
+                })
             },
             Statement::Jump {
                 index: 1,
@@ -153,7 +163,12 @@ fn all_opwidths() {
         [
             Statement::Noop,
             Statement::DrawCol {
-                arg: Argument::Colour( Rgba { r: 18, g: 52, b: 86, a: 175 }),
+                arg: Argument::Colour(Rgba {
+                    r: 18,
+                    g: 52,
+                    b: 86,
+                    a: 175
+                }),
             },
             Statement::DrawTranslate {
                 a: Argument::Number(5.0),

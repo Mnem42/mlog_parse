@@ -31,8 +31,7 @@ fn parse_nradix_literal(text: &str, radix: u32) -> i64 {
 
 static JUMPLABEL_REGEX: LazyLock<Regex> =
     LazyLock::new(|| Regex::new(r"^\s*?[[:word:]]+:").unwrap());
-static COMMENT_REGEX: LazyLock<Regex> =
-    LazyLock::new(|| Regex::new(r"^\s*#").unwrap());
+static COMMENT_REGEX: LazyLock<Regex> = LazyLock::new(|| Regex::new(r"^\s*#").unwrap());
 
 impl<'a> Lexer<'a> {
     /// Create a new lexer
@@ -45,11 +44,10 @@ impl<'a> Lexer<'a> {
             .enumerate()
             .filter(|(_, x)| x.contains(|x: char| !x.is_whitespace()))
         {
-            if COMMENT_REGEX.is_match(line) {} 
-            else if JUMPLABEL_REGEX.is_match(line) {
+            if COMMENT_REGEX.is_match(line) {
+            } else if JUMPLABEL_REGEX.is_match(line) {
                 jump_labels.insert(line.trim().strip_suffix(":").unwrap(), idx);
-            } 
-            else {
+            } else {
                 lines.push((idx, line));
             }
         }

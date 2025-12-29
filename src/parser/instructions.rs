@@ -138,7 +138,7 @@ impl fmt::Display for Argument<'_> {
             Self::String(x) => write!(f, "\"{x}\""),
             Self::Variable(x) => write!(f, "{x}"),
             Self::Colour(x) => write!(f, "%{x}"),
-            Self::GlobalConst(x) => write!(f, "@{x}")
+            Self::GlobalConst(x) => write!(f, "@{x}"),
         }
     }
 }
@@ -155,8 +155,10 @@ impl<'s> From<&'s str> for Argument<'s> {
             Some('@') => {
                 if let Ok(colour) = value[1..].parse() {
                     Argument::Colour(colour)
-                } else { Argument::GlobalConst(&value[1..]) }
-            },
+                } else {
+                    Argument::GlobalConst(&value[1..])
+                }
+            }
             Some(_) => {
                 if let Ok(x) = value.parse() {
                     Argument::Number(x)
@@ -170,7 +172,7 @@ impl<'s> From<&'s str> for Argument<'s> {
                     Argument::Variable(value)
                 }
             }
-            _ => unimplemented!()
+            x => unimplemented!(),
         }
     }
 }
@@ -209,7 +211,7 @@ gen_instructions! {
         UCBoost("ucontrol" "boost")   = "Set whether a unit should boost"
         UCPayTake("ucontrol" "payTake") = "Make a unit take payload"
         UCFlag("ucontrol" "flag")     = "Sets a unit's flag"
-        
+
         Wait("wait") = "Wait for n seconds"
     ---
 
@@ -230,7 +232,7 @@ gen_instructions! {
     ---
 
 
-    3i0o: 
+    3i0o:
         ControlShootP("control shootp") = "Set where a turret should shoot with velocity prediction"
 
         UCApproach("ucontrol" "approach") = "Set the position for units to approach"
@@ -238,11 +240,11 @@ gen_instructions! {
         UCItemTake("ucontrol" "itemtake") = "Make a unit take items"
     ---
 
-    4i0o: 
+    4i0o:
         ControlShoot("control shoot") = "Set where a turret should shoot"
     ---
 
-    1i1o: 
+    1i1o:
         Set("set") = "Set variable"
 
         // Looks wrong, but isn't
