@@ -114,19 +114,19 @@ macro_rules! gen_instructions {
         impl<'a> $name<'a> {
             /// Parse a set of whitespace split tokens into an instruction
             #[allow(unreachable_patterns)]
-            pub fn parse(v: &[&'a str], jump_labels: &HashMap<&'a str, usize>) -> Result<Option<Self>, StatementParseError<'a>> {
+            pub fn parse(v: &[&'a str], jump_labels: &HashMap<&'a str, usize>) -> Result<Self, StatementParseError<'a>> {
                 match v {
                     ["jump", index, cond_str, lhs, rhs, ..] if ConditionOp::try_from(*cond_str).is_ok() => {
                         if let Ok(index) = index.parse() {
-                            Ok(Some($name::Jump {
+                            Ok($name::Jump {
                                 index,
                                 cond: ConditionOp::try_from(*cond_str).unwrap(),
                                 lhs: Some(Argument::from(*lhs)),
                                 rhs: Some(Argument::from(*rhs))
-                            }))
+                            })
                         }
                         else {
-                            Ok(Some($name::Jump {
+                            Ok($name::Jump {
                                 index: jump_labels
                                     .get(*index)
                                     .ok_or(StatementParseError::MissingJumpLabel(index))?
@@ -134,21 +134,21 @@ macro_rules! gen_instructions {
                                 cond: ConditionOp::try_from(*cond_str).unwrap(),
                                 lhs: Some(Argument::from(*lhs)),
                                 rhs: Some(Argument::from(*rhs))
-                            }))
+                            })
                         }
                     },
                     ["jump", index, "always", ..] => {
                         if let Ok(index) = index.parse() {
-                            Ok(Some($name::Jump {
+                            Ok($name::Jump {
                                 index,
                                 cond: ConditionOp::Always,
                                 lhs: None,
                                 rhs: None
-                            }))
+                            })
                         }
 
                         else {
-                            Ok(Some($name::Jump {
+                            Ok($name::Jump {
                                 index: jump_labels
                                     .get(*index)
                                     .ok_or(StatementParseError::MissingJumpLabel(index))?
@@ -156,39 +156,38 @@ macro_rules! gen_instructions {
                                 cond: ConditionOp::Always,
                                 lhs: None,
                                 rhs: None
-                            }))
+                            })
                         }
                     },
-                    ["#", ..] => Ok(None),
                     $([$($name_0i0o),*, ..] => {
-                        Ok(Some($name::$ident_0i0o {}))
+                        Ok($name::$ident_0i0o {})
                     },)*
                     $([$($name_1i0o),*, arg, ..] => {
-                        Ok(Some($name::$ident_1i0o { arg: Argument::from(*arg) }))
+                        Ok($name::$ident_1i0o { arg: Argument::from(*arg) })
                     },)*
                     $([$($name_2i0o),*, a, b, ..] => {
-                        Ok(Some($name::$ident_2i0o { a: Argument::from(*a), b: Argument::from(*b) }))
+                        Ok($name::$ident_2i0o { a: Argument::from(*a), b: Argument::from(*b) })
                     },)*
                     $([$($name_3i0o),*, a, b, c, ..] => {
-                        Ok(Some($name::$ident_3i0o { a: Argument::from(*a), b: Argument::from(*b), c: Argument::from(*c) }))
+                        Ok($name::$ident_3i0o { a: Argument::from(*a), b: Argument::from(*b), c: Argument::from(*c) })
                     },)*
                     $([$($name_4i0o),*, a, b, c, d, ..] => {
-                        Ok(Some($name::$ident_4i0o { a: Argument::from(*a), b: Argument::from(*b), c: Argument::from(*c), d: Argument::from(*d)  }))
+                        Ok($name::$ident_4i0o { a: Argument::from(*a), b: Argument::from(*b), c: Argument::from(*c), d: Argument::from(*d)  })
                     },)*
                     $([$($name_1i1o),*, o, i, ..] if matches!(Argument::from(*o), Argument::Variable(_)) => {
-                        Ok(Some($name::$ident_1i1o { o, i: Argument::from(*i) }))
+                        Ok($name::$ident_1i1o { o, i: Argument::from(*i) })
                     },)*
                     $([$($name_2i1o),*, c, a, b, ..] if matches!(Argument::from(*c), Argument::Variable(_)) => {
-                        Ok(Some($name::$ident_2i1o { c, a: Argument::from(*a), b: Argument::from(*b) }))
+                        Ok($name::$ident_2i1o { c, a: Argument::from(*a), b: Argument::from(*b) })
                     },)*
-                    $([$($name_4i1o),*, o, a, b, c, d, ..] if matches!(Argument::from(*c), Argument::Variable(_)) => {
-                        Ok(Some($name::$ident_4i1o { 
+                    $([$($name_4i1o),*, o, a, b, c, d, ..]  => {
+                        Ok($name::$ident_4i1o { 
                             o: *o,
                             a: Argument::from(*a), 
                             b: Argument::from(*b), 
                             c: Argument::from(*c), 
                             d: Argument::from(*d) 
-                        }))
+                        })
                     },)*
                     _ => unimplemented!()
                 }
