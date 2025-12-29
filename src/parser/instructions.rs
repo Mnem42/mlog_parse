@@ -211,9 +211,9 @@ gen_instructions! {
         DrawRotate("draw" "rotate")       = "Rotate everything in the print buffer"
         DrawScale("draw" "scale")         = "Scale everything in the print buffer"
 
-        ControlEnabled("control enabled") = "Set whether a block is enabled or not"
-        ControlConfig("control config")   = "Set the configuration of a block (exact behaviour depends on the block)"
-        ControlColour("control color")    = "Set the colour of a block that supports it"
+        ControlEnabled("control" "enabled") = "Set whether a block is enabled or not"
+        ControlConfig("control" "config")   = "Set the configuration of a block (exact behaviour depends on the block)"
+        ControlColour("control" "color")    = "Set the colour of a block that supports it"
 
         UCMove("ucontrol" "move")         = "Set the position for units to move to"
         UCPathfind("ucontrol" "pathfind") = "Set the position for units to pathfind to"
