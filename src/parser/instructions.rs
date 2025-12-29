@@ -152,7 +152,11 @@ impl<'s> From<&'s str> for Argument<'s> {
     fn from(value: &'s str) -> Self {
         match value.chars().next() {
             Some('"') if value.ends_with('"') => Argument::String(&value[1..value.len() - 1]),
-            Some('@') => Argument::Colour(value[1..].parse().unwrap()),
+            Some('@') => {
+                if let Ok(colour) = value[1..].parse() {
+                    Argument::Colour(colour)
+                } else { Argument::GlobalConst(&value[1..]) }
+            },
             Some(_) => {
                 if let Ok(x) = value.parse() {
                     Argument::Number(x)
