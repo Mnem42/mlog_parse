@@ -150,22 +150,6 @@ static COLOUR_REGEX: LazyLock<Regex> =
 
 impl<'s> From<&'s str> for Argument<'s> {
     fn from(value: &'s str) -> Self {
-        /*if let Ok(x) = value.parse() {
-            return Argument::Number(x);
-        } else if value.starts_with('"') && value.ends_with('"') {
-            Argument::String(&value[1..value.len() - 1])
-        } else if value.starts_with("@"){
-            Argument::GlobalConst(&value[1..value.len() - 1])
-        } else if COLOUR_REGEX.is_match(value) {
-            Argument::Colour(value[1..].parse().unwrap())
-        } else if HEX_REGEX.is_match(value) {
-            Argument::Number(parse_nradix_literal(value, 16) as f64)
-        } else if BIN_REGEX.is_match(value) {
-            Argument::Number(parse_nradix_literal(value, 2) as f64)
-        } else {
-            Argument::Variable(value)
-        }*/
-
         match value.chars().next() {
             Some('"') if value.ends_with('"') => Argument::String(&value[1..value.len() - 1]),
             Some('@') => Argument::Colour(value[1..].parse().unwrap()),
