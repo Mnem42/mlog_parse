@@ -152,7 +152,7 @@ impl<'s> From<&'s str> for Argument<'s> {
     fn from(value: &'s str) -> Self {
         if let Ok(x) = value.parse() {
             return Argument::Number(x);
-        } if value.starts_with('"') && value.ends_with('"') {
+        } else if value.starts_with('"') && value.ends_with('"') {
             Argument::String(&value[1..value.len() - 1])
         } else if value.starts_with("@"){
             Argument::GlobalConst(&value[1..value.len() - 1])
