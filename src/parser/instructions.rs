@@ -223,7 +223,7 @@ gen_instructions! {
         UBind("ubind") = "Bind a unit with a given type"
 
         UCBoost("ucontrol" "boost")   = "Set whether a unit should boost"
-        UCBoost("ucontrol" "payTake") = "Make a unit take payload"
+        UCPayTake("ucontrol" "payTake") = "Make a unit take payload"
         UCFlag("ucontrol" "flag")     = "Sets a unit's flag"
     ---
 
