@@ -1,4 +1,4 @@
-use regex::Regex;
+use regex::RegexSet;
 use std::fmt::{self, Display, Write};
 use std::num::{IntErrorKind, ParseIntError};
 use std::str::FromStr;
@@ -143,27 +143,35 @@ impl fmt::Display for Argument<'_> {
     }
 }
 
-static HEX_REGEX: LazyLock<Regex> = LazyLock::new(|| Regex::new("^[+-]?0x[0-9a-fA-F]+$").unwrap());
-static BIN_REGEX: LazyLock<Regex> = LazyLock::new(|| Regex::new("^[+-]?0b[01]+$").unwrap());
-static COLOUR_REGEX: LazyLock<Regex> =
-    LazyLock::new(|| Regex::new("^%[0-9a-fA-F]{6}(?:[0-9a-fA-F]{2})?$").unwrap());
+static ARG_PATTERNS: LazyLock<RegexSet> = LazyLock::new(|| {
+    RegexSet::new([
+        "^\".*\"$",
+        "^[%@][0-9a-fA-F]{6}(?:[0-9a-fA-F]{2})?$",
+        r"^[+-]?\d+(?:\.\d+)?$",
+        "^[+-]?0x[0-9a-fA-F]+$",
+        "^[+-]?0b[01]+$",
+    ])
+    .unwrap()
+});
 
 impl<'s> From<&'s str> for Argument<'s> {
     fn from(value: &'s str) -> Self {
-        match value.chars().next() {
-            Some('"') if value.ends_with('"') => Argument::String(&value[1..value.len() - 1]),
-            Some('@') => Argument::Colour(value[1..].parse().unwrap()),
-            Some(_) if COLOUR_REGEX.is_match(value) => {
-                Argument::Colour(value[1..].parse().unwrap())
+        let matches = ARG_PATTERNS.matches(value);
+        match () {
+            _ if matches.matched(0) => Argument::String(&value[1..value.len() - 1]),
+            _ if matches.matched(1) => Argument::Colour(value[1..].parse().unwrap()),
+            _ if matches.matched(2) => {
+                let first = value.as_bytes().first().copied().unwrap_or_default();
+                let value = matches!(first, b'-' | b'+')
+                    .then(|| &value[1..])
+                    .unwrap_or(value);
+                Argument::Number(
+                    value.parse::<f64>().unwrap() * if first == b'-' { -1. } else { 1. },
+                )
             }
-            Some(_) if HEX_REGEX.is_match(value) => {
-                Argument::Number(parse_nradix_literal(value, 16) as f64)
-            }
-            Some(_) if BIN_REGEX.is_match(value) => {
-                Argument::Number(parse_nradix_literal(value, 2) as f64)
-            }
-            Some(_) => Argument::Variable(value),
-            _ => unimplemented!(),
+            _ if matches.matched(3) => Argument::Number(parse_nradix_literal(value, 16) as f64),
+            _ if matches.matched(4) => Argument::Number(parse_nradix_literal(value, 2) as f64),
+            _ => Argument::Variable(value),
         }
     }
 }
