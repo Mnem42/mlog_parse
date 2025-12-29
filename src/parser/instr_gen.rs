@@ -13,6 +13,9 @@ macro_rules! gen_instructions {
     ) => {
         use std::collections::HashMap;
         use super::errs::StatementParseError;
+        use super::instructions::Argument;
+        use super::instructions::ConditionOp;
+        use std::fmt;
 
         /// An mlog statement
         #[derive(Debug, PartialEq)]

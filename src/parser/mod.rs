@@ -6,9 +6,11 @@ pub mod errs;
 mod instr_gen;
 /// Instructions
 pub mod instructions;
+/// The definition of the Statement type.
+pub mod statement_def;
 
 use errs::StatementParseError;
-use instructions::Statement;
+use statement_def::Statement;
 
 /// A lexer for mindustry logic.
 pub struct Lexer<'a> {
