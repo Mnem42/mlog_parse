@@ -1,12 +1,14 @@
 macro_rules! gen_instructions {
     (
         $name:ident,
-        0i0o: $($ident_0i0o:ident ($($name_0i0o:literal)*) = $desc_0i0o:literal)*---
-        1i0o: $($ident_1i0o:ident ($($name_1i0o:literal)*) = $desc_1i0o:literal)*---
-        2i0o: $($ident_2i0o:ident ($($name_2i0o:literal)*) = $desc_2i0o:literal)*---
+        0i0o: $($ident_0i0o:ident ($($name_0i0o:literal)+) = $desc_0i0o:literal)*---
+        1i0o: $($ident_1i0o:ident ($($name_1i0o:literal)+) = $desc_1i0o:literal)*---
+        2i0o: $($ident_2i0o:ident ($($name_2i0o:literal)+) = $desc_2i0o:literal)*---
+        3i0o: $($ident_3i0o:ident ($($name_3i0o:literal)+) = $desc_3i0o:literal)*---
+        4i0o: $($ident_4i0o:ident ($($name_4i0o:literal)+) = $desc_4i0o:literal)*---
 
-        1i1o: $($ident_1i1o:ident ($($name_1i1o:literal)*) = $desc_1i1o:literal)*---
-        2i1o: $($ident_2i1o:ident ($($name_2i1o:literal)*) = $desc_2i1o:literal)*---
+        1i1o: $($ident_1i1o:ident ($($name_1i1o:literal)+) = $desc_1i1o:literal)*---
+        2i1o: $($ident_2i1o:ident ($($name_2i1o:literal)+) = $desc_2i1o:literal)*---
     ) => {
         use std::collections::HashMap;
         use super::errs::StatementParseError;
@@ -53,6 +55,31 @@ macro_rules! gen_instructions {
                     a: Argument<'a>,
                     /// Argument B
                     b: Argument<'a>
+                },
+            )*
+            $(
+                #[doc = $desc_3i0o]
+                $ident_3i0o {
+                    /// Argument A
+                    a: Argument<'a>,
+                    /// Argument B
+                    b: Argument<'a>,
+                    /// Argument C
+                    c: Argument<'a>,
+                },
+
+            )*
+            $(
+                #[doc = $desc_4i0o]
+                $ident_4i0o {
+                    /// Argument A
+                    a: Argument<'a>,
+                    /// Argument B
+                    b: Argument<'a>,
+                    /// Argument C
+                    c: Argument<'a>,
+                    /// Argument C
+                    d: Argument<'a>,
                 },
             )*
             $(
@@ -103,6 +130,7 @@ macro_rules! gen_instructions {
                                 rhs: None
                             })
                         }
+
                         else {
                             Ok($name::Jump {
                                 index: jump_labels
@@ -120,6 +148,12 @@ macro_rules! gen_instructions {
                     },)*
                     $([$($name_1i1o),*, o, i, ..] if matches!(Argument::from(*o), Argument::Variable(_)) => {
                         Ok($name::$ident_1i1o { o, i: Argument::from(*i) })
+                    },)*
+                    $([$($name_3i0o),*, a, b, c, ..] => {
+                        Ok($name::$ident_3i0o { a: Argument::from(*a), b: Argument::from(*b), c: Argument::from(*c) })
+                    },)*
+                    $([$($name_4i0o),*, a, b, c, d, ..] => {
+                        Ok($name::$ident_4i0o { a: Argument::from(*a), b: Argument::from(*b), c: Argument::from(*c), d: Argument::from(*d)  })
                     },)*
                     $([$($name_2i0o),*, a, b, ..] => {
                         Ok($name::$ident_2i0o { a: Argument::from(*a), b: Argument::from(*b) })
@@ -148,6 +182,12 @@ macro_rules! gen_instructions {
                     },)*
                     $($name::$ident_2i0o { a, b } => {
                         write!(f, "{} {} {}", concat!("" $(, $name_2i0o ,)" "*), a, b)
+                    },)*
+                    $($name::$ident_3i0o { a, b, c } => {
+                        write!(f, "{} {} {} {}", concat!("" $(, $name_3i0o ,)" "*), a, b, c)
+                    },)*
+                    $($name::$ident_4i0o { a, b, c, d } => {
+                        write!(f, "{} {} {} {} {}", concat!("" $(, $name_4i0o ,)" "*), a, b, c, d)
                     },)*
                     $($name::$ident_1i1o { o, i } => {
                         write!(f, "{} {} {}", concat!("" $(, $name_1i1o ,)" "*), o, i)

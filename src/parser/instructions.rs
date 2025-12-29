@@ -191,8 +191,19 @@ gen_instructions! {
         DrawScale("draw" "scale") = "Scale everything in the print buffer"
     ---
 
-    1i1o:
+    3i0o: ---
+
+    4i0o: ---
+
+    1i1o: 
         Set("set") = "Set variable"
+
+        // Looks wrong, but isn't
+        BlockLookup("lookup" "block") = "Lookup a block by index"
+        Unitookup("lookup" "unit") = "Lookup a unit by index"
+        ItemLookup("lookup" "item") = "Lookup an item by index"
+        LiquidLookup("lookup" "liquid") = "Lookup a liquid by index"
+        TeamLookup("lookup" "team") = "Lookup a team by index"
     ---
 
     2i1o:
