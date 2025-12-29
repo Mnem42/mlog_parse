@@ -1,5 +1,5 @@
-use regex::Regex;
-use std::fmt::{self, Display, Write, write};
+use regex::RegexSet;
+use std::fmt::{self, Display, Write};
 use std::num::{IntErrorKind, ParseIntError};
 use std::str::FromStr;
 use std::sync::LazyLock;
@@ -138,39 +138,42 @@ impl fmt::Display for Argument<'_> {
             Self::String(x) => write!(f, "\"{x}\""),
             Self::Variable(x) => write!(f, "{x}"),
             Self::Colour(x) => write!(f, "%{x}"),
-            Self::GlobalConst(x) => write!(f, "@{x}")
+            Self::GlobalConst(x) => write!(f, "@{x}"),
         }
     }
 }
 
-static HEX_REGEX: LazyLock<Regex> = LazyLock::new(|| Regex::new("^[+-]?0x[0-9a-fA-F]+$").unwrap());
-static BIN_REGEX: LazyLock<Regex> = LazyLock::new(|| Regex::new("^[+-]?0b[01]+$").unwrap());
-static COLOUR_REGEX: LazyLock<Regex> =
-    LazyLock::new(|| Regex::new("^%[0-9a-fA-F]{6}(?:[0-9a-fA-F]{2})?$").unwrap());
+static ARG_PATTERNS: LazyLock<RegexSet> = LazyLock::new(|| {
+    RegexSet::new([
+        "^\".*\"$",
+        "^[%@][0-9a-fA-F]{6}(?:[0-9a-fA-F]{2})?$",
+        "^@",
+        r"^[+-]?\d+(?:\.\d+)?$",
+        "^[+-]?0x[0-9a-fA-F]+$",
+        "^[+-]?0b[01]+$",
+    ])
+    .unwrap()
+});
 
 impl<'s> From<&'s str> for Argument<'s> {
     fn from(value: &'s str) -> Self {
-        match value.chars().next() {
-            Some('"') if value.ends_with('"') => Argument::String(&value[1..value.len() - 1]),
-            Some('@') => {
-                if let Ok(colour) = value[1..].parse() {
-                    Argument::Colour(colour)
-                } else { Argument::GlobalConst(&value[1..]) }
-            },
-            Some(_) => {
-                if let Ok(x) = value.parse() {
-                    Argument::Number(x)
-                } else if COLOUR_REGEX.is_match(value) {
-                    Argument::Colour(value[1..].parse().unwrap())
-                } else if HEX_REGEX.is_match(value) {
-                    Argument::Number(parse_nradix_literal(value, 16) as f64)
-                } else if BIN_REGEX.is_match(value) {
-                    Argument::Number(parse_nradix_literal(value, 2) as f64)
-                } else {
-                    Argument::Variable(value)
-                }
+        let matches = ARG_PATTERNS.matches(value);
+        match () {
+            _ if matches.matched(0) => Argument::String(&value[1..value.len() - 1]),
+            _ if matches.matched(1) => Argument::Colour(value[1..].parse().unwrap()),
+            _ if matches.matched(2) => Argument::GlobalConst(&value[1..]),
+            _ if matches.matched(3) => {
+                let first = value.as_bytes().first().copied().unwrap_or_default();
+                let value = matches!(first, b'-' | b'+')
+                    .then(|| &value[1..])
+                    .unwrap_or(value);
+                Argument::Number(
+                    value.parse::<f64>().unwrap() * if first == b'-' { -1. } else { 1. },
+                )
             }
-            _ => unimplemented!()
+            _ if matches.matched(4) => Argument::Number(parse_nradix_literal(value, 16) as f64),
+            _ if matches.matched(5) => Argument::Number(parse_nradix_literal(value, 2) as f64),
+            _ => Argument::Variable(value),
         }
     }
 }
@@ -209,7 +212,7 @@ gen_instructions! {
         UCBoost("ucontrol" "boost")   = "Set whether a unit should boost"
         UCPayTake("ucontrol" "payTake") = "Make a unit take payload"
         UCFlag("ucontrol" "flag")     = "Sets a unit's flag"
-        
+
         Wait("wait") = "Wait for n seconds"
     ---
 
@@ -230,7 +233,7 @@ gen_instructions! {
     ---
 
 
-    3i0o: 
+    3i0o:
         ControlShootP("control shootp") = "Set where a turret should shoot with velocity prediction"
 
         UCApproach("ucontrol" "approach") = "Set the position for units to approach"
@@ -238,11 +241,11 @@ gen_instructions! {
         UCItemTake("ucontrol" "itemtake") = "Make a unit take items"
     ---
 
-    4i0o: 
+    4i0o:
         ControlShoot("control shoot") = "Set where a turret should shoot"
     ---
 
-    1i1o: 
+    1i1o:
         Set("set") = "Set variable"
 
         // Looks wrong, but isn't
