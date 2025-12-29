@@ -1,6 +1,6 @@
-use crate::parser::instr_gen::gen_instructions;
+use crate::parser::statement_gen::gen_statements_enum;
 
-gen_instructions! {
+gen_statements_enum! {
     Statement,
     0i0o:
         Noop("nop")  = "No-op"

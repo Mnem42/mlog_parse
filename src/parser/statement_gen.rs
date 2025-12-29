@@ -1,4 +1,4 @@
-macro_rules! gen_instructions {
+macro_rules! gen_statements_enum {
     (
         $name:ident,
         0i0o: $($ident_0i0o:ident ($($name_0i0o:literal)+) = $desc_0i0o:literal)*---
@@ -230,4 +230,4 @@ macro_rules! gen_instructions {
     };
 }
 
-pub(super) use gen_instructions;
+pub(super) use gen_statements_enum;

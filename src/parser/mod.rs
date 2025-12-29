@@ -3,7 +3,7 @@ use std::{collections::HashMap, sync::LazyLock};
 
 /// Error handling
 pub mod errs;
-mod instr_gen;
+mod statement_gen;
 /// Instructions
 pub mod instructions;
 /// The definition of the Statement type.
