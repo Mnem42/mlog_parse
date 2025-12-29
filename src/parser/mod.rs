@@ -66,7 +66,14 @@ impl<'s> Iterator for Lexer<'s> {
         let split: Vec<_> = line.split_whitespace().collect();
 
         self.index += 1;
+        println!("{}", line);
 
-        Some(Statement::parse(&split, &self.jump_labels))
+        let v = Statement::parse(&split, &self.jump_labels);
+
+        match v {
+            Ok(Some(v)) => Some(Ok(v)),
+            Ok(None) => Some(self.next()?),
+            Err(e) => Some(Err(e))
+        }
     }
 }

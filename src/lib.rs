@@ -8,4 +8,4 @@ pub mod parser;
 mod util;
 
 #[cfg(test)]
-mod test;
+mod tests;

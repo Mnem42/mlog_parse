@@ -154,7 +154,9 @@ impl<'s> From<&'s str> for Argument<'s> {
             Some('"') if value.ends_with('"') => Argument::String(&value[1..value.len() - 1]),
             Some('@') => Argument::Colour(value[1..].parse().unwrap()),
             Some(_) => {
-                if COLOUR_REGEX.is_match(value) {
+                if let Ok(x) = value.parse() {
+                    Argument::Number(x)
+                } else if COLOUR_REGEX.is_match(value) {
                     Argument::Colour(value[1..].parse().unwrap())
                 } else if HEX_REGEX.is_match(value) {
                     Argument::Number(parse_nradix_literal(value, 16) as f64)
@@ -170,12 +172,6 @@ impl<'s> From<&'s str> for Argument<'s> {
 }
 
 gen_instructions! {
-
-//     ubind @poly
-// ucontrol move 0 0 0 0 0
-// uradar enemy any any distance 0 1 result
-// ulocate building core true @copper outx outy found building
-
     Statement,
     0i0o:
         Noop("nop")  = "No-op"
