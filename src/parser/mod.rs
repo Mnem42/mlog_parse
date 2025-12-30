@@ -9,8 +9,10 @@ pub mod instructions;
 /// The definition of the Statement type.
 pub mod statement_def;
 
+pub mod statement_gen_expmt;
+
 use errs::StatementParseError;
-use statement_def::Statement;
+use statement_gen_expmt::Statement;
 
 /// A lexer for mindustry logic.
 pub struct Lexer<'a> {
