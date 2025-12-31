@@ -1,7 +1,3 @@
-macro_rules! replace_expr {
-    ($_t:tt : $sub:expr) => {$sub};
-}
-
 macro_rules! gen_match_l {
     ($($name:literal),* $($l:ident),* -> $($r:ident),*) => { [$($name),*, $($l,)* $($r,)* ..] }
 }
@@ -26,8 +22,6 @@ macro_rules! gen_enum {
         $enum: ident, 
         $($ident:ident: ($($i:ident),* -> $($o:ident),*))*
     ) => {
-        use super::instructions::ConditionOp;
-
         /// A statement
         #[derive(Debug, PartialEq)]
         pub enum $enum<'a> {
@@ -54,7 +48,7 @@ macro_rules! gen_enum {
 /// `oi` means the outputs are *before* the inputs in the statement, while `io` means the inputs
 /// are *before* the outputs in the statement.
 macro_rules! gen_statements {
-    (
+    {
         $enum: ident, 
         oi: $(
             $oi_ident:ident:
@@ -68,9 +62,10 @@ macro_rules! gen_statements {
             ($($io_i:ident),* -> $($io_o:ident),*)
         )*
         ---
-    ) => {
-        use super::instructions::Argument;
-        use super::errs::StatementParseError;
+    } => {mod thing {
+        use crate::parser::instructions::Argument;
+        use crate::parser::errs::StatementParseError;
+        use crate::parser::instructions::ConditionOp;
 
         gen_enum!{
             $enum,
@@ -150,54 +145,47 @@ macro_rules! gen_statements {
                     Self::Jump { index, cond, lhs: Some(lhs), rhs: Some(rhs) } =>
                         write!(f, "jump {} {} {} {}", index, cond, lhs, rhs),
                     $(
-                        Self::$oi_ident {$($oi_i),* $(, $oi_o)*} => write!(
-                            f,
-                            concat!(
-                                "{}", 
-                                $(replace_expr!($oi_o:" {}"),)*
-                                $(replace_expr!($oi_i:" {}"),)*
-                            ), 
-                            concat!("" $(, $oi_name ,)" "*),
-                            $($oi_o,)*
-                            $($oi_i,)*
-                        ),
+                        Self::$oi_ident {$($oi_i),* $(, $oi_o)*} => {
+                            f.write_str(concat!("" $(, $oi_name ,)" "*));
+                            $($oi_o.fmt(f);)*
+                            $($oi_i.fmt(f);)*
+                            
+                            Ok(())
+                        },
                     )*
                     $(
-                        Self::$io_ident {$($io_i),* $(,$io_o)*} => write!(
-                            f,
-                            concat!(
-                                "{}", 
-                                $(replace_expr!($io_i:" {}"),)*
-                                $(replace_expr!($io_o:" {}"),)*
-                            ), 
-                            concat!("" $(, $io_name ,)" "*),
-                            $($io_i,)*
-                            $($io_o,)*
-                        ),
+                        Self::$io_ident {$($io_i),* $(,$io_o)*} => {
+                            f.write_str(concat!("" $(, $io_name ,)" "*));
+                            $($io_o.fmt(f);)*
+                            $($io_i.fmt(f);)*
+                            
+                            Ok(())
+                        },
                     )*
                     _ => unreachable!()
                 }
             }
         }
-    };
-}
+    }
+}}
 
 
+mod x {
+    gen_statements!{
+        Statement,
 
-gen_statements!{
-    Statement,
+        oi:
+            Set: "set" (value -> var)
+            
+            OpAdd: "op" "add" (a, b -> c)
+            OpSub: "op" "sub" (a, b -> c)
+            OpMul: "op" "mul" (a, b -> c)
+            OpDiv: "op" "div" (a, b -> c)
+        ---
 
-    oi:
-        Set: "set" (value -> var)
-        
-        OpAdd: "op" "add" (a, b -> c)
-        OpSub: "op" "sub" (a, b -> c)
-        OpMul: "op" "mul" (a, b -> c)
-        OpDiv: "op" "div" (a, b -> c)
-    ---
-
-    io: 
-        Noop: "nop" (->)
-        ULocate: "ulocate" (find, group, enemy, outx, outy -> found, building)
-    ---
+        io: 
+            Noop: "nop" (->)
+            ULocate: "ulocate" (find, group, enemy, outx, outy -> found, building)
+        ---
+    }
 }
