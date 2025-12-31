@@ -20,8 +20,8 @@ macro_rules! gen_match_result {
         $($i:ident),* -> $($o:ident),*
     ) => {
         $enum::$ident {
-            $($o),*
-            $(, $i: Argument::from(*$i))*
+            $($o,)*
+            $($i: Argument::from(*$i)),*
         }
     }
 }
@@ -175,16 +175,79 @@ macro_rules! gen_statements {
 gen_statements!{
     Statement,
 
-    Noop: "nop" (oi: ->)
+    Noop: "nop"  (io: ->)
+    Stop: "stop" (io: ->)
+    End:  "end"  (io: ->)
+    Set:  "set"  (oi: value -> var)
+    Wait: "wait" (io: time ->)
 
-    Set: "set" (oi: value -> var)
+    GetLink: "getlink" (oi: index -> result)
     
+    Sensor: "sensor"   (oi: item -> result)
+
+    Read:  "read"  (oi: cell, index -> result)
+    Write: "write" (io: value, cell, index ->)
+
+    Print:      "print"      (io: text ->)
+    PrintChar:  "printChar"  (io: char ->)
+    Format:     "format"     (io: f_string ->)
+    PrintFlush: "printflush" (io: output ->)
+
+    PackColour: "packcolor"     (oi: r, g, b, a -> result)
+    DrawReset:  "draw" "reset"  (io: ->)
+    DrawCol:    "draw" "col"    (io: packed_colour ->)
+    DrawStroke: "draw" "stroke" (io: width ->)
+    DrawFlush:  "drawflush"     (io: output ->)
+    DrawTranslate: "draw" "translate" (io: x, y ->)
+    DrawRotate:    "draw" "rotate"    (io: angle ->)
+    DrawScale:     "draw" "scale"     (io: x, y ->)
+
+    ControlEnabled: "control" "enabled" (io: enabled ->)
+    ControlConfig:  "control" "config"  (io: config ->)
+    ControlColour:  "control" "color"   (io: colour ->)
+    ControlShoot:   "control" "shoot"   (io: block, x, y, shoot ->)
+    ControlShootP:  "control" "shootp"  (io: block, unit, shoot ->)
+
+    BlockLookup:  "lookup" "block"  (oi: index -> result)
+    UnitLookup:   "lookup" "unit"   (oi: index -> result)
+    ItemLookup:   "lookup" "item"   (oi: index -> result)
+    LiquidLookup: "lookup" "liquid" (oi: index -> result)
+    TeamLookup:   "lookup" "team"   (oi: index -> result)
+
     OpAdd: "op" "add" (oi: a, b -> c)
     OpSub: "op" "sub" (oi: a, b -> c)
     OpMul: "op" "mul" (oi: a, b -> c)
     OpDiv: "op" "div" (oi: a, b -> c)
+    OpExp: "op" "pow" (oi: a, b -> c)
+    OpIntDiv:   "op" "fdiv" (oi: a, b -> c)
+    OpMod:      "op" "mod"  (oi: a, b -> c)
+    OpTrueMod:  "op" "emod" (oi: a, b -> c)
+    OpEq:       "op" "equal"    (oi: a, b -> result)
+    OpNotEqual: "op" "notEqual" (oi: a, b -> result)
 
+    UBind:   "ubind"   (io: unit_type ->)
     ULocate: "ulocate" (io: find, group, enemy, outx, outy -> found, building)
+
+    UCIdle:     "ucontrol" "idle"   (oi: ->)
+    UCStop:     "ucontrol" "stop"   (oi: ->)
+    UCUnbind:   "ucontrol" "unbind" (oi: ->)
+    UCFlag:     "ucontrol" "flag"   (oi: flag ->)
+    UCMove:     "ucontrol" "move"     (oi: x, y ->)
+    UCPathfind: "ucontrol" "pathfind" (oi: x, y ->)
+    UCApproach: "ucontrol" "approach" (oi: x, y, radius ->)
+    UCBoost:    "ucontrol" "boost"    (oi: boost ->)
+    UCMine:     "ucontrol" "move"     (oi: x, y ->)
+    UCTarget:   "ucontrol" "target"   (oi: x, y, shoot ->)
+    UCTargetP:  "ucontrol" "move"     (oi: unit, shoot ->)
+    UCPayTake:  "ucontrol" "payTake"  (oi: units ->)
+    UCPayDrop:  "ucontrol" "payDrop"  (oi: ->)
+    UCItemTake: "ucontrol" "itemTake" (oi: x, y, radius ->)
+    UCItemDrop: "ucontrol" "itemDrop" (oi: to, amount ->)
+    UCAutoPathfind: "ucontrol" "autoPathFind" (oi: ->)
+    UCPayloadDrop:  "ucontrol" "payDrop"      (oi: ->)
+    UCPayloadEnter: "ucontrol" "payEnter"     (oi: ->)
 }
+
+use std::process::Output;
 
 pub use thing::Statement;
