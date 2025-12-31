@@ -44,6 +44,20 @@ macro_rules! gen_enum {
                 /// The condition RHS
                 rhs: Option<Argument<'a>>
             },
+            Select {
+                /// The index to jump to
+                result: &'a str,
+                /// The condition
+                cond: ConditionOp,
+                /// The condition LHS
+                lhs: Option<Argument<'a>>,
+                /// The condition RHS
+                rhs: Option<Argument<'a>>,
+                /// Option when true
+                true_option: Argument<'a>,
+                /// Option when false
+                false_option: Argument<'a>
+            },
             $($ident {
                 $($i: Argument<'a>,)*
                 $($o: &'a str),*
@@ -142,6 +156,26 @@ macro_rules! gen_statements {
                             })
                         }
                     },
+                    ["select", result, cond_str, lhs, rhs, true_option, false_option, ..] if ConditionOp::try_from(*cond_str).is_ok() => {
+                        Ok(Self::Select {
+                            result,
+                            cond: ConditionOp::try_from(*cond_str).unwrap(),
+                            lhs: Some(Argument::from(*lhs)), 
+                            rhs: Some(Argument::from(*rhs)),
+                            true_option: Argument::from(*true_option), 
+                            false_option: Argument::from(*false_option)
+                        })
+                    },
+                    ["select", result, "always", true_option, false_option, ..] => {
+                        Ok(Self::Select {
+                            result,
+                            cond: ConditionOp::Always,
+                            lhs: None, 
+                            rhs: None,
+                            true_option: Argument::from(*true_option), 
+                            false_option: Argument::from(*false_option)
+                        })
+                    },
                     $(
                         gen_match_l!($ty $($name),* $($o),* -> $($i),*)
                             if gen_match_guard!($($o)*)
@@ -182,7 +216,7 @@ gen_statements!{
     Wait: "wait" (io: time ->)
 
     GetLink: "getlink" (oi: index -> result)
-    
+
     Sensor: "sensor"   (oi: item -> result)
 
     Read:  "read"  (oi: cell, index -> result)
@@ -247,7 +281,5 @@ gen_statements!{
     UCPayloadDrop:  "ucontrol" "payDrop"      (oi: ->)
     UCPayloadEnter: "ucontrol" "payEnter"     (oi: ->)
 }
-
-use std::process::Output;
 
 pub use thing::Statement;
