@@ -1,6 +1,6 @@
 use crate::parser;
 use crate::parser::instructions::{Argument, ConditionOp, Rgba};
-use crate::parser::statement_gen_expmt::Statement;
+use crate::parser::statements::Statement;
 use pretty_assertions::assert_eq;
 
 #[test]

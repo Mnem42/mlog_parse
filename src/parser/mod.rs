@@ -3,16 +3,13 @@ use std::{collections::HashMap, sync::LazyLock};
 
 /// Error handling
 pub mod errs;
-mod statement_gen;
 /// Instructions
 pub mod instructions;
 /// The definition of the Statement type.
-pub mod statement_def;
-
-pub mod statement_gen_expmt;
+pub mod statements;
 
 use errs::StatementParseError;
-use statement_gen_expmt::Statement;
+use statements::Statement;
 
 /// A lexer for mindustry logic.
 pub struct Lexer<'a> {

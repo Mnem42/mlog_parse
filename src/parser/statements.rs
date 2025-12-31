@@ -205,7 +205,6 @@ macro_rules! gen_statements {
     }
 }}
 
-
 gen_statements!{
     Statement,
 
