@@ -1,5 +1,14 @@
 macro_rules! gen_match_l {
-    ($($name:literal),* $($l:ident),* -> $($r:ident),*) => { [$($name),*, $($l,)* $($r,)* ..] }
+    (
+        oi
+        $($name:literal),* 
+        $($i:ident),* -> $($o:ident),*
+    ) => { [$($name),*, $($i,)* $($o,)* ..] };
+    (
+        io
+        $($name:literal),* 
+        $($i:ident),* -> $($o:ident),*
+    ) => { [$($name),*, $($i,)* $($o,)* ..] };
 }
 macro_rules! gen_match_guard {
     ($($o:ident)*) => { $(matches!(Argument::from(*$o), Argument::Variable(_))&&)* true };
@@ -19,16 +28,12 @@ macro_rules! gen_match_result {
 
 macro_rules! gen_enum {
     (
-        $enum: ident, 
-        $($ident:ident: ($($i:ident),* -> $($o:ident),*))*
+        $enum: ident
+        $($ident:ident $($i:ident),* -> $($o:ident),*);*
     ) => {
         /// A statement
         #[derive(Debug, PartialEq)]
         pub enum $enum<'a> {
-            $($ident {
-                $($i: Argument<'a>,)*
-                $($o: &'a str),*
-            }),*,
             Jump {
                 /// The index to jump to
                 index: usize,
@@ -38,9 +43,32 @@ macro_rules! gen_enum {
                 lhs: Option<Argument<'a>>,
                 /// The condition RHS
                 rhs: Option<Argument<'a>>
-            }
+            },
+            $($ident {
+                $($i: Argument<'a>,)*
+                $($o: &'a str),*
+            }),*,
         }
     };
+}
+
+macro_rules! gen_printer {
+    (oi $f:expr ; $($name:literal),* $($i:ident),* -> $($o:ident),*) => {
+        (|| {
+            $f.write_str(concat!("" $(, $name ,)" "*))?;
+            $(write!($f, " {}", $o)?;)*
+            $(write!($f, " {}", $i)?;)*
+            Ok(())
+        })()
+    };
+    (io $f:expr ; $($name:literal),* $($i:ident),* -> $($o:ident),*) => {{
+        (|| {
+            $f.write_str(concat!("" $(, $name ,)" "*))?;
+            $(write!($f, " {}", $i)?;)*
+            $(write!($f, " {}", $o)?;)*
+            Ok(())
+        })()
+    }};
 }
 
 /// Generates a statements enum
@@ -50,27 +78,19 @@ macro_rules! gen_enum {
 macro_rules! gen_statements {
     {
         $enum: ident, 
-        oi: $(
-            $oi_ident:ident:
-            $($oi_name:literal)*
-            ($($oi_i:ident),* -> $($oi_o:ident),*)
+        $(
+            $ident:ident:
+            $($name:literal)*
+            ($ty:tt: $($i:ident),* -> $($o:ident),*)
         )*
-        ---
-        io: $(
-            $io_ident:ident:
-            $($io_name:literal)*
-            ($($io_i:ident),* -> $($io_o:ident),*)
-        )*
-        ---
     } => {mod thing {
         use crate::parser::instructions::Argument;
         use crate::parser::errs::StatementParseError;
         use crate::parser::instructions::ConditionOp;
 
         gen_enum!{
-            $enum,
-            $($oi_ident: ($($oi_i),* -> $($oi_o),*))*
-            $($io_ident: ($($io_i),* -> $($io_o),*))*
+            $enum
+            $($ident $($i),* -> $($o),*);*
         }
 
         impl<'a> $enum<'a> {
@@ -123,14 +143,9 @@ macro_rules! gen_statements {
                         }
                     },
                     $(
-                        gen_match_l!($($oi_name),* $($oi_o),* -> $($oi_i),*)
-                            if gen_match_guard!($($oi_o)*)
-                        => Ok(gen_match_result!($enum $oi_ident $($oi_i),* -> $($oi_o),*)),
-                    )*
-                    $(
-                        gen_match_l!($($io_name),* $($io_i),* -> $($io_o),*)
-                            if gen_match_guard!($($io_o)*) 
-                        => Ok(gen_match_result!($enum $io_ident $($io_i),* -> $($io_o),*)),
+                        gen_match_l!($ty $($name),* $($o),* -> $($i),*)
+                            if gen_match_guard!($($o)*)
+                        => Ok(gen_match_result!($enum $ident $($i),* -> $($o),*)),
                     )*
                     _ => Err(StatementParseError::InvalidInstruction(tokens.to_vec()))
                 }
@@ -145,21 +160,8 @@ macro_rules! gen_statements {
                     Self::Jump { index, cond, lhs: Some(lhs), rhs: Some(rhs) } =>
                         write!(f, "jump {} {} {} {}", index, cond, lhs, rhs),
                     $(
-                        Self::$oi_ident {$($oi_i),* $(, $oi_o)*} => {
-                            f.write_str(concat!("" $(, $oi_name ,)" "*));
-                            $($oi_o.fmt(f);)*
-                            $($oi_i.fmt(f);)*
-                            
-                            Ok(())
-                        },
-                    )*
-                    $(
-                        Self::$io_ident {$($io_i),* $(,$io_o)*} => {
-                            f.write_str(concat!("" $(, $io_name ,)" "*));
-                            $($io_o.fmt(f);)*
-                            $($io_i.fmt(f);)*
-                            
-                            Ok(())
+                        Self::$ident {$($i),* $(,$o)*} => {
+                            gen_printer!($ty f ; $($name),* $($i),* -> $($o),*)
                         },
                     )*
                     _ => unreachable!()
@@ -170,22 +172,19 @@ macro_rules! gen_statements {
 }}
 
 
-mod x {
-    gen_statements!{
-        Statement,
+gen_statements!{
+    Statement,
 
-        oi:
-            Set: "set" (value -> var)
-            
-            OpAdd: "op" "add" (a, b -> c)
-            OpSub: "op" "sub" (a, b -> c)
-            OpMul: "op" "mul" (a, b -> c)
-            OpDiv: "op" "div" (a, b -> c)
-        ---
+    Noop: "nop" (oi: ->)
 
-        io: 
-            Noop: "nop" (->)
-            ULocate: "ulocate" (find, group, enemy, outx, outy -> found, building)
-        ---
-    }
+    Set: "set" (oi: value -> var)
+    
+    OpAdd: "op" "add" (oi: a, b -> c)
+    OpSub: "op" "sub" (oi: a, b -> c)
+    OpMul: "op" "mul" (oi: a, b -> c)
+    OpDiv: "op" "div" (oi: a, b -> c)
+
+    ULocate: "ulocate" (io: find, group, enemy, outx, outy -> found, building)
 }
+
+pub use thing::Statement;
