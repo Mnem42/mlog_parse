@@ -430,8 +430,9 @@ gen_statements! {
     ---
 
     wproc:
-        GetBlock: "getblock" (oi: x, y -> result)
-        SetProp:  "setprop"  (oi: prop, block, amount ->)
+        GetBlock:     "getblock"     (oi: x, y -> result)
+        SetProp:      "setprop"      (oi: prop, block, amount ->)
+        FlushMessage: "message"      (oi: msg_type, duration, success ->)
         WeatherSense: "weathersense" (oi: weather -> result)
         WeatherSet:   "weatherset"   (oi: weather, state ->)
         
@@ -467,9 +468,11 @@ gen_statements! {
         SetRBlockDamage:    "setrule" "blockDamage"    (oi: team, v ->)
         SetRRtsMinWeight:   "setrule" "rtsMinWeight"   (oi: team, v ->)
         SetRRtsMinSquad:    "setrule" "rtsMinSquad"    (oi: team, v ->)
+        SetRMapArea:        "setrule" "mapArea"        (oi: x, y, w, h ->)
 
-        SetRMapArea: "setrule" "mapArea" (oi: x, y, w, h ->)
-
+        CutsceneStop: "cutscene" "stop" (oi: ->)
+        CutsceneZoom: "cutscene" "zoom" (oi: level ->)
+        CutscenePan:  "cutscene" "pan"  (oi: x, y, speed ->)
     ---
 }
 
