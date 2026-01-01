@@ -218,7 +218,7 @@ macro_rules! gen_statements {
 
         gen_enum!{
             $wproc_enum
-            $($ident $($i),* -> $($o),*);*
+            $($ident $($i),* -> $($o),*);*;
             $($wp_ident $($wp_i),* -> $($wp_o),*);*
         }
 
@@ -427,7 +427,7 @@ gen_statements! {
         UCPayloadEnter: "ucontrol" "payEnter" (oi: ->)
     ---
     wproc: 
-    
+        SetProp: "setprop" (oi: prop, block, amount ->)
     ---
 }
 
