@@ -335,8 +335,6 @@ gen_statements! {
     UCTargetP:  "ucontrol" "targetp"  (oi: unit, shoot ->)
 
     UCPayTake:  "ucontrol" "payTake"  (oi: units ->)
-    UCPayDrop:  "ucontrol" "payDrop"  (oi: ->)
-    UCItemTake: "ucontrol" "itemTake" (oi: x, y, radius ->)
     UCItemDrop: "ucontrol" "itemDrop" (oi: to, amount ->)
 
     UCAutoPathfind: "ucontrol" "autoPathFind" (oi: ->)
