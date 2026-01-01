@@ -10,9 +10,7 @@ macro_rules! gen_match_l {
         $($i:ident),* -> $($o:ident),*
     ) => { [$($name),*, $($i,)* $($o,)* ..] };
 }
-/*macro_rules! gen_match_guard {
-    ($($o:ident)*) => { $(matches!(Argument::from(*$o), Argument::Variable(_) | Argument::GlobalConst(_))&&)* true };
-}*/
+
 macro_rules! gen_match_result {
     (
         $enum:ident
