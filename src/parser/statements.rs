@@ -18,8 +18,8 @@ macro_rules! gen_match_result {
         $($i:ident),* -> $($o:ident),*
     ) => {
         $enum::$ident {
-            $($o: 
-                if let Argument::Variable(x) | Argument::GlobalConst(x) = Argument::from(*$o) 
+            $($o:
+                if let Argument::Variable(x) | Argument::GlobalConst(x) = Argument::from(*$o)
                     { Some(x) } else { None },
             )*
             $($i: Argument::from(*$i)),*
@@ -61,7 +61,7 @@ macro_rules! gen_enum {
                 /// Option when false
                 false_option: Argument<'a>
             },
-            
+
             $(
                 // There just isn't much of a point in adding doc support
                 #[allow(missing_docs)]
@@ -191,7 +191,7 @@ macro_rules! gen_statements {
     {
         normal_enum: $enum:ident
         wproc_enum: $wproc_enum:ident
-        normal: 
+        normal:
             $(
                 $ident:ident:
                 $($name:literal)*
@@ -281,12 +281,16 @@ macro_rules! gen_statements {
     }
 }}
 
+use crate::parser::errs::StatementParseError;
 use std::collections::HashMap;
 use std::fmt::Display;
-use crate::parser::errs::StatementParseError;
+
 /// Trait for anything that can be used as a statement
-pub(super) trait StatementType<'a>: Display + Sized {
-    fn parse(tokens: &[&'a str], jump_labels: &HashMap<&'a str, usize>) -> Result<Self, StatementParseError<'a>>;
+pub trait StatementType<'a>: Display + Sized {
+    fn parse(
+        tokens: &[&'a str],
+        jump_labels: &HashMap<&'a str, usize>,
+    ) -> Result<Self, StatementParseError<'a>>;
 }
 
 gen_statements! {
@@ -426,7 +430,7 @@ gen_statements! {
         UCPayloadDrop:  "ucontrol" "payDrop"  (oi: ->)
         UCPayloadEnter: "ucontrol" "payEnter" (oi: ->)
     ---
-    wproc: 
+    wproc:
         SetProp: "setprop" (oi: prop, block, amount ->)
     ---
 }

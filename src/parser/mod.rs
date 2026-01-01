@@ -9,7 +9,6 @@ pub mod instructions;
 pub mod statements;
 
 use errs::StatementParseError;
-use statements::Statement;
 
 use crate::parser::statements::StatementType;
 
@@ -18,7 +17,7 @@ pub struct Lexer<'a, T: StatementType<'a>> {
     lines: Vec<(usize, &'a str)>,
     jump_labels: HashMap<&'a str, usize>,
     index: usize,
-    _marker: PhantomData<T>
+    _marker: PhantomData<T>,
 }
 
 /// Parse a literal with a prefix (e.g. 0x05) with a given radix.
@@ -38,6 +37,7 @@ static JUMPLABEL_REGEX: LazyLock<Regex> =
 static COMMENT_REGEX: LazyLock<Regex> = LazyLock::new(|| Regex::new(r"^\s*#").unwrap());
 
 impl<'a, T: StatementType<'a>> Lexer<'a, T> {
+    /// Renames synonymous tokens as necessary
     fn do_renaming(tokens: &[&'a str]) -> Vec<&'a str> {
         match tokens {
             ["op", "and", rest @ ..] => {
@@ -71,7 +71,7 @@ impl<'a, T: StatementType<'a>> Lexer<'a, T> {
             lines,
             jump_labels,
             index: 0,
-            _marker: PhantomData {}
+            _marker: PhantomData {},
         }
     }
 }
@@ -85,9 +85,6 @@ impl<'a, T: StatementType<'a>> Iterator for Lexer<'a, T> {
 
         self.index += 1;
 
-        Some(T::parse(
-            &Self::do_renaming(&split),
-            &self.jump_labels,
-        ))
+        Some(T::parse(&Self::do_renaming(&split), &self.jump_labels))
     }
 }

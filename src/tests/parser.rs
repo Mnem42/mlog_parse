@@ -1,6 +1,6 @@
-use crate::parser::{self, Lexer};
 use crate::parser::instructions::{Argument, ConditionOp, Rgba};
 use crate::parser::statements::Statement;
+use crate::parser::{self, Lexer};
 use pretty_assertions::assert_eq;
 
 #[test]

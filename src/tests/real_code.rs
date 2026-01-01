@@ -1,4 +1,7 @@
-use crate::parser::{self, Lexer, statements::{Statement, WprocStatement}};
+use crate::parser::{
+    self, Lexer,
+    statements::{Statement, WprocStatement},
+};
 
 // These are all tests to see if they parse *at all*, not for parsing correctness
 
@@ -33,7 +36,6 @@ fn base_builder_wproc() {
     let lexer: Lexer<WprocStatement> = parser::Lexer::new(SRC);
     let _ = lexer.map(|x| x.unwrap()).collect::<Vec<_>>();
 }
-
 
 #[test]
 fn power_plant() {
