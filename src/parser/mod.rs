@@ -41,8 +41,8 @@ impl<'a> Lexer<'a> {
                 let mut vec = vec!["op", "b-and"];
                 vec.extend(rest);
                 vec
-            },
-            x => x.into()
+            }
+            x => x.into(),
         }
     }
 
@@ -81,6 +81,9 @@ impl<'s> Iterator for Lexer<'s> {
 
         self.index += 1;
 
-        Some(Statement::parse(&Lexer::do_renaming(&split), &self.jump_labels))
+        Some(Statement::parse(
+            &Lexer::do_renaming(&split),
+            &self.jump_labels,
+        ))
     }
 }

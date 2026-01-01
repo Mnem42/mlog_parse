@@ -1,12 +1,12 @@
 macro_rules! gen_match_l {
     (
         oi
-        $($name:literal),* 
+        $($name:literal),*
         $($i:ident),* -> $($o:ident),*
     ) => { [$($name),*, $($i,)* $($o,)* ..] };
     (
         io
-        $($name:literal),* 
+        $($name:literal),*
         $($i:ident),* -> $($o:ident),*
     ) => { [$($name),*, $($i,)* $($o,)* ..] };
 }
@@ -86,12 +86,12 @@ macro_rules! gen_printer {
 }
 
 /// Generates a statements enum
-/// 
+///
 /// `oi` means the outputs are *before* the inputs in the statement, while `io` means the inputs
 /// are *before* the outputs in the statement.
 macro_rules! gen_statements {
     {
-        $enum: ident, 
+        $enum: ident,
         $(
             $ident:ident:
             $($name:literal)*
@@ -110,7 +110,7 @@ macro_rules! gen_statements {
         impl<'a> $enum<'a> {
             /// Parses a token
             pub fn parse(
-                tokens: &[&'a str], 
+                tokens: &[&'a str],
                 jump_labels: &std::collections::HashMap<&'a str, usize>
             ) -> Result<Self, StatementParseError<'a>> {
                 match tokens {
@@ -160,9 +160,9 @@ macro_rules! gen_statements {
                         Ok(Self::Select {
                             result,
                             cond: ConditionOp::try_from(*cond_str).unwrap(),
-                            lhs: Some(Argument::from(*lhs)), 
+                            lhs: Some(Argument::from(*lhs)),
                             rhs: Some(Argument::from(*rhs)),
-                            true_option: Argument::from(*true_option), 
+                            true_option: Argument::from(*true_option),
                             false_option: Argument::from(*false_option)
                         })
                     },
@@ -170,9 +170,9 @@ macro_rules! gen_statements {
                         Ok(Self::Select {
                             result,
                             cond: ConditionOp::Always,
-                            lhs: None, 
+                            lhs: None,
                             rhs: None,
-                            true_option: Argument::from(*true_option), 
+                            true_option: Argument::from(*true_option),
                             false_option: Argument::from(*false_option)
                         })
                     },
@@ -189,7 +189,7 @@ macro_rules! gen_statements {
         impl std::fmt::Display for $enum<'_> {
             fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
                 match self {
-                    Self::Jump { index, cond, lhs: None, rhs: None } => 
+                    Self::Jump { index, cond, lhs: None, rhs: None } =>
                         write!(f, "jump {} {}", index, cond),
                     Self::Jump { index, cond, lhs: Some(lhs), rhs: Some(rhs) } =>
                         write!(f, "jump {} {} {} {}", index, cond, lhs, rhs),
@@ -205,7 +205,7 @@ macro_rules! gen_statements {
     }
 }}
 
-gen_statements!{
+gen_statements! {
     Statement,
 
     Noop: "nop"  (io: ->)
