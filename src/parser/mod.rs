@@ -85,6 +85,6 @@ impl<'a, T: StatementType<'a>> Iterator for Lexer<'a, T> {
 
         self.index += 1;
 
-        Some(T::parse(&Self::do_renaming(&split), &self.jump_labels))
+        Some(T::try_parse(&Self::do_renaming(&split), &self.jump_labels))
     }
 }

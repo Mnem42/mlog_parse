@@ -287,7 +287,8 @@ use std::fmt::Display;
 
 /// Trait for anything that can be used as a statement
 pub trait StatementType<'a>: Display + Sized {
-    fn parse(
+    /// Parses a statement
+    fn try_parse(
         tokens: &[&'a str],
         jump_labels: &HashMap<&'a str, usize>,
     ) -> Result<Self, StatementParseError<'a>>;
