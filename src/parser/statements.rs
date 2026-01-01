@@ -104,7 +104,7 @@ macro_rules! impl_statement_parse {
     ) => {
         impl<'a> StatementType<'a> for $enum<'a> {
             /// Parses a token
-            fn parse(
+            fn try_parse(
                 tokens: &[&'a str],
                 jump_labels: &std::collections::HashMap<&'a str, usize>
             ) -> Result<Self, StatementParseError<'a>> {
