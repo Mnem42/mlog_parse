@@ -35,6 +35,7 @@ macro_rules! gen_enum {
         /// A statement
         #[derive(Debug, PartialEq)]
         pub enum $enum<'a> {
+            /// A jump statement
             Jump {
                 /// The index to jump to
                 index: usize,
@@ -45,6 +46,7 @@ macro_rules! gen_enum {
                 /// The condition RHS
                 rhs: Option<Argument<'a>>
             },
+            /// A select statement
             Select {
                 /// The index to jump to
                 result: &'a str,
@@ -59,10 +61,15 @@ macro_rules! gen_enum {
                 /// Option when false
                 false_option: Argument<'a>
             },
-            $($ident {
-                $($i: Argument<'a>,)*
-                $($o: Option<&'a str>),*
-            }),*,
+            
+            $(
+                // There just isn't much of a point in adding doc support
+                #[allow(missing_docs)]
+                $ident {
+                    $($i: Argument<'a>,)*
+                    $($o: Option<&'a str>),*
+                }
+            ),*,
         }
     };
 }
@@ -214,7 +221,7 @@ macro_rules! gen_statements {
             $($wp_ident $($wp_i),* -> $($wp_o),*);*
         }
 
-        impl_statements_enum!{
+        impl_statement_parse!{
             $enum
             $(
                 $ident:
@@ -222,7 +229,7 @@ macro_rules! gen_statements {
                 ($ty: $($i),* -> $($o),*)
             )*
         }
-        impl_statements_enum!{
+        impl_statement_parse!{
             $wproc_enum
             $(
                 $ident:
