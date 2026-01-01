@@ -1,0 +1,1391 @@
+# Source: https://github.com/cardillan/golem/blob/main/power-plant/
+# (all the files are blobbed together)
+
+printflush message1
+print "Initializing..."
+printflush message1
+write 0 bank1 0
+write 0 bank1 1
+write 0 bank1 2
+write 0 bank1 3
+write 0 bank1 4
+write 0 bank1 5
+write 0 bank1 6
+write 0 bank1 7
+write 0 bank1 8
+write 0 bank1 9
+write 0 bank1 10
+write 0 bank1 11
+write 0 bank1 12
+write 0 bank1 13
+write 0 bank1 14
+write 0 bank1 15
+write 0 bank1 16
+write 0 bank1 17
+write 0 bank1 18
+write 0 bank1 19
+write 0 bank1 20
+write 0 bank1 21
+write 0 bank1 22
+write 0 bank1 23
+write 0 bank1 24
+write 0 bank1 25
+write 0 bank1 26
+write 0 bank1 27
+write 0 bank1 28
+write 0 bank1 29
+write 0 bank1 30
+write 0 bank1 31
+write 0 bank1 32
+write 0 bank1 33
+write 0 bank1 34
+write 0 bank1 35
+write 0 bank1 36
+write 0 bank1 37
+write 0 bank1 38
+write 0 bank1 39
+write 0 bank1 40
+write 0 bank1 41
+write 0 bank1 42
+write 0 bank1 43
+write 0 bank1 44
+write 0 bank1 45
+write 0 bank1 46
+write 0 bank1 47
+write 0 bank1 48
+write 0 bank1 49
+write 0 bank1 50
+write 0 bank1 51
+write 0 bank1 52
+write 0 bank1 53
+write 0 bank1 54
+write 0 bank1 55
+write 0 bank1 56
+write 0 bank1 57
+write 0 bank1 58
+write 0 bank1 59
+write 0 bank1 60
+write 0 bank1 61
+write 0 bank1 62
+write 0 bank1 63
+write 0 bank1 64
+write 0 bank1 65
+write 0 bank1 66
+write 0 bank1 67
+write 0 bank1 68
+write 0 bank1 69
+write 0 bank1 70
+write 0 bank1 71
+write 0 bank1 72
+write 0 bank1 73
+write 0 bank1 74
+write 0 bank1 75
+write 0 bank1 76
+write 0 bank1 77
+write 0 bank1 78
+write 0 bank1 79
+write 0 bank1 80
+write 0 bank1 81
+write 0 bank1 82
+write 0 bank1 83
+write 0 bank1 84
+write 0 bank1 85
+write 0 bank1 86
+write 0 bank1 87
+write 0 bank1 88
+write 0 bank1 89
+write 0 bank1 90
+write 0 bank1 91
+write 0 bank1 92
+write 0 bank1 93
+write 0 bank1 94
+write 0 bank1 95
+write 0 bank1 96
+write 0 bank1 97
+write 0 bank1 98
+write 0 bank1 99
+write 0 bank1 100
+write 0 bank1 101
+write 0 bank1 102
+write 0 bank1 103
+write 0 bank1 104
+write 0 bank1 105
+write 0 bank1 106
+write 0 bank1 107
+write 0 bank1 108
+write 0 bank1 109
+write 0 bank1 110
+write 0 bank1 111
+write 0 bank1 112
+write 0 bank1 113
+write 0 bank1 114
+write 0 bank1 115
+write 0 bank1 116
+write 0 bank1 117
+write 0 bank1 118
+write 0 bank1 119
+write 0 bank1 120
+write 0 bank1 121
+write 0 bank1 122
+write 0 bank1 123
+write 0 bank1 124
+write 0 bank1 125
+write 0 bank1 126
+write 0 bank1 127
+write 0 bank1 128
+write 0 bank1 129
+write 0 bank1 130
+write 0 bank1 131
+write 0 bank1 132
+write 0 bank1 133
+write 0 bank1 134
+write 0 bank1 135
+write 0 bank1 136
+write 0 bank1 137
+write 0 bank1 138
+write 0 bank1 139
+write 0 bank1 140
+write 0 bank1 141
+write 0 bank1 142
+write 0 bank1 143
+write 0 bank1 144
+write 0 bank1 145
+write 0 bank1 146
+write 0 bank1 147
+write 0 bank1 148
+write 0 bank1 149
+write 0 bank1 150
+write 0 bank1 151
+write 0 bank1 152
+write 0 bank1 153
+write 0 bank1 154
+write 0 bank1 155
+write 0 bank1 156
+write 0 bank1 157
+write 0 bank1 158
+write 0 bank1 159
+write 0 bank1 160
+write 0 bank1 161
+write 0 bank1 162
+write 0 bank1 163
+write 0 bank1 164
+write 0 bank1 165
+write 0 bank1 166
+write 0 bank1 167
+write 0 bank1 168
+write 0 bank1 169
+write 0 bank1 170
+write 0 bank1 171
+write 0 bank1 172
+write 0 bank1 173
+write 0 bank1 174
+write 0 bank1 175
+write 0 bank1 176
+write 0 bank1 177
+write 0 bank1 178
+write 0 bank1 179
+write 0 bank1 180
+write 0 bank1 181
+write 0 bank1 182
+write 0 bank1 183
+write 0 bank1 184
+write 0 bank1 185
+write 0 bank1 186
+write 0 bank1 187
+write 0 bank1 188
+write 0 bank1 189
+write 0 bank1 190
+write 0 bank1 191
+write 0 bank1 192
+write 0 bank1 193
+write 0 bank1 194
+write 0 bank1 195
+write 0 bank1 196
+write 0 bank1 197
+write 0 bank1 198
+write 0 bank1 199
+write 0 bank1 200
+write 0 bank1 201
+write 0 bank1 202
+write 0 bank1 203
+write 0 bank1 204
+write 0 bank1 205
+write 0 bank1 206
+write 0 bank1 207
+write 0 bank1 208
+write 0 bank1 209
+write 0 bank1 210
+write 0 bank1 211
+write 0 bank1 212
+write 0 bank1 213
+write 0 bank1 214
+write 0 bank1 215
+write 0 bank1 216
+write 0 bank1 217
+write 0 bank1 218
+write 0 bank1 219
+write 0 bank1 220
+write 0 bank1 221
+write 0 bank1 222
+write 0 bank1 223
+write 0 bank1 224
+write 0 bank1 225
+write 0 bank1 226
+write 0 bank1 227
+write 0 bank1 228
+write 0 bank1 229
+write 0 bank1 230
+write 0 bank1 231
+write 0 bank1 232
+write 0 bank1 233
+write 0 bank1 234
+write 0 bank1 235
+write 0 bank1 236
+write 0 bank1 237
+write 0 bank1 238
+write 0 bank1 239
+write 0 bank1 240
+write 0 bank1 241
+write 0 bank1 242
+write 0 bank1 243
+write 0 bank1 244
+write 0 bank1 245
+write 0 bank1 246
+write 0 bank1 247
+write 0 bank1 248
+write 0 bank1 249
+write 0 bank1 250
+write 0 bank1 251
+write 0 bank1 252
+write 0 bank1 253
+write 0 bank1 254
+write 0 bank1 255
+write 0 bank1 256
+write 0 bank1 257
+write 0 bank1 258
+write 0 bank1 259
+write 0 bank1 260
+write 0 bank1 261
+write 0 bank1 262
+write 0 bank1 263
+write 0 bank1 264
+write 0 bank1 265
+write 0 bank1 266
+write 0 bank1 267
+write 0 bank1 268
+write 0 bank1 269
+write 0 bank1 270
+write 0 bank1 271
+write 0 bank1 272
+write 0 bank1 273
+write 0 bank1 274
+write 0 bank1 275
+write 0 bank1 276
+write 0 bank1 277
+write 0 bank1 278
+write 0 bank1 279
+write 0 bank1 280
+write 0 bank1 281
+write 0 bank1 282
+write 0 bank1 283
+write 0 bank1 284
+write 0 bank1 285
+write 0 bank1 286
+write 0 bank1 287
+write 0 bank1 288
+write 0 bank1 289
+write 0 bank1 290
+write 0 bank1 291
+write 0 bank1 292
+write 0 bank1 293
+write 0 bank1 294
+write 0 bank1 295
+write 0 bank1 296
+write 0 bank1 297
+write 0 bank1 298
+write 0 bank1 299
+write 0 bank1 300
+write 0 bank1 301
+write 0 bank1 302
+write 0 bank1 303
+write 0 bank1 304
+write 0 bank1 305
+write 0 bank1 306
+write 0 bank1 307
+write 0 bank1 308
+write 0 bank1 309
+write 0 bank1 310
+write 0 bank1 311
+write 0 bank1 312
+write 0 bank1 313
+write 0 bank1 314
+write 0 bank1 315
+write 0 bank1 316
+write 0 bank1 317
+write 0 bank1 318
+write 0 bank1 319
+write 0 bank1 320
+write 0 bank1 321
+write 0 bank1 322
+write 0 bank1 323
+write 0 bank1 324
+write 0 bank1 325
+write 0 bank1 326
+write 0 bank1 327
+write 0 bank1 328
+write 0 bank1 329
+write 0 bank1 330
+write 0 bank1 331
+write 0 bank1 332
+write 0 bank1 333
+write 0 bank1 334
+write 0 bank1 335
+write 0 bank1 336
+write 0 bank1 337
+write 0 bank1 338
+write 0 bank1 339
+write 0 bank1 340
+write 0 bank1 341
+write 0 bank1 342
+write 0 bank1 343
+write 0 bank1 344
+write 0 bank1 345
+write 0 bank1 346
+write 0 bank1 347
+write 0 bank1 348
+write 0 bank1 349
+write 0 bank1 350
+write 0 bank1 351
+write 0 bank1 352
+write 0 bank1 353
+write 0 bank1 354
+write 0 bank1 355
+write 0 bank1 356
+write 0 bank1 357
+write 0 bank1 358
+write 0 bank1 359
+write 0 bank1 360
+write 0 bank1 361
+write 0 bank1 362
+write 0 bank1 363
+write 0 bank1 364
+write 0 bank1 365
+write 0 bank1 366
+write 0 bank1 367
+write 0 bank1 368
+write 0 bank1 369
+write 0 bank1 370
+write 0 bank1 371
+write 0 bank1 372
+write 0 bank1 373
+write 0 bank1 374
+write 0 bank1 375
+write 0 bank1 376
+write 0 bank1 377
+write 0 bank1 378
+write 0 bank1 379
+write 0 bank1 380
+write 0 bank1 381
+write 0 bank1 382
+write 0 bank1 383
+write 0 bank1 384
+write 0 bank1 385
+write 0 bank1 386
+write 0 bank1 387
+write 0 bank1 388
+write 0 bank1 389
+write 0 bank1 390
+write 0 bank1 391
+write 0 bank1 392
+write 0 bank1 393
+write 0 bank1 394
+write 0 bank1 395
+write 0 bank1 396
+write 0 bank1 397
+write 0 bank1 398
+write 0 bank1 399
+write 0 bank1 400
+write 0 bank1 401
+write 0 bank1 402
+write 0 bank1 403
+write 0 bank1 404
+write 0 bank1 405
+write 0 bank1 406
+write 0 bank1 407
+write 0 bank1 408
+write 0 bank1 409
+write 0 bank1 410
+write 0 bank1 411
+write 0 bank1 412
+write 0 bank1 413
+write 0 bank1 414
+write 0 bank1 415
+write 0 bank1 416
+write 0 bank1 417
+write 0 bank1 418
+write 0 bank1 419
+write 0 bank1 420
+write 0 bank1 421
+write 0 bank1 422
+write 0 bank1 423
+write 0 bank1 424
+write 0 bank1 425
+write 0 bank1 426
+write 0 bank1 427
+write 0 bank1 428
+write 0 bank1 429
+write 0 bank1 430
+write 0 bank1 431
+write 0 bank1 432
+write 0 bank1 433
+write 0 bank1 434
+write 0 bank1 435
+write 0 bank1 436
+write 0 bank1 437
+write 0 bank1 438
+write 0 bank1 439
+write 0 bank1 440
+write 0 bank1 441
+write 0 bank1 442
+write 0 bank1 443
+write 0 bank1 444
+write 0 bank1 445
+write 0 bank1 446
+write 0 bank1 447
+write 0 bank1 448
+write 0 bank1 449
+write 0 bank1 450
+write 0 bank1 451
+write 0 bank1 452
+write 0 bank1 453
+write 0 bank1 454
+write 0 bank1 455
+write 0 bank1 456
+write 0 bank1 457
+write 0 bank1 458
+write 0 bank1 459
+write 0 bank1 460
+write 0 bank1 461
+write 0 bank1 462
+write 0 bank1 463
+write 0 bank1 464
+write 0 bank1 465
+write 0 bank1 466
+write 0 bank1 467
+write 0 bank1 468
+write 0 bank1 469
+write 0 bank1 470
+write 0 bank1 471
+write 0 bank1 472
+write 0 bank1 473
+write 0 bank1 474
+write 0 bank1 475
+write 0 bank1 476
+write 0 bank1 477
+write 0 bank1 478
+write 0 bank1 479
+write 0 bank1 480
+write 0 bank1 481
+write 0 bank1 482
+write 0 bank1 483
+write 0 bank1 484
+write 0 bank1 485
+write 0 bank1 486
+write 0 bank1 487
+write 0 bank1 488
+write 0 bank1 489
+write 0 bank1 490
+write 0 bank1 491
+write 0 bank1 492
+write 0 bank1 493
+write 0 bank1 494
+write 0 bank1 495
+write 0 bank1 496
+write 0 bank1 497
+write 0 bank1 498
+write 0 bank1 499
+write 0 bank1 500
+write 0 bank1 501
+write 0 bank1 502
+write 0 bank1 503
+write 0 bank1 504
+write 0 bank1 505
+write 0 bank1 506
+write 0 bank1 507
+write 0 bank1 508
+write 0 bank1 509
+write 0 bank1 510
+write 0 bank1 511
+set .ACCU_CONS 0
+set .ACCU_PROD 0
+set :index 0
+set :loops 0
+set :wait @time
+jump 522 notEqual :loops 0
+set :wait @time
+op add :wait :wait 150
+sensor :powerNetIn battery1 @powerNetIn
+sensor :powerNetOut battery1 @powerNetOut
+sensor :powerNetStored battery1 @powerNetStored
+read *tmp13 bank1 :index
+op sub .ACCU_CONS .ACCU_CONS *tmp13
+op add .ACCU_CONS .ACCU_CONS :powerNetOut
+write :powerNetOut bank1 :index
+op div *tmp16 .ACCU_CONS 40
+op add *tmp17 *tmp16 0.5
+op floor :consumption *tmp17 0
+write :consumption bank1 508
+op add :tmp :index 100
+read *tmp23 bank1 :tmp
+op sub .ACCU_PROD .ACCU_PROD *tmp23
+op add .ACCU_PROD .ACCU_PROD :powerNetIn
+write :powerNetIn bank1 :tmp
+op div *tmp26 .ACCU_PROD 40
+op add *tmp27 *tmp26 0.5
+op floor :production *tmp27 0
+write :production bank1 509
+op sub *tmp31 .ACCU_PROD .ACCU_CONS
+op div *tmp32 *tmp31 40
+op add *tmp33 *tmp32 0.5
+op floor :net_power *tmp33 0
+write :net_power bank1 510
+op add :tmp :index 200
+read :last bank1 :tmp
+write :powerNetStored bank1 :tmp
+op sub :diff :powerNetStored :last
+op div *tmp43 :diff 6
+op add *tmp44 *tmp43 0.5
+op floor :battery_change *tmp44 0
+write :battery_change bank1 511
+op add *tmp48 :index 1
+op mod :index *tmp48 40
+print "Measured interval: [green]6[] seconds\nConsumption: [green]"
+print :consumption
+print "[]\nProduction: [green]"
+print :production
+print "[]\nNet power: [green]"
+print :net_power
+print "[]\nBattery change: [green]"
+print :battery_change
+print "\n"
+set :loops 0
+set :start @time
+jump 573 lessThan @time :start
+jump 573 greaterThanEq @time :wait
+op add :loops :loops 1
+jump 570 greaterThanEq @time :start
+print "[lightgray]Loops: "
+print :loops
+printflush message1
+jump 520 always 0 0
+print "Compiled by Mindcode - github.com/cardillan/mindcode"
+set PLANT_PROTECTION 1
+set FAST_START 1
+set .COOLANT_FLAG null
+set .FUEL_FLAG null
+set .START null
+set :reactors 0
+set :n @links
+jump 104 lessThanEq :n 0
+op sub :n :n 1
+getlink :block :n
+print "Found: "
+print :block
+print "\n"
+sensor *tmp5 :block @type
+sensor *tmp209 *tmp5 @id
+jump 103 greaterThanEq *tmp209 83
+op add @counter *tmp209 17
+jump 103 always 0 0
+jump 103 always 0 0
+jump 103 always 0 0
+jump 103 always 0 0
+jump 103 always 0 0
+jump 103 always 0 0
+jump 103 always 0 0
+jump 103 always 0 0
+jump 103 always 0 0
+jump 103 always 0 0
+jump 103 always 0 0
+jump 103 always 0 0
+jump 103 always 0 0
+jump 103 always 0 0
+jump 103 always 0 0
+jump 103 always 0 0
+jump 103 always 0 0
+jump 103 always 0 0
+jump 103 always 0 0
+jump 103 always 0 0
+jump 103 always 0 0
+jump 103 always 0 0
+jump 103 always 0 0
+jump 103 always 0 0
+jump 103 always 0 0
+jump 103 always 0 0
+jump 103 always 0 0
+jump 103 always 0 0
+jump 103 always 0 0
+jump 103 always 0 0
+jump 103 always 0 0
+jump 103 always 0 0
+jump 103 always 0 0
+jump 103 always 0 0
+jump 103 always 0 0
+jump 103 always 0 0
+jump 103 always 0 0
+jump 102 always 0 0
+jump 102 always 0 0
+jump 103 always 0 0
+jump 103 always 0 0
+jump 102 always 0 0
+jump 102 always 0 0
+jump 102 always 0 0
+jump 102 always 0 0
+jump 103 always 0 0
+jump 103 always 0 0
+jump 103 always 0 0
+jump 103 always 0 0
+jump 103 always 0 0
+jump 103 always 0 0
+jump 103 always 0 0
+jump 103 always 0 0
+jump 103 always 0 0
+jump 103 always 0 0
+jump 103 always 0 0
+jump 103 always 0 0
+jump 103 always 0 0
+jump 103 always 0 0
+jump 103 always 0 0
+jump 102 always 0 0
+jump 102 always 0 0
+jump 102 always 0 0
+jump 103 always 0 0
+jump 103 always 0 0
+jump 103 always 0 0
+jump 103 always 0 0
+jump 103 always 0 0
+jump 103 always 0 0
+jump 103 always 0 0
+jump 103 always 0 0
+jump 103 always 0 0
+jump 103 always 0 0
+jump 103 always 0 0
+jump 103 always 0 0
+jump 103 always 0 0
+jump 103 always 0 0
+jump 103 always 0 0
+jump 103 always 0 0
+jump 103 always 0 0
+jump 103 always 0 0
+jump 103 always 0 0
+set .START :n
+op add :reactors :reactors 1
+jump 103 always 0 0
+set .START :n
+jump 8 greaterThan :n 0
+read *tmp7 cell2 1
+op add :reactors :reactors *tmp7
+jump 108 notEqual :reactors 0
+print "No reactor."
+printflush message1
+jump 5 equal :reactors 0
+read .MODE cell1 0
+read .OUTPUT_1 cell1 1
+read .OUTPUT_2 cell1 2
+read .REACTORS_ON cell1 3
+read .OVERDRIVE cell1 4
+read .GENERATOR cell1 5
+read .CAN_COMMIT cell1 6
+read .STARTUPS cell1 7
+read .RESETS cell1 8
+read .COMMITS cell1 9
+set :reactors .REACTORS_ON
+set .REASON "Reason unknown -- out of power?"
+jump 124 notEqual .MODE 0
+set .REASON "Processor reset"
+op notEqual *tmp23 .MODE 0
+control enabled switch1 *tmp23 0 0 0
+set :failure_cnt 0
+set :boosts 0
+set :nextStart 0
+op add :nextDecommit @time 6000
+sensor *tmp25 battery1 @totalPower
+op floor :battery_level *tmp25 0
+op idiv :battery_level_str :battery_level 1000
+sensor *tmp28 battery1 @powerNetStored
+op floor :total_battery *tmp28 0
+op idiv :total_battery_str :total_battery 1000
+sensor :consumption battery1 @powerNetOut
+read :production bank1 509
+read :net_power bank1 510
+read :battery_change bank1 511
+sensor :total_capacity battery1 @powerNetCapacity
+op idiv :total_capacity_str :total_capacity 1000
+op mul :required_capacity 100000 :reactors
+op sub *tmp39 :required_capacity :total_capacity
+op div *tmp40 *tmp39 1000
+op ceil :missing_battery *tmp40 0
+jump 173 equal .MODE 0
+sensor *tmp44 switch1 @enabled
+jump 152 notEqual *tmp44 false
+set .MODE 0
+set .REASON "Manual power off"
+jump 173 always 0 0
+op mul :min_consumption .REACTORS_ON 1200
+set *tmp52 false
+jump 157 notEqual :battery_level 0
+jump 157 lessThanEq :consumption 0
+op equal *tmp52 :production 0
+jump 159 lessThan :consumption :min_consumption
+jump 172 equal *tmp52 false
+op add :failure_cnt :failure_cnt 1
+read *tmp54 cell2 1
+op add *tmp55 10 *tmp54
+jump 173 lessThanEq :failure_cnt *tmp55
+set .MODE 0
+control enabled switch1 false 0 0 0
+set .REASON "Unknown -- out of power?"
+print "Consumption: "
+print :consumption
+print "\nMin. consumption: "
+print :min_consumption
+printflush message2
+jump 173 always 0 0
+set :failure_cnt 0
+jump 176 notEqual .MODE 0
+set *tmp59 "[salmon]SHUTDOWN[]"
+jump 183 always 0 0
+jump 179 notEqual .MODE 1
+set *tmp59 "[gold]STARTUP[]"
+jump 183 always 0 0
+jump 182 notEqual .MODE 2
+set *tmp59 "[green]RUNNING[]"
+jump 183 always 0 0
+set *tmp59 null
+print *tmp59
+print ", reactors [green]"
+print .REACTORS_ON
+print "/"
+print :reactors
+print "[]"
+jump 198 equal .OVERDRIVE false
+op mul *tmp62 100 :boosts
+op div *tmp63 *tmp62 .REACTORS_ON
+op add *tmp64 *tmp63 0.5
+op floor *tmp65 *tmp64 0
+op div :multiplier *tmp65 100
+print " ([gold]"
+print :multiplier
+print "x[])"
+print "\n=================================="
+sensor *tmp67 tank1 @totalLiquids
+jump 202 greaterThanEq *tmp67 750
+print "\n[salmon]Cryofluid level critical![]"
+sensor *tmp70 vault1 @blast-compound
+jump 205 greaterThanEq *tmp70 700
+print "\n[salmon]Blast compound level critical![]"
+jump 209 greaterThanEq :total_capacity :required_capacity
+print "\n[salmon]Insufficient battery storage![]\nLink [gold]"
+print :missing_battery
+print " K[] of additional storage to internal battery."
+print "\nInternal battery:    [gold]"
+print :battery_level_str
+print "[]/[green]50[] K\nTotal battery:        [gold]"
+print :total_battery_str
+print "[]/[green]"
+print :total_capacity_str
+print "[] K\nBattery change:     [gold]"
+print :battery_change
+print "[]\nPower balance:       [gold]"
+print :net_power
+print "[]"
+jump 240 notEqual .MODE 0
+set .REACTORS_ON 0
+set .OVERDRIVE 0
+set .OUTPUT_1 0
+set .OUTPUT_2 0
+op greaterThanEq *tmp77 :net_power -150
+op lessThan *tmp78 :total_battery 47500
+op land .GENERATOR *tmp77 *tmp78
+print "\nShutdown reason: [gold]"
+print .REASON
+print "[]"
+sensor *tmp80 switch1 @enabled
+jump 378 equal *tmp80 false
+set .MODE 1
+op add .STARTUPS .STARTUPS 1
+set :nextStart 0
+set :failure_cnt 0
+set .GENERATOR true
+set .REASON "Unknown -- out of power?"
+jump 378 always 0 0
+jump 292 notEqual .MODE 1
+sensor *tmp83 battery2 @powerNetOut
+jump 244 equal .OUTPUT_1 false
+sensor *tmp83 battery3 @powerNetOut
+op idiv *tmp85 *tmp83 0.9523809523809523
+op max :neededPower *tmp85 1000
+jump 253 notEqual .REACTORS_ON 0
+jump 251 lessThan :total_battery 25000
+set .REACTORS_ON 1
+op add :nextStart @time 2000
+jump 378 always 0 0
+print "\nRequired startup energy: [gold]25 K[]"
+jump 378 always 0 0
+op add :outputs .OUTPUT_1 .OUTPUT_2
+print "\n[gold]"
+print :outputs
+print "[] surge tower(s) online"
+jump 261 notEqual .OUTPUT_2 0
+print "\nRequired power level: [gold]"
+print :neededPower
+print "[]"
+jump 263 lessThanEq :net_power 100
+set .OVERDRIVE true
+set *tmp100 false
+jump 267 greaterThanEq .REACTORS_ON :reactors
+jump 267 lessThanEq :net_power 1000
+op greaterThanEq *tmp100 :total_battery 25000
+jump 270 lessThan :net_power :neededPower
+set .OUTPUT_2 .OUTPUT_1
+set .OUTPUT_1 1
+jump 275 notEqual .OUTPUT_1 0
+op mul :availablePower 6300 :boosts
+op div :ratio :neededPower :availablePower
+jump 275 greaterThanEq :ratio 1
+op add :nextStart @time 2000
+jump 283 equal *tmp100 false
+jump 283 lessThanEq @time :nextStart
+set *tmp112 1
+jump 280 equal FAST_START false
+op idiv *tmp112 :total_battery 25000
+op add *tmp114 .REACTORS_ON *tmp112
+op min .REACTORS_ON *tmp114 :reactors
+op add :nextStart @time 2000
+jump 378 lessThan .REACTORS_ON :reactors
+jump 378 lessThanEq @time :nextStart
+jump 378 lessThanEq .OUTPUT_2 0
+set .MODE 2
+op add :nextDecommit @time 6000
+set .COOLANT_FLAG 0
+set .FUEL_FLAG 0
+set .GENERATOR false
+jump 378 always 0 0
+jump 378 notEqual .MODE 2
+jump 299 equal .COOLANT_FLAG false
+sensor *tmp122 tank1 @totalLiquids
+jump 299 greaterThanEq *tmp122 750
+set .MODE 0
+control enabled switch1 false 0 0 0
+set .REASON "Cryo level too low"
+jump 305 equal .FUEL_FLAG false
+sensor *tmp126 vault1 @blast-compound
+jump 305 greaterThanEq *tmp126 700
+set .MODE 0
+control enabled switch1 false 0 0 0
+set .REASON "Blast compound level too low"
+jump 308 equal .COOLANT_FLAG false
+set .COOLANT_FLAG true
+jump 310 always 0 0
+sensor *tmp130 tank1 @totalLiquids
+op greaterThan .COOLANT_FLAG *tmp130 1000
+jump 313 equal .FUEL_FLAG false
+set .FUEL_FLAG true
+jump 315 always 0 0
+sensor *tmp133 vault1 @blast-compound
+op greaterThan .FUEL_FLAG *tmp133 800
+jump 363 lessThan :total_capacity :required_capacity
+sensor *tmp136 switch2 @enabled
+jump 363 equal *tmp136 false
+op mul :min_level :reactors 50000
+set :commit_level 0
+jump 332 equal .CAN_COMMIT false
+jump 332 greaterThanEq :battery_change 0
+jump 332 greaterThanEq .REACTORS_ON :reactors
+op sub :p :battery_change 2500
+op mul *tmp144 :p 0.00472972972972973
+op add *tmp145 -5 *tmp144
+op mul *tmp146 :p *tmp145
+op add :commit_margin 25000 *tmp146
+op add :commit_level :min_level :commit_margin
+op idiv *tmp149 :commit_level 1000
+print "\nCommit threshold:   [gold]"
+print *tmp149
+jump 336 notEqual :commit_level 0
+op idiv *tmp152 :min_level 1000
+print "\nRestart threshold: [gold]"
+print *tmp152
+print "[] K"
+jump 340 lessThan :total_battery :min_level
+op mul *tmp154 .REACTORS_ON -2500
+jump 346 greaterThanEq :battery_change *tmp154
+op equal *tmp157 .OVERDRIVE false
+op add .RESETS .RESETS *tmp157
+set .OVERDRIVE true
+set .REACTORS_ON :reactors
+op add :nextDecommit @time 6000
+jump 370 always 0 0
+jump 348 lessThan :battery_level 47500
+jump 349 greaterThanEq :battery_change -100
+op add :nextDecommit @time 6000
+jump 358 lessThanEq @time :nextDecommit
+jump 353 equal .OVERDRIVE false
+set .OVERDRIVE false
+jump 356 always 0 0
+op sub *tmp166 .REACTORS_ON 1
+op max .REACTORS_ON *tmp166 1
+set .CAN_COMMIT true
+op add :nextDecommit @time 6000
+jump 370 always 0 0
+jump 370 greaterThanEq :total_battery :commit_level
+op add .REACTORS_ON .REACTORS_ON 1
+op add .COMMITS .COMMITS 1
+set .CAN_COMMIT false
+jump 370 always 0 0
+sensor *tmp171 switch2 @enabled
+jump 367 equal *tmp171 false
+print "\n[salmon]Load adapting not possible.[]"
+jump 368 always 0 0
+print "\n[gold]Load adapting not active.[]"
+set .REACTORS_ON :reactors
+set .OVERDRIVE true
+op mul *tmp173 PLANT_PROTECTION 47500
+jump 373 greaterThanEq :total_battery *tmp173
+set .OUTPUT_2 0
+jump 378 notEqual .OUTPUT_2 0
+jump 377 lessThanEq :total_battery 47500
+set .OUTPUT_2 1
+jump 378 always 0 0
+print "\n*** [gold]Surge tower 2 offline[] ***"
+print "\n"
+print .STARTUPS
+print "-"
+print .RESETS
+print "-"
+print .COMMITS
+printflush message1
+control enabled diode1 .OUTPUT_1 0 0 0
+control enabled diode2 .OUTPUT_2 0 0 0
+control enabled generator1 .GENERATOR 0 0 0
+control enabled generator2 .GENERATOR 0 0 0
+op equal :startup .MODE 1
+set :reactors 0
+set :boosts 0
+set :n .START
+jump 493 greaterThanEq .START @links
+getlink :block :n
+sensor *tmp187 :block @type
+sensor *tmp208 *tmp187 @id
+jump 491 greaterThanEq *tmp208 83
+op add @counter *tmp208 399
+jump 491 always 0 0
+jump 491 always 0 0
+jump 491 always 0 0
+jump 491 always 0 0
+jump 491 always 0 0
+jump 491 always 0 0
+jump 491 always 0 0
+jump 491 always 0 0
+jump 491 always 0 0
+jump 491 always 0 0
+jump 491 always 0 0
+jump 491 always 0 0
+jump 491 always 0 0
+jump 491 always 0 0
+jump 491 always 0 0
+jump 491 always 0 0
+jump 491 always 0 0
+jump 491 always 0 0
+jump 491 always 0 0
+jump 491 always 0 0
+jump 491 always 0 0
+jump 491 always 0 0
+jump 491 always 0 0
+jump 491 always 0 0
+jump 491 always 0 0
+jump 491 always 0 0
+jump 491 always 0 0
+jump 491 always 0 0
+jump 491 always 0 0
+jump 491 always 0 0
+jump 491 always 0 0
+jump 491 always 0 0
+jump 491 always 0 0
+jump 491 always 0 0
+jump 491 always 0 0
+jump 491 always 0 0
+jump 491 always 0 0
+jump 488 always 0 0
+jump 488 always 0 0
+jump 491 always 0 0
+jump 491 always 0 0
+jump 490 always 0 0
+jump 490 always 0 0
+jump 490 always 0 0
+jump 490 always 0 0
+jump 491 always 0 0
+jump 491 always 0 0
+jump 491 always 0 0
+jump 491 always 0 0
+jump 491 always 0 0
+jump 491 always 0 0
+jump 491 always 0 0
+jump 491 always 0 0
+jump 491 always 0 0
+jump 491 always 0 0
+jump 491 always 0 0
+jump 491 always 0 0
+jump 491 always 0 0
+jump 491 always 0 0
+jump 491 always 0 0
+jump 490 always 0 0
+jump 490 always 0 0
+jump 490 always 0 0
+jump 491 always 0 0
+jump 491 always 0 0
+jump 491 always 0 0
+jump 491 always 0 0
+jump 491 always 0 0
+jump 491 always 0 0
+jump 491 always 0 0
+jump 491 always 0 0
+jump 491 always 0 0
+jump 491 always 0 0
+jump 491 always 0 0
+jump 491 always 0 0
+jump 491 always 0 0
+jump 491 always 0 0
+jump 491 always 0 0
+jump 491 always 0 0
+jump 491 always 0 0
+jump 491 always 0 0
+jump 491 always 0 0
+op add :reactors :reactors 1
+op lessThanEq :enabled :reactors .REACTORS_ON
+control enabled :block :enabled 0 0 0
+jump 491 greaterThan :reactors .REACTORS_ON
+sensor *tmp193 :block @timescale
+op add :boosts :boosts *tmp193
+jump 491 always 0 0
+control enabled :block .OVERDRIVE 0 0 0
+jump 491 always 0 0
+control enabled :block :startup 0 0 0
+op add :n :n 1
+jump 394 lessThan :n @links
+jump 501 equal cell2 null
+write :reactors cell2 0
+write .REACTORS_ON cell2 2
+write .OVERDRIVE cell2 3
+read *tmp203 cell2 1
+op add :reactors :reactors *tmp203
+read *tmp204 cell2 4
+op add :boosts :boosts *tmp204
+op min .REACTORS_ON .REACTORS_ON :reactors
+jump 507 notEqual cell1 null
+set .STARTUPS 0
+set .RESETS 0
+set .COMMITS 0
+jump 130 always 0 0
+write .MODE cell1 0
+write .OUTPUT_1 cell1 1
+write .OUTPUT_2 cell1 2
+write .REACTORS_ON cell1 3
+write .OVERDRIVE cell1 4
+write .GENERATOR cell1 5
+write .CAN_COMMIT cell1 6
+write .STARTUPS cell1 7
+write .RESETS cell1 8
+write .COMMITS cell1 9
+jump 130 always 0 0
+print "Compiled by Mindcode - github.com/cardillan/mindcode"
+jump 3 always 0 0
+print "This is the preferred unit type to use for bringing in supplies."
+print "If no units of this type exist, we'll try using other types."
+set UNIT_TYPE @poly
+jump 6 always 0 0
+print "Do not modify anything below this line."
+set .MSG ""
+set .VAULT vault1
+sensor *tmp0 vault1 @dead
+jump 13 equal *tmp0 0
+set .VAULT vault1
+sensor *tmp0 vault1 @dead
+jump 10 notEqual *tmp0 0
+printflush null
+print "[gold]Looking for suitable unit type:[]\n"
+set :areUnitsAvailable:occupied 0
+ubind UNIT_TYPE
+set :areUnitsAvailable:firstUnit @unit
+jump 30 equal :areUnitsAvailable:firstUnit null
+sensor *tmp7 @unit @controlled
+jump 23 equal *tmp7 0
+sensor *tmp9 @unit @controller
+jump 25 notEqual *tmp9 @this
+set *tmp3 true
+jump 35 always 0 0
+op add :areUnitsAvailable:occupied :areUnitsAvailable:occupied 1
+ubind UNIT_TYPE
+jump 30 equal @unit :areUnitsAvailable:firstUnit
+sensor *tmp13 :areUnitsAvailable:firstUnit @dead
+jump 19 equal *tmp13 0
+print UNIT_TYPE
+print " occupied: "
+print :areUnitsAvailable:occupied
+print "\n"
+set *tmp3 false
+jump 38 equal *tmp3 false
+set *tmp2 UNIT_TYPE
+jump 136 always 0 0
+jump 62 equal @flare UNIT_TYPE
+set :areUnitsAvailable.1:occupied 0
+ubind @flare
+set :areUnitsAvailable.1:firstUnit @unit
+jump 54 equal :areUnitsAvailable.1:firstUnit null
+sensor *tmp24 @unit @controlled
+jump 47 equal *tmp24 0
+sensor *tmp26 @unit @controller
+jump 49 notEqual *tmp26 @this
+set *tmp20 true
+jump 58 always 0 0
+op add :areUnitsAvailable.1:occupied :areUnitsAvailable.1:occupied 1
+ubind @flare
+jump 54 equal @unit :areUnitsAvailable.1:firstUnit
+sensor *tmp30 :areUnitsAvailable.1:firstUnit @dead
+jump 43 equal *tmp30 0
+print "flare occupied: "
+print :areUnitsAvailable.1:occupied
+print "\n"
+set *tmp20 false
+jump 62 equal *tmp20 false
+printflush null
+set *tmp2 @flare
+jump 136 always 0 0
+jump 86 equal @poly UNIT_TYPE
+set :areUnitsAvailable.1:occupied 0
+ubind @poly
+set :areUnitsAvailable.1:firstUnit @unit
+jump 78 equal :areUnitsAvailable.1:firstUnit null
+sensor *tmp24 @unit @controlled
+jump 71 equal *tmp24 0
+sensor *tmp26 @unit @controller
+jump 73 notEqual *tmp26 @this
+set *tmp20 true
+jump 82 always 0 0
+op add :areUnitsAvailable.1:occupied :areUnitsAvailable.1:occupied 1
+ubind @poly
+jump 78 equal @unit :areUnitsAvailable.1:firstUnit
+sensor *tmp30 :areUnitsAvailable.1:firstUnit @dead
+jump 67 equal *tmp30 0
+print "poly occupied: "
+print :areUnitsAvailable.1:occupied
+print "\n"
+set *tmp20 false
+jump 86 equal *tmp20 false
+printflush null
+set *tmp2 @poly
+jump 136 always 0 0
+jump 110 equal @mega UNIT_TYPE
+set :areUnitsAvailable.1:occupied 0
+ubind @mega
+set :areUnitsAvailable.1:firstUnit @unit
+jump 102 equal :areUnitsAvailable.1:firstUnit null
+sensor *tmp24 @unit @controlled
+jump 95 equal *tmp24 0
+sensor *tmp26 @unit @controller
+jump 97 notEqual *tmp26 @this
+set *tmp20 true
+jump 106 always 0 0
+op add :areUnitsAvailable.1:occupied :areUnitsAvailable.1:occupied 1
+ubind @mega
+jump 102 equal @unit :areUnitsAvailable.1:firstUnit
+sensor *tmp30 :areUnitsAvailable.1:firstUnit @dead
+jump 91 equal *tmp30 0
+print "mega occupied: "
+print :areUnitsAvailable.1:occupied
+print "\n"
+set *tmp20 false
+jump 110 equal *tmp20 false
+printflush null
+set *tmp2 @mega
+jump 136 always 0 0
+jump 134 equal @mono UNIT_TYPE
+set :areUnitsAvailable.1:occupied 0
+ubind @mono
+set :areUnitsAvailable.1:firstUnit @unit
+jump 126 equal :areUnitsAvailable.1:firstUnit null
+sensor *tmp24 @unit @controlled
+jump 119 equal *tmp24 0
+sensor *tmp26 @unit @controller
+jump 121 notEqual *tmp26 @this
+set *tmp20 true
+jump 130 always 0 0
+op add :areUnitsAvailable.1:occupied :areUnitsAvailable.1:occupied 1
+ubind @mono
+jump 126 equal @unit :areUnitsAvailable.1:firstUnit
+sensor *tmp30 :areUnitsAvailable.1:firstUnit @dead
+jump 115 equal *tmp30 0
+print "mono occupied: "
+print :areUnitsAvailable.1:occupied
+print "\n"
+set *tmp20 false
+jump 134 equal *tmp20 false
+printflush null
+set *tmp2 @mono
+jump 136 always 0 0
+printflush message1
+jump 13 always 0 0
+ubind *tmp2
+set :rebindUnit:firstUnit @unit
+jump 0 equal :rebindUnit:firstUnit null
+sensor *tmp47 @unit @controlled
+jump 146 equal *tmp47 0
+ubind *tmp2
+jump 0 equal @unit :rebindUnit:firstUnit
+sensor *tmp51 :rebindUnit:firstUnit @dead
+jump 139 equal *tmp51 0
+end
+ucontrol flag 1 0 0 0 0
+set *tmp34 @unit
+set .UNIT *tmp34
+sensor .UNIT_CAPACITY *tmp34 @itemCapacity
+sensor .SPEED *tmp34 @speed
+op div .SPEED_TENTHS .SPEED 10
+print "[gold]Locating core..."
+printflush message1
+ulocate building core false @copper 0 0 0 .CORE
+jump 154 equal .CORE null
+sensor .CORE_X .CORE @x
+sensor .CORE_Y .CORE @y
+sensor .VAULT_X .VAULT @x
+sensor .VAULT_Y .VAULT @y
+op add :unitCheck @time 5000
+set :start @time
+sensor *tmp67 .VAULT @thorium
+print " === [gold]Supplying Power Plant[] === \n\n\n[gold]Thorium[] status: [green]"
+print *tmp67
+print "[]\n"
+sensor *tmp68 .VAULT @thorium
+jump 283 greaterThanEq *tmp68 500
+print "\nUnit type: [green]"
+print *tmp2
+print "[]\n"
+jump 179 equal .UNIT null
+ubind .UNIT
+sensor *tmp75 @unit @dead
+op equal *tmp76 *tmp75 0
+sensor *tmp77 @unit @controller
+op equal *tmp78 *tmp77 @this
+op land *tmp79 *tmp76 *tmp78
+jump 189 notEqual *tmp79 false
+ubind *tmp2
+set :rebindUnit.1:firstUnit @unit
+jump 0 equal :rebindUnit.1:firstUnit null
+sensor *tmp84 @unit @controlled
+jump 189 equal *tmp84 0
+ubind *tmp2
+jump 0 equal @unit :rebindUnit.1:firstUnit
+sensor *tmp88 :rebindUnit.1:firstUnit @dead
+jump 182 equal *tmp88 0
+end
+sensor :processUnit:state @unit @flag
+set :processUnit:distance -1
+jump 193 lessThan :processUnit:state 2
+jump 206 lessThanEq :processUnit:state 3
+sensor *tmp94 @unit @firstItem
+jump 197 notEqual *tmp94 @thorium
+set :processUnit:state 3
+jump 206 always 0 0
+sensor *tmp97 @unit @totalItems
+jump 201 notEqual *tmp97 0
+set :processUnit:state 2
+jump 206 always 0 0
+set .MSG ", initializing\n"
+ucontrol approach .CORE_X .CORE_Y 6 0 0
+ucontrol within .CORE_X .CORE_Y 8 *tmp100 0
+jump 206 equal *tmp100 false
+ucontrol itemDrop .CORE .UNIT_CAPACITY 0 0 0
+jump 226 notEqual :processUnit:state 2
+ucontrol within .CORE_X .CORE_Y 8 *tmp104 0
+jump 217 equal *tmp104 false
+ucontrol itemTake .CORE @thorium .UNIT_CAPACITY 0 0
+sensor *tmp106 @unit @totalItems
+jump 215 lessThan *tmp106 .UNIT_CAPACITY
+ucontrol approach .VAULT_X .VAULT_Y 6 0 0
+set :processUnit:state 3
+jump 226 always 0 0
+set .MSG ", loading\n"
+jump 226 always 0 0
+ucontrol approach .CORE_X .CORE_Y 6 0 0
+set .MSG ", fetching in [gold]"
+sensor *tmp109 @unit @x
+op sub *tmp110 .CORE_X *tmp109
+sensor *tmp111 @unit @y
+op sub *tmp112 .CORE_Y *tmp111
+op len *tmp113 *tmp110 *tmp112
+op idiv *tmp114 *tmp113 .SPEED_TENTHS
+op div :processUnit:distance *tmp114 10
+jump 245 notEqual :processUnit:state 3
+ucontrol within .VAULT_X .VAULT_Y 8 *tmp118 0
+jump 236 equal *tmp118 false
+ucontrol itemDrop .VAULT .UNIT_CAPACITY 0 0 0
+set .MSG ", supplying\n"
+sensor *tmp120 @unit @totalItems
+jump 245 greaterThan *tmp120 0
+ucontrol approach .CORE_X .CORE_Y 6 0 0
+set :processUnit:state 2
+jump 245 always 0 0
+ucontrol approach .VAULT_X .VAULT_Y 6 0 0
+set .MSG ", returning in [gold]"
+sensor *tmp123 @unit @x
+op sub *tmp124 .VAULT_X *tmp123
+sensor *tmp125 @unit @y
+op sub *tmp126 .VAULT_Y *tmp125
+op len *tmp127 *tmp124 *tmp126
+op idiv *tmp128 *tmp127 .SPEED_TENTHS
+op div :processUnit:distance *tmp128 10
+ucontrol flag :processUnit:state 0 0 0 0
+sensor *tmp130 @unit @totalItems
+print "[gold]"
+print *tmp130
+print "[]"
+jump 255 lessThan :processUnit:distance 0
+print .MSG
+print :processUnit:distance
+print "[] sec\n"
+jump 256 always 0 0
+print .MSG
+set .UNIT @unit
+jump 262 notEqual :processUnit:state 2
+sensor *tmp134 .VAULT @thorium
+jump 262 lessThan *tmp134 500
+ucontrol unbind 0 0 0 0 0
+jump 283 always 0 0
+jump 283 equal *tmp2 UNIT_TYPE
+jump 283 lessThanEq :unitCheck @time
+set :areUnitsAvailable.2:occupied 0
+ubind UNIT_TYPE
+set :areUnitsAvailable.2:firstUnit @unit
+jump 279 equal :areUnitsAvailable.2:firstUnit null
+sensor *tmp144 @unit @controlled
+jump 272 equal *tmp144 0
+sensor *tmp146 @unit @controller
+jump 274 notEqual *tmp146 @this
+set *tmp140 true
+jump 280 always 0 0
+op add :areUnitsAvailable.2:occupied :areUnitsAvailable.2:occupied 1
+ubind UNIT_TYPE
+jump 279 equal @unit :areUnitsAvailable.2:firstUnit
+sensor *tmp150 :areUnitsAvailable.2:firstUnit @dead
+jump 268 equal *tmp150 0
+set *tmp140 false
+jump 282 equal *tmp140 false
+end
+op add :unitCheck @time 5000
+op sub *tmp155 @time :start
+op floor *tmp156 *tmp155 0
+print "\n[lightgray]Loop time: "
+print *tmp156
+print " ms"
+printflush message1
+jump 161 always 0 0
+print "Compiled by Mindcode - github.com/cardillan/mindcode"

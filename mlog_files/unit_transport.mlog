@@ -1,0 +1,237 @@
+# Source: https://github.com/cardillan/golem/blob/main/unit-transport-simple/
+# (all the files are blobbed together)
+
+jump 2 always 0 0
+jump 10 always 0 0
+set .types*0 @mega
+set .types*1 @poly
+set .types*2 @horizon
+set .types*3 @flare
+set .types*4 @mono
+set *signature "d6ba00c23bee94f3:v1"
+wait 1e12
+jump 8 always 0 0
+sensor :findUnit:currentType :findUnit:currentUnit @type
+print "Trying to find unit better than "
+print :findUnit:currentUnit
+printflush message1
+jump 14 equal .types*0 :findUnit:currentType
+print "Finding unit: "
+print .types*0
+printflush message1
+ubind .types*0
+jump 22 notEqual @unit null
+set *tmp4 null
+jump 33 always 0 0
+set :findFreeUnit:first_unit @unit
+sensor *tmp7 @unit @controlled
+jump 28 notEqual *tmp7 0
+ucontrol flag 0 0 0 0 0
+set *tmp4 @unit
+jump 33 always 0 0
+sensor *tmp10 :findFreeUnit:first_unit @dead
+select :findFreeUnit:first_unit equal *tmp10 1 @unit :findFreeUnit:first_unit
+ubind .types*0
+jump 23 notEqual :findFreeUnit:first_unit @unit
+set *tmp4 null
+jump 39 equal *tmp4 null
+print "Returning unit: "
+print *tmp4
+printflush message1
+set :findUnit*retval *tmp4
+jump 138 always 0 0
+jump 14 equal .types*1 :findUnit:currentType
+print "Finding unit: "
+print .types*1
+printflush message1
+ubind .types*1
+jump 47 notEqual @unit null
+set *tmp4 null
+jump 58 always 0 0
+set :findFreeUnit:first_unit @unit
+sensor *tmp7 @unit @controlled
+jump 53 notEqual *tmp7 0
+ucontrol flag 0 0 0 0 0
+set *tmp4 @unit
+jump 58 always 0 0
+sensor *tmp10 :findFreeUnit:first_unit @dead
+select :findFreeUnit:first_unit equal *tmp10 1 @unit :findFreeUnit:first_unit
+ubind .types*1
+jump 48 notEqual :findFreeUnit:first_unit @unit
+set *tmp4 null
+jump 64 equal *tmp4 null
+print "Returning unit: "
+print *tmp4
+printflush message1
+set :findUnit*retval *tmp4
+jump 138 always 0 0
+jump 14 equal .types*2 :findUnit:currentType
+print "Finding unit: "
+print .types*2
+printflush message1
+ubind .types*2
+jump 72 notEqual @unit null
+set *tmp4 null
+jump 83 always 0 0
+set :findFreeUnit:first_unit @unit
+sensor *tmp7 @unit @controlled
+jump 78 notEqual *tmp7 0
+ucontrol flag 0 0 0 0 0
+set *tmp4 @unit
+jump 83 always 0 0
+sensor *tmp10 :findFreeUnit:first_unit @dead
+select :findFreeUnit:first_unit equal *tmp10 1 @unit :findFreeUnit:first_unit
+ubind .types*2
+jump 73 notEqual :findFreeUnit:first_unit @unit
+set *tmp4 null
+jump 89 equal *tmp4 null
+print "Returning unit: "
+print *tmp4
+printflush message1
+set :findUnit*retval *tmp4
+jump 138 always 0 0
+jump 14 equal .types*3 :findUnit:currentType
+print "Finding unit: "
+print .types*3
+printflush message1
+ubind .types*3
+jump 97 notEqual @unit null
+set *tmp4 null
+jump 108 always 0 0
+set :findFreeUnit:first_unit @unit
+sensor *tmp7 @unit @controlled
+jump 103 notEqual *tmp7 0
+ucontrol flag 0 0 0 0 0
+set *tmp4 @unit
+jump 108 always 0 0
+sensor *tmp10 :findFreeUnit:first_unit @dead
+select :findFreeUnit:first_unit equal *tmp10 1 @unit :findFreeUnit:first_unit
+ubind .types*3
+jump 98 notEqual :findFreeUnit:first_unit @unit
+set *tmp4 null
+jump 114 equal *tmp4 null
+print "Returning unit: "
+print *tmp4
+printflush message1
+set :findUnit*retval *tmp4
+jump 138 always 0 0
+jump 14 equal .types*4 :findUnit:currentType
+print "Finding unit: "
+print .types*4
+printflush message1
+ubind .types*4
+jump 122 notEqual @unit null
+set *tmp4 null
+jump 133 always 0 0
+set :findFreeUnit:first_unit @unit
+sensor *tmp7 @unit @controlled
+jump 128 notEqual *tmp7 0
+ucontrol flag 0 0 0 0 0
+set *tmp4 @unit
+jump 133 always 0 0
+sensor *tmp10 :findFreeUnit:first_unit @dead
+select :findFreeUnit:first_unit equal *tmp10 1 @unit :findFreeUnit:first_unit
+ubind .types*4
+jump 123 notEqual :findFreeUnit:first_unit @unit
+set *tmp4 null
+jump 14 equal *tmp4 null
+print "Returning unit: "
+print *tmp4
+printflush message1
+set :findUnit*retval *tmp4
+set :findUnit*finished true
+jump 8 always 0 0
+print "Compiled by Mindcode - github.com/cardillan/mindcode"
+read *tmp1 processor1 "*signature"
+jump 0 notEqual *tmp1 "d6ba00c23bee94f3:v1"
+print "Initializing..."
+printflush message1
+write null processor1 ":findUnit:currentUnit"
+write false processor1 ":findUnit*finished"
+write 1 processor1 "@counter"
+wait 1e-15
+read *tmp3 processor1 ":findUnit*finished"
+jump 7 equal *tmp3 false
+read :unit processor1 ":findUnit*retval"
+ubind :unit
+ucontrol flag 1764335678894 0 0 0 0
+ulocate building core false @copper 0 0 0 .core
+jump 4 equal .core null
+write @unit processor1 ":findUnit:currentUnit"
+write false processor1 ":findUnit*finished"
+write 1 processor1 "@counter"
+sensor :moveItems:capacity @unit @itemCapacity
+print "Moving to core"
+printflush message1
+sensor :moveTo:x .core @x
+sensor :moveTo:y .core @y
+ucontrol approach :moveTo:x :moveTo:y 5 0 0
+sensor *tmp38 @unit @dead
+jump 0 notEqual *tmp38 false
+sensor *tmp39 @unit @controller
+jump 29 equal *tmp39 @this
+end
+ucontrol within :moveTo:x :moveTo:y 5 *tmp44 0
+jump 23 equal *tmp44 false
+sensor :moveItems:item sorter1 @config
+select *tmp14 equal :moveItems:item null "Please select item to transport" "Taking items"
+print *tmp14
+printflush message1
+sensor *tmp15 @unit @firstItem
+jump 40 equal *tmp15 null
+sensor *tmp17 @unit @firstItem
+jump 40 equal *tmp17 :moveItems:item
+ucontrol itemDrop @air :moveItems:capacity 0 0 0
+ucontrol itemTake .core :moveItems:item :moveItems:capacity 0 0
+sensor *tmp38 @unit @dead
+jump 0 notEqual *tmp38 false
+sensor *tmp39 @unit @controller
+jump 46 equal *tmp39 @this
+end
+sensor *tmp20 @unit @totalItems
+jump 31 notEqual *tmp20 :moveItems:capacity
+print "Moving to vault"
+printflush message1
+sensor :moveTo:x vault1 @x
+sensor :moveTo:y vault1 @y
+ucontrol approach :moveTo:x :moveTo:y 5 0 0
+sensor *tmp38 @unit @dead
+jump 0 notEqual *tmp38 false
+sensor *tmp39 @unit @controller
+jump 58 equal *tmp39 @this
+end
+ucontrol within :moveTo:x :moveTo:y 5 *tmp44 0
+jump 52 equal *tmp44 false
+print "Dropping items"
+printflush message1
+ucontrol itemDrop vault1 :moveItems:capacity 0 0 0
+sensor *tmp38 @unit @dead
+jump 0 notEqual *tmp38 false
+sensor *tmp39 @unit @controller
+jump 68 equal *tmp39 @this
+end
+sensor *tmp22 sorter1 @config
+jump 72 notEqual :moveItems:item *tmp22
+sensor *tmp24 @unit @totalItems
+jump 62 greaterThan *tmp24 0
+read *tmp26 processor1 ":findUnit*finished"
+jump 18 equal *tmp26 false
+wait 1e-15
+read *tmp28 processor1 ":findUnit*finished"
+jump 74 equal *tmp28 false
+read :unit.1 processor1 ":findUnit*retval"
+sensor *tmp30 :unit.1 @dead
+jump 88 notEqual *tmp30 false
+sensor *tmp32 :unit.1 @controller
+jump 84 equal *tmp32 processor1
+sensor *tmp34 :unit.1 @controlled
+jump 88 notEqual *tmp34 false
+ucontrol flag null 0 0 0 0
+ucontrol unbind 0 0 0 0 0
+ubind :unit.1
+ucontrol flag 1764335678894 0 0 0 0
+write @unit processor1 ":findUnit:currentUnit"
+write false processor1 ":findUnit*finished"
+write 1 processor1 "@counter"
+jump 18 always 0 0
+print "Compiled by Mindcode - github.com/cardillan/mindcode"
