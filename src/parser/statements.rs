@@ -86,28 +86,15 @@ macro_rules! gen_printer {
     }};
 }
 
-/// Generates a statements enum
-///
-/// `oi` means the outputs are *before* the inputs in the statement, while `io` means the inputs
-/// are *before* the outputs in the statement.
-macro_rules! gen_statements {
-    {
-        $enum: ident,
+macro_rules! impl_statements_enum {
+    (
+        $enum:ident
         $(
             $ident:ident:
             $($name:literal)*
             ($ty:tt: $($i:ident),* -> $($o:ident),*)
         )*
-    } => {mod thing {
-        use crate::parser::instructions::Argument;
-        use crate::parser::errs::StatementParseError;
-        use crate::parser::instructions::ConditionOp;
-
-        gen_enum!{
-            $enum
-            $($ident $($i),* -> $($o),*);*
-        }
-
+    ) => {
         impl<'a> $enum<'a> {
             /// Parses a token
             pub fn parse(
@@ -186,6 +173,68 @@ macro_rules! gen_statements {
                 }
             }
         }
+    }
+}
+
+/// Generates a statements enum
+///
+/// `oi` means the outputs are *before* the inputs in the statement, while `io` means the inputs
+/// are *before* the outputs in the statement.
+macro_rules! gen_statements {
+    {
+        normal_enum: $enum:ident
+        wproc_enum: $wproc_enum:ident
+        normal: 
+            $(
+                $ident:ident:
+                $($name:literal)*
+                ($ty:tt: $($i:ident),* -> $($o:ident),*)
+            )*
+        ---
+        wproc:
+            $(
+                $wp_ident:ident:
+                $($wp_name:literal)*
+                ($wp_ty:tt: $($wp_i:ident),* -> $($wp_o:ident),*)
+            )*
+        ---
+    } => {mod thing {
+        use crate::parser::instructions::Argument;
+        use crate::parser::errs::StatementParseError;
+        use crate::parser::instructions::ConditionOp;
+
+        gen_enum!{
+            $enum
+            $($ident $($i),* -> $($o),*);*
+        }
+
+        gen_enum!{
+            $wproc_enum
+            $($ident $($i),* -> $($o),*);*
+            $($wp_ident $($wp_i),* -> $($wp_o),*);*
+        }
+
+        impl_statements_enum!{
+            $enum
+            $(
+                $ident:
+                $($name)*
+                ($ty: $($i),* -> $($o),*)
+            )*
+        }
+        impl_statements_enum!{
+            $wproc_enum
+            $(
+                $ident:
+                $($name)*
+                ($ty: $($i),* -> $($o),*)
+            )*
+            $(
+                $wp_ident:
+                $($wp_name)*
+                ($wp_ty: $($wp_i),* -> $($wp_o),*)
+            )*
+        }
 
         impl std::fmt::Display for $enum<'_> {
             fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
@@ -207,139 +256,143 @@ macro_rules! gen_statements {
 }}
 
 gen_statements! {
-    Statement,
+    normal_enum: Statement
+    wproc_enum:  WprocStatement
 
-    Noop: "nop"  (io: ->)
-    Stop: "stop" (io: ->)
-    End:  "end"  (io: ->)
-    Set:  "set"  (oi: value -> var)
-    Wait: "wait" (io: time ->)
+    normal:
+        Noop: "nop"  (io: ->)
+        Stop: "stop" (io: ->)
+        End:  "end"  (io: ->)
+        Set:  "set"  (oi: value -> var)
+        Wait: "wait" (io: time ->)
 
-    GetLink: "getlink" (oi: index -> result)
+        GetLink: "getlink" (oi: index -> result)
 
-    Sensor: "sensor"   (oi: item -> result)
+        Sensor: "sensor"   (oi: item -> result)
 
-    Read:  "read"  (oi: cell, index -> result)
-    Write: "write" (io: value, cell, index ->)
+        Read:  "read"  (oi: cell, index -> result)
+        Write: "write" (io: value, cell, index ->)
 
-    Print:      "print"      (io: text ->)
-    PrintChar:  "printchar"  (io: char ->)
-    Format:     "format"     (io: f_string ->)
-    PrintFlush: "printflush" (io: output ->)
+        Print:      "print"      (io: text ->)
+        PrintChar:  "printchar"  (io: char ->)
+        Format:     "format"     (io: f_string ->)
+        PrintFlush: "printflush" (io: output ->)
 
-    PackColour: "packcolor"     (oi: r, g, b, a -> result)
-    DrawReset:  "draw" "reset"  (io: ->)
-    DrawClear:  "draw" "clear"  (io: r, g, b ->)
-    DrawCol:    "draw" "col"    (io: packed_colour ->)
-    DrawColour: "draw" "color"  (io: r, g, b, a ->)
-    DrawStroke: "draw" "stroke" (io: width ->)
-    DrawFlush:  "drawflush"     (io: output ->)
+        PackColour: "packcolor"     (oi: r, g, b, a -> result)
+        DrawReset:  "draw" "reset"  (io: ->)
+        DrawClear:  "draw" "clear"  (io: r, g, b ->)
+        DrawCol:    "draw" "col"    (io: packed_colour ->)
+        DrawColour: "draw" "color"  (io: r, g, b, a ->)
+        DrawStroke: "draw" "stroke" (io: width ->)
+        DrawFlush:  "drawflush"     (io: output ->)
 
-    DrawRect:     "draw" "rect"     (io: x, y, w, h ->)
-    DrawLineRect: "draw" "lineRect" (io: x, y, w, h ->)
-    DrawPoly:     "draw" "poly"     (io: x, y, w, h ->)
-    DrawLinePoly: "draw" "linePoly" (io: x, y, w, h ->)
+        DrawRect:     "draw" "rect"     (io: x, y, w, h ->)
+        DrawLineRect: "draw" "lineRect" (io: x, y, w, h ->)
+        DrawPoly:     "draw" "poly"     (io: x, y, w, h ->)
+        DrawLinePoly: "draw" "linePoly" (io: x, y, w, h ->)
 
-    DrawTri:   "draw" "triangle" (io: x1, y1, x2, y2, x3, y3 ->)
-    DrawImage: "draw" "image"    (io: x, y, image, size, rot ->)
-    DrawPrint: "draw" "print"    (io: x, y, align ->)
+        DrawTri:   "draw" "triangle" (io: x1, y1, x2, y2, x3, y3 ->)
+        DrawImage: "draw" "image"    (io: x, y, image, size, rot ->)
+        DrawPrint: "draw" "print"    (io: x, y, align ->)
 
-    DrawTranslate: "draw" "translate" (io: x, y ->)
-    DrawRotate:    "draw" "rotate"    (io: angle ->)
-    DrawScale:     "draw" "scale"     (io: x, y ->)
+        DrawTranslate: "draw" "translate" (io: x, y ->)
+        DrawRotate:    "draw" "rotate"    (io: angle ->)
+        DrawScale:     "draw" "scale"     (io: x, y ->)
 
-    ControlEnabled: "control" "enabled" (io: enabled ->)
-    ControlConfig:  "control" "config"  (io: config ->)
-    ControlColour:  "control" "color"   (io: colour ->)
-    ControlShoot:   "control" "shoot"   (io: block, x, y, shoot ->)
-    ControlShootP:  "control" "shootp"  (io: block, unit, shoot ->)
+        ControlEnabled: "control" "enabled" (io: enabled ->)
+        ControlConfig:  "control" "config"  (io: config ->)
+        ControlColour:  "control" "color"   (io: colour ->)
+        ControlShoot:   "control" "shoot"   (io: block, x, y, shoot ->)
+        ControlShootP:  "control" "shootp"  (io: block, unit, shoot ->)
 
-    BlockLookup:  "lookup" "block"  (oi: index -> result)
-    UnitLookup:   "lookup" "unit"   (oi: index -> result)
-    ItemLookup:   "lookup" "item"   (oi: index -> result)
-    LiquidLookup: "lookup" "liquid" (oi: index -> result)
-    TeamLookup:   "lookup" "team"   (oi: index -> result)
+        BlockLookup:  "lookup" "block"  (oi: index -> result)
+        UnitLookup:   "lookup" "unit"   (oi: index -> result)
+        ItemLookup:   "lookup" "item"   (oi: index -> result)
+        LiquidLookup: "lookup" "liquid" (oi: index -> result)
+        TeamLookup:   "lookup" "team"   (oi: index -> result)
 
-    OpAdd:     "op" "add"  (oi: a, b -> c)
-    OpSub:     "op" "sub"  (oi: a, b -> c)
-    OpMul:     "op" "mul"  (oi: a, b -> c)
-    OpDiv:     "op" "div"  (oi: a, b -> c)
-    OpExp:     "op" "pow"  (oi: a, b -> c)
-    OpIntDiv:  "op" "idiv" (oi: a, b -> c)
-    OpMod:     "op" "mod"  (oi: a, b -> c)
-    OpTrueMod: "op" "emod" (oi: a, b -> c)
+        OpAdd:     "op" "add"  (oi: a, b -> c)
+        OpSub:     "op" "sub"  (oi: a, b -> c)
+        OpMul:     "op" "mul"  (oi: a, b -> c)
+        OpDiv:     "op" "div"  (oi: a, b -> c)
+        OpExp:     "op" "pow"  (oi: a, b -> c)
+        OpIntDiv:  "op" "idiv" (oi: a, b -> c)
+        OpMod:     "op" "mod"  (oi: a, b -> c)
+        OpTrueMod: "op" "emod" (oi: a, b -> c)
 
-    OpEq:            "op" "equal"         (oi: a, b -> result)
-    OpStrictEq:      "op" "strictEqual"   (oi: a, b -> result)
-    OpNotEqual:      "op" "notEqual"      (oi: a, b -> result)
-    OpLAnd:          "op" "land"          (oi: a, b -> result)
-    OpGreaterThan:   "op" "greaterThan"   (oi: a, b -> result)
-    OpLessThan:      "op" "lessThan"      (oi: a, b -> result)
-    OpGreaterThanEq: "op" "greaterThanEq" (oi: a, b -> result)
-    OpLessThanEq:    "op" "lessThanEq"    (oi: a, b -> result)
+        OpEq:            "op" "equal"         (oi: a, b -> result)
+        OpStrictEq:      "op" "strictEqual"   (oi: a, b -> result)
+        OpNotEqual:      "op" "notEqual"      (oi: a, b -> result)
+        OpLAnd:          "op" "land"          (oi: a, b -> result)
+        OpGreaterThan:   "op" "greaterThan"   (oi: a, b -> result)
+        OpLessThan:      "op" "lessThan"      (oi: a, b -> result)
+        OpGreaterThanEq: "op" "greaterThanEq" (oi: a, b -> result)
+        OpLessThanEq:    "op" "lessThanEq"    (oi: a, b -> result)
 
-    OpBAnd:    "op" "b-and" (oi: a, b -> result)
-    OpOr:      "op" "or"    (oi: a, b -> result)
-    OpXor:     "op" "xor"   (oi: a, b -> result)
-    OpNot:     "op" "flip"  (oi: a, b -> result)
-    OpLShift:  "op" "shl"   (oi: a, b -> result)
-    OpRShift:  "op" "shr"   (oi: a, b -> result)
-    OpURShift: "op" "ushr"  (oi: a, b -> result)
+        OpBAnd:    "op" "b-and" (oi: a, b -> result)
+        OpOr:      "op" "or"    (oi: a, b -> result)
+        OpXor:     "op" "xor"   (oi: a, b -> result)
+        OpNot:     "op" "flip"  (oi: a, b -> result)
+        OpLShift:  "op" "shl"   (oi: a, b -> result)
+        OpRShift:  "op" "shr"   (oi: a, b -> result)
+        OpURShift: "op" "ushr"  (oi: a, b -> result)
 
-    OpMin: "op" "min" (oi: a, b -> result)
-    OpMax: "op" "max" (oi: a, b -> result)
+        OpMin: "op" "min" (oi: a, b -> result)
+        OpMax: "op" "max" (oi: a, b -> result)
 
-    OpAngle:     "op" "angle"     (oi: x, y -> result)
-    OpAngleDiff: "op" "angleDiff" (oi: a, b -> result)
-    OpLen:       "op" "len"       (oi: a, b -> result)
+        OpAngle:     "op" "angle"     (oi: x, y -> result)
+        OpAngleDiff: "op" "angleDiff" (oi: a, b -> result)
+        OpLen:       "op" "len"       (oi: a, b -> result)
 
-    OpRand:  "op" "rand"  (oi: d -> result)
-    OpNoise: "op" "noise" (oi: x, y -> result)
+        OpRand:  "op" "rand"  (oi: d -> result)
+        OpNoise: "op" "noise" (oi: x, y -> result)
 
-    OpAbs:   "op" "abs"   (oi: x -> result)
-    OpSign:  "op" "sign"  (oi: x -> result)
-    OpFloor: "op" "floor" (oi: a, b -> result)
-    OpCeil:  "op" "ceil"  (oi: x -> result)
-    OpRound: "op" "round" (oi: x -> result)
-    OpSqrt:  "op" "sqrt"  (oi: x -> result)
+        OpAbs:   "op" "abs"   (oi: x -> result)
+        OpSign:  "op" "sign"  (oi: x -> result)
+        OpFloor: "op" "floor" (oi: a, b -> result)
+        OpCeil:  "op" "ceil"  (oi: x -> result)
+        OpRound: "op" "round" (oi: x -> result)
+        OpSqrt:  "op" "sqrt"  (oi: x -> result)
 
-    OpLog:   "op" "log"   (oi: a, b -> result)
-    OpLogN:  "op" "logn"  (oi: x -> result)
-    OpLog10: "op" "log10" (oi: x -> result)
+        OpLog:   "op" "log"   (oi: a, b -> result)
+        OpLogN:  "op" "logn"  (oi: x -> result)
+        OpLog10: "op" "log10" (oi: x -> result)
 
-    OpSin:  "op" "sin"  (oi: x -> result)
-    OpCos:  "op" "cos"  (oi: x -> result)
-    OpTan:  "op" "tan"  (oi: x -> result)
-    OpASin: "op" "asin" (oi: x -> result)
-    OpACos: "op" "acos" (oi: x -> result)
-    OpATan: "op" "atan" (oi: x -> result)
+        OpSin:  "op" "sin"  (oi: x -> result)
+        OpCos:  "op" "cos"  (oi: x -> result)
+        OpTan:  "op" "tan"  (oi: x -> result)
+        OpASin: "op" "asin" (oi: x -> result)
+        OpACos: "op" "acos" (oi: x -> result)
+        OpATan: "op" "atan" (oi: x -> result)
 
-    UBind:   "ubind"   (io: unit_type ->)
-    ULocate: "ulocate" (io: find, group, enemy, outx, outy -> found, building)
+        UBind:   "ubind"   (io: unit_type ->)
+        ULocate: "ulocate" (io: find, group, enemy, outx, outy -> found, building)
 
-    UCIdle:     "ucontrol" "idle"     (oi: ->)
-    UCStop:     "ucontrol" "stop"     (oi: ->)
-    UCUnbind:   "ucontrol" "unbind"   (oi: ->)
-    UCFlag:     "ucontrol" "flag"     (oi: flag ->)
-    UCGetBlock: "ucontrol" "getBlock" (io: x, y -> building_type, building, floor_type)
-    UCBuild:    "ucontrol" "build"    (oi: x, y, block, rotation, config ->)
+        UCIdle:     "ucontrol" "idle"     (oi: ->)
+        UCStop:     "ucontrol" "stop"     (oi: ->)
+        UCUnbind:   "ucontrol" "unbind"   (oi: ->)
+        UCFlag:     "ucontrol" "flag"     (oi: flag ->)
+        UCGetBlock: "ucontrol" "getBlock" (io: x, y -> building_type, building, floor_type)
+        UCBuild:    "ucontrol" "build"    (oi: x, y, block, rotation, config ->)
 
-    UCMove:         "ucontrol" "move"         (oi: x, y ->)
-    UCPathfind:     "ucontrol" "pathfind"     (oi: x, y ->)
-    UCAutoPathfind: "ucontrol" "autoPathFind" (oi: ->)
-    UCApproach:     "ucontrol" "approach"     (oi: x, y, radius ->)
-    UCWithin:       "ucontrol" "within"       (oi: x, y, radius -> result)
-    UCBoost:        "ucontrol" "boost"        (oi: boost ->)
-    UCMine:         "ucontrol" "mine"         (oi: x, y ->)
+        UCMove:         "ucontrol" "move"         (oi: x, y ->)
+        UCPathfind:     "ucontrol" "pathfind"     (oi: x, y ->)
+        UCAutoPathfind: "ucontrol" "autoPathFind" (oi: ->)
+        UCApproach:     "ucontrol" "approach"     (oi: x, y, radius ->)
+        UCWithin:       "ucontrol" "within"       (oi: x, y, radius -> result)
+        UCBoost:        "ucontrol" "boost"        (oi: boost ->)
+        UCMine:         "ucontrol" "mine"         (oi: x, y ->)
 
-    UCTarget:   "ucontrol" "target"   (oi: x, y, shoot ->)
-    UCTargetP:  "ucontrol" "targetp"  (oi: unit, shoot ->)
+        UCTarget:   "ucontrol" "target"   (oi: x, y, shoot ->)
+        UCTargetP:  "ucontrol" "targetp"  (oi: unit, shoot ->)
 
-    UCItemTake: "ucontrol" "itemTake" (oi: x, y, radius ->)
-    UCItemDrop: "ucontrol" "itemDrop" (oi: to, amount ->)
-    UCPayloadTake:  "ucontrol" "payTake"  (oi: units ->)
-    UCPayloadDrop:  "ucontrol" "payDrop"      (oi: ->)
-    UCPayloadEnter: "ucontrol" "payEnter"     (oi: ->)
+        UCItemTake:     "ucontrol" "itemTake" (oi: x, y, radius ->)
+        UCItemDrop:     "ucontrol" "itemDrop" (oi: to, amount ->)
+        UCPayloadTake:  "ucontrol" "payTake"  (oi: units ->)
+        UCPayloadDrop:  "ucontrol" "payDrop"  (oi: ->)
+        UCPayloadEnter: "ucontrol" "payEnter" (oi: ->)
+    ---
+    wproc: ---
 }
 
-pub use thing::Statement;
+pub use thing::{Statement, WprocStatement};
