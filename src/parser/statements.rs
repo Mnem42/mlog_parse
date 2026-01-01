@@ -428,8 +428,48 @@ gen_statements! {
         UCPayloadDrop:  "ucontrol" "payDrop"  (oi: ->)
         UCPayloadEnter: "ucontrol" "payEnter" (oi: ->)
     ---
+
     wproc:
-        SetProp: "setprop" (oi: prop, block, amount ->)
+        GetBlock: "getblock" (oi: x, y -> result)
+        SetProp:  "setprop"  (oi: prop, block, amount ->)
+        WeatherSense: "weathersense" (oi: weather -> result)
+        WeatherSet:   "weatherset"   (oi: weather, state ->)
+        
+        SpawnUnit:    "spawn"        (io: unit_type, x, y, rotation, team -> result)
+        ApplyStatus:  "status"       (oi: _padding, wet, unit, duration ->)
+        SpawnWave:    "spawnwave"    (oi: natural, x, y ->)
+
+        SetRCurrentWaveTime:      "setrule" "currentWaveTime"      (oi: v ->) 
+        SetRWaveTimer:            "setrule" "waveTimer"            (oi: v ->) 
+        SetRWaves:                "setrule" "waves"                (oi: v ->) 
+        SetRWave:                 "setrule" "wave"                 (oi: v ->) 
+        SetRWaveSpacing:          "setrule" "waveSpacing"          (oi: v ->) 
+        SetRWaveSending:          "setrule" "waveSending"          (oi: v ->) 
+        SetRAttackMode:           "setrule" "attackMode"           (oi: v ->) 
+        SetREnemyCoreBuildRadius: "setrule" "enemyCoreBuildRadius" (oi: v ->) 
+        SetRDropZoneRadius:       "setrule" "dropZoneRadius"       (oi: v ->) 
+        SetRUnitCap:              "setrule" "unitCap"              (oi: v ->)
+        SetRLighting:             "setrule" "lighting"             (oi: v ->)
+        SetRCanGameOver:          "setrule" "canGameOver"          (oi: v ->)
+        SetRAmbientLight:         "setrule" "ambientLight"         (oi: v ->) 
+        SetRSolarMultiplier:      "setrule" "solarMultiplier"      (oi: multiplier ->) 
+        SetRDragMultiplier:       "setrule" "dragMultiplier"       (oi: multiplier ->) 
+        SetRBan:                  "setrule" "ban"                  (oi: index ->)
+        SetRUnban:                "setrule" "unban"                (oi: index ->)
+
+        SetRBuildSpeed:     "setrule" "buildSpeed"     (oi: team, v ->)
+        SetRUnitHealth:     "setrule" "unitHealth"     (oi: team, v ->)
+        SetRUnitBuildSpeed: "setrule" "unitBuildSpeed" (oi: team, v ->)
+        SetRUnitMineSpeed:  "setrule" "unitMineSpeed"  (oi: team, v ->)
+        SetRUnitCost:       "setrule" "unitCost"       (oi: team, v ->)
+        SetRUnitDamage:     "setrule" "unitDamage"     (oi: team, v ->)
+        SetRBlockHealth:    "setrule" "blockHealth"    (oi: team, v ->)
+        SetRBlockDamage:    "setrule" "blockDamage"    (oi: team, v ->)
+        SetRRtsMinWeight:   "setrule" "rtsMinWeight"   (oi: team, v ->)
+        SetRRtsMinSquad:    "setrule" "rtsMinSquad"    (oi: team, v ->)
+
+        SetRMapArea: "setrule" "mapArea" (oi: x, y, w, h ->)
+
     ---
 }
 
