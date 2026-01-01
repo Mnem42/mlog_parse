@@ -86,7 +86,7 @@ macro_rules! gen_printer {
     }};
 }
 
-macro_rules! impl_statements_enum {
+macro_rules! impl_statement_parse {
     (
         $enum:ident
         $(
