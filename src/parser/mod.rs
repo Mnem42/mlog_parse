@@ -35,6 +35,17 @@ static JUMPLABEL_REGEX: LazyLock<Regex> =
 static COMMENT_REGEX: LazyLock<Regex> = LazyLock::new(|| Regex::new(r"^\s*#").unwrap());
 
 impl<'a> Lexer<'a> {
+    fn do_renaming(tokens: &[&'a str]) -> Vec<&'a str> {
+        match tokens {
+            ["op", "and", rest @ ..] => {
+                let mut vec = vec!["op", "b-and"];
+                vec.extend(rest);
+                vec
+            },
+            x => x.into()
+        }
+    }
+
     /// Create a new lexer
     #[must_use]
     pub fn new(str: &'a str) -> Self {
@@ -70,6 +81,6 @@ impl<'s> Iterator for Lexer<'s> {
 
         self.index += 1;
 
-        Some(Statement::parse(&split, &self.jump_labels))
+        Some(Statement::parse(&Lexer::do_renaming(&split), &self.jump_labels))
     }
 }

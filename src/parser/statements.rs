@@ -11,7 +11,7 @@ macro_rules! gen_match_l {
     ) => { [$($name),*, $($i,)* $($o,)* ..] };
 }
 macro_rules! gen_match_guard {
-    ($($o:ident)*) => { $(matches!(Argument::from(*$o), Argument::Variable(_))&&)* true };
+    ($($o:ident)*) => { $(matches!(Argument::from(*$o), Argument::Variable(_) | Argument::GlobalConst(_))&&)* true };
 }
 macro_rules! gen_match_result {
     (
@@ -228,9 +228,21 @@ gen_statements!{
 
     PackColour: "packcolor"     (oi: r, g, b, a -> result)
     DrawReset:  "draw" "reset"  (io: ->)
+    DrawClear:  "draw" "clear"  (io: r, g, b ->)
     DrawCol:    "draw" "col"    (io: packed_colour ->)
+    DrawColour: "draw" "color"  (io: r, g, b, a ->)
     DrawStroke: "draw" "stroke" (io: width ->)
     DrawFlush:  "drawflush"     (io: output ->)
+
+    DrawRect:     "draw" "rect"     (io: x, y, w, h ->)
+    DrawLineRect: "draw" "lineRect" (io: x, y, w, h ->)
+    DrawPoly:     "draw" "poly"     (io: x, y, w, h ->)
+    DrawLinePoly: "draw" "linePoly" (io: x, y, w, h ->)
+
+    DrawTri:   "draw" "triangle" (io: x1, y1, x2, y2, x3, y3 ->)
+    DrawImage: "draw" "image"    (io: x, y, image, size, rot ->)
+    DrawPrint: "draw" "print"    (io: x, y, align ->)
+
     DrawTranslate: "draw" "translate" (io: x, y ->)
     DrawRotate:    "draw" "rotate"    (io: angle ->)
     DrawScale:     "draw" "scale"     (io: x, y ->)
@@ -247,16 +259,58 @@ gen_statements!{
     LiquidLookup: "lookup" "liquid" (oi: index -> result)
     TeamLookup:   "lookup" "team"   (oi: index -> result)
 
-    OpAdd: "op" "add" (oi: a, b -> c)
-    OpSub: "op" "sub" (oi: a, b -> c)
-    OpMul: "op" "mul" (oi: a, b -> c)
-    OpDiv: "op" "div" (oi: a, b -> c)
-    OpExp: "op" "pow" (oi: a, b -> c)
-    OpIntDiv:   "op" "fdiv" (oi: a, b -> c)
-    OpMod:      "op" "mod"  (oi: a, b -> c)
-    OpTrueMod:  "op" "emod" (oi: a, b -> c)
-    OpEq:       "op" "equal"    (oi: a, b -> result)
-    OpNotEqual: "op" "notEqual" (oi: a, b -> result)
+    OpAdd:     "op" "add"  (oi: a, b -> c)
+    OpSub:     "op" "sub"  (oi: a, b -> c)
+    OpMul:     "op" "mul"  (oi: a, b -> c)
+    OpDiv:     "op" "div"  (oi: a, b -> c)
+    OpExp:     "op" "pow"  (oi: a, b -> c)
+    OpIntDiv:  "op" "fdiv" (oi: a, b -> c)
+    OpMod:     "op" "mod"  (oi: a, b -> c)
+    OpTrueMod: "op" "emod" (oi: a, b -> c)
+
+    OpEq:            "op" "equal"         (oi: a, b -> result)
+    OpStrictEq:      "op" "strictEqual"   (oi: a, b -> result)
+    OpNotEqual:      "op" "notEqual"      (oi: a, b -> result)
+    OpLAnd:          "op" "land"          (oi: a, b -> result)
+    OpGreaterThan:   "op" "greaterThan"   (oi: a, b -> result)
+    OpLessThan:      "op" "lessThan"      (oi: a, b -> result)
+    OpGreaterThanEq: "op" "greaterThanEq" (oi: a, b -> result)
+    OpLessThanEq:    "op" "lessThanEq"    (oi: a, b -> result)
+
+    OpBAnd:    "op" "b-and" (oi: a, b -> result)
+    OpXor:     "op" "xor"   (oi: a, b -> result)
+    OpNot:     "op" "flip"  (oi: a, b -> result)
+    OpLShift:  "op" "shl"   (oi: a, b -> result)
+    OpRShift:  "op" "shr"   (oi: a, b -> result)
+    OpURShift: "op" "ushr"  (oi: a, b -> result)
+
+    OpMin: "op" "min" (oi: a, b -> result)
+    OpMax: "op" "max" (oi: a, b -> result)
+
+    OpAngle:     "op" "angle"     (oi: x, y -> result)
+    OpAngleDiff: "op" "angleDiff" (oi: a, b -> result)
+    OpLen:       "op" "len"       (oi: a, b -> result)
+
+    OpRand:  "op" "rand"  (oi: d -> result)
+    OpNoise: "op" "noise" (oi: x, y -> result)
+
+    OpAbs:   "op" "abs"   (oi: x -> result)
+    OpSign:  "op" "sign"  (oi: x -> result)
+    OpFloor: "op" "floor" (oi: a, b -> result)
+    OpCeil:  "op" "ceil"  (oi: x -> result)
+    OpRound: "op" "round" (oi: x -> result)
+    OpSqrt:  "op" "sqrt"  (oi: x -> result)
+
+    OpLog:   "op" "log"   (oi: a, b -> result)
+    OpLogN:  "op" "logn"  (oi: x -> result)
+    OpLog10: "op" "log10" (oi: x -> result)
+
+    OpSin:  "op" "sin"  (oi: x -> result)
+    OpCos:  "op" "cos"  (oi: x -> result)
+    OpTan:  "op" "tan"  (oi: x -> result)
+    OpASin: "op" "asin" (oi: x -> result)
+    OpACos: "op" "acos" (oi: x -> result)
+    OpATan: "op" "atan" (oi: x -> result)
 
     UBind:   "ubind"   (io: unit_type ->)
     ULocate: "ulocate" (io: find, group, enemy, outx, outy -> found, building)
