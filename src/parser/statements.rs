@@ -324,20 +324,20 @@ gen_statements! {
     UCGetBlock: "ucontrol" "getBlock" (io: x, y -> building_type, building, floor_type)
     UCBuild:    "ucontrol" "build"    (oi: x, y, block, rotation, config ->)
 
-    UCMove:     "ucontrol" "move"     (oi: x, y ->)
-    UCPathfind: "ucontrol" "pathfind" (oi: x, y ->)
-    UCApproach: "ucontrol" "approach" (oi: x, y, radius ->)
-    UCWithin:   "ucontrol" "within"   (oi: x, y, radius -> result)
-    UCBoost:    "ucontrol" "boost"    (oi: boost ->)
-    UCMine:     "ucontrol" "mine"     (oi: x, y ->)
+    UCMove:         "ucontrol" "move"         (oi: x, y ->)
+    UCPathfind:     "ucontrol" "pathfind"     (oi: x, y ->)
+    UCAutoPathfind: "ucontrol" "autoPathFind" (oi: ->)
+    UCApproach:     "ucontrol" "approach"     (oi: x, y, radius ->)
+    UCWithin:       "ucontrol" "within"       (oi: x, y, radius -> result)
+    UCBoost:        "ucontrol" "boost"        (oi: boost ->)
+    UCMine:         "ucontrol" "mine"         (oi: x, y ->)
 
     UCTarget:   "ucontrol" "target"   (oi: x, y, shoot ->)
     UCTargetP:  "ucontrol" "targetp"  (oi: unit, shoot ->)
 
-    UCPayTake:  "ucontrol" "payTake"  (oi: units ->)
+    UCItemTake: "ucontrol" "itemTake" (oi: x, y, radius ->)
     UCItemDrop: "ucontrol" "itemDrop" (oi: to, amount ->)
-
-    UCAutoPathfind: "ucontrol" "autoPathFind" (oi: ->)
+    UCPayloadTake:  "ucontrol" "payTake"  (oi: units ->)
     UCPayloadDrop:  "ucontrol" "payDrop"      (oi: ->)
     UCPayloadEnter: "ucontrol" "payEnter"     (oi: ->)
 }
