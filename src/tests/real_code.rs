@@ -17,3 +17,11 @@ fn odd_supply() {
     let lexer = parser::Lexer::new(SRC);
     let _ = lexer.map(|x| x.unwrap()).collect::<Vec<_>>();
 }
+
+#[test]
+fn base_builder() {
+    const SRC: &str = include_str!("../../mlog_files/base_builder.mlog");
+
+    let lexer = parser::Lexer::new(SRC);
+    let _ = lexer.map(|x| x.unwrap()).collect::<Vec<_>>();
+}

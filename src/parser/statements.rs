@@ -10,9 +10,9 @@ macro_rules! gen_match_l {
         $($i:ident),* -> $($o:ident),*
     ) => { [$($name),*, $($i,)* $($o,)* ..] };
 }
-macro_rules! gen_match_guard {
+/*macro_rules! gen_match_guard {
     ($($o:ident)*) => { $(matches!(Argument::from(*$o), Argument::Variable(_) | Argument::GlobalConst(_))&&)* true };
-}
+}*/
 macro_rules! gen_match_result {
     (
         $enum:ident
@@ -20,7 +20,10 @@ macro_rules! gen_match_result {
         $($i:ident),* -> $($o:ident),*
     ) => {
         $enum::$ident {
-            $($o,)*
+            $($o: 
+                if let Argument::Variable(x) | Argument::GlobalConst(x) = Argument::from(*$o) 
+                    { Some(x) } else { None },
+            )*
             $($i: Argument::from(*$i)),*
         }
     }
@@ -60,7 +63,7 @@ macro_rules! gen_enum {
             },
             $($ident {
                 $($i: Argument<'a>,)*
-                $($o: &'a str),*
+                $($o: Option<&'a str>),*
             }),*,
         }
     };
@@ -70,7 +73,7 @@ macro_rules! gen_printer {
     (oi $f:expr ; $($name:literal),* $($i:ident),* -> $($o:ident),*) => {
         (|| {
             $f.write_str(concat!("" $(, $name ,)" "*))?;
-            $(write!($f, " {}", $o)?;)*
+            $(write!($f, " {}", $o.unwrap_or("0"))?;)*
             $(write!($f, " {}", $i)?;)*
             Ok(())
         })()
@@ -79,7 +82,7 @@ macro_rules! gen_printer {
         (|| {
             $f.write_str(concat!("" $(, $name ,)" "*))?;
             $(write!($f, " {}", $i)?;)*
-            $(write!($f, " {}", $o)?;)*
+            $(write!($f, " {}", $o.unwrap_or("0"))?;)*
             Ok(())
         })()
     }};
@@ -178,7 +181,7 @@ macro_rules! gen_statements {
                     },
                     $(
                         gen_match_l!($ty $($name),* $($o),* -> $($i),*)
-                            if gen_match_guard!($($o)*)
+                            /*if gen_match_guard!($($o)*)*/
                         => Ok(gen_match_result!($enum $ident $($i),* -> $($o),*)),
                     )*
                     _ => Err(StatementParseError::InvalidInstruction(tokens.to_vec()))
@@ -222,7 +225,7 @@ gen_statements! {
     Write: "write" (io: value, cell, index ->)
 
     Print:      "print"      (io: text ->)
-    PrintChar:  "printChar"  (io: char ->)
+    PrintChar:  "printchar"  (io: char ->)
     Format:     "format"     (io: f_string ->)
     PrintFlush: "printflush" (io: output ->)
 
@@ -278,6 +281,7 @@ gen_statements! {
     OpLessThanEq:    "op" "lessThanEq"    (oi: a, b -> result)
 
     OpBAnd:    "op" "b-and" (oi: a, b -> result)
+    OpOr:      "op" "or"    (oi: a, b -> result)
     OpXor:     "op" "xor"   (oi: a, b -> result)
     OpNot:     "op" "flip"  (oi: a, b -> result)
     OpLShift:  "op" "shl"   (oi: a, b -> result)
@@ -319,18 +323,24 @@ gen_statements! {
     UCStop:     "ucontrol" "stop"     (oi: ->)
     UCUnbind:   "ucontrol" "unbind"   (oi: ->)
     UCFlag:     "ucontrol" "flag"     (oi: flag ->)
+    UCGetBlock: "ucontrol" "getBlock" (io: x, y -> building_type, building, floor_type)
+    UCBuild:    "ucontrol" "build"    (oi: x, y, block, rotation, config ->)
+
     UCMove:     "ucontrol" "move"     (oi: x, y ->)
     UCPathfind: "ucontrol" "pathfind" (oi: x, y ->)
     UCApproach: "ucontrol" "approach" (oi: x, y, radius ->)
     UCWithin:   "ucontrol" "within"   (oi: x, y, radius -> result)
     UCBoost:    "ucontrol" "boost"    (oi: boost ->)
-    UCMine:     "ucontrol" "move"     (oi: x, y ->)
+    UCMine:     "ucontrol" "mine"     (oi: x, y ->)
+
     UCTarget:   "ucontrol" "target"   (oi: x, y, shoot ->)
-    UCTargetP:  "ucontrol" "move"     (oi: unit, shoot ->)
+    UCTargetP:  "ucontrol" "targetp"  (oi: unit, shoot ->)
+
     UCPayTake:  "ucontrol" "payTake"  (oi: units ->)
     UCPayDrop:  "ucontrol" "payDrop"  (oi: ->)
     UCItemTake: "ucontrol" "itemTake" (oi: x, y, radius ->)
     UCItemDrop: "ucontrol" "itemDrop" (oi: to, amount ->)
+
     UCAutoPathfind: "ucontrol" "autoPathFind" (oi: ->)
     UCPayloadDrop:  "ucontrol" "payDrop"      (oi: ->)
     UCPayloadEnter: "ucontrol" "payEnter"     (oi: ->)
