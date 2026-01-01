@@ -1,4 +1,4 @@
-use crate::parser;
+use crate::parser::{self, Lexer, statements::Statement};
 
 // These are all tests to see if they parse *at all*, not for parsing correctness
 
@@ -6,7 +6,7 @@ use crate::parser;
 fn mandelbrot() {
     const SRC: &str = include_str!("../../mlog_files/mandelbrot.mlog");
 
-    let lexer = parser::Lexer::new(SRC);
+    let lexer: Lexer<Statement> = parser::Lexer::new(SRC);
     let _ = lexer.map(|x| x.unwrap()).collect::<Vec<_>>();
 }
 
@@ -14,7 +14,7 @@ fn mandelbrot() {
 fn odd_supply() {
     const SRC: &str = include_str!("../../mlog_files/odd_supply.mlog");
 
-    let lexer = parser::Lexer::new(SRC);
+    let lexer: Lexer<Statement> = parser::Lexer::new(SRC);
     let _ = lexer.map(|x| x.unwrap()).collect::<Vec<_>>();
 }
 
@@ -22,7 +22,7 @@ fn odd_supply() {
 fn base_builder() {
     const SRC: &str = include_str!("../../mlog_files/base_builder.mlog");
 
-    let lexer = parser::Lexer::new(SRC);
+    let lexer: Lexer<Statement> = parser::Lexer::new(SRC);
     let _ = lexer.map(|x| x.unwrap()).collect::<Vec<_>>();
 }
 
@@ -30,7 +30,7 @@ fn base_builder() {
 fn power_plant() {
     const SRC: &str = include_str!("../../mlog_files/power_plant.mlog");
 
-    let lexer = parser::Lexer::new(SRC);
+    let lexer: Lexer<Statement> = parser::Lexer::new(SRC);
     let _ = lexer.map(|x| x.unwrap()).collect::<Vec<_>>();
 }
 
@@ -38,6 +38,6 @@ fn power_plant() {
 fn unit_transport() {
     const SRC: &str = include_str!("../../mlog_files/unit_transport.mlog");
 
-    let lexer = parser::Lexer::new(SRC);
+    let lexer: Lexer<Statement> = parser::Lexer::new(SRC);
     let _ = lexer.map(|x| x.unwrap()).collect::<Vec<_>>();
 }

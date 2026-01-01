@@ -102,9 +102,9 @@ macro_rules! impl_statement_parse {
             ($ty:tt: $($i:ident),* -> $($o:ident),*)
         )*
     ) => {
-        impl<'a> $enum<'a> {
+        impl<'a> StatementType<'a> for $enum<'a> {
             /// Parses a token
-            pub fn parse(
+            fn parse(
                 tokens: &[&'a str],
                 jump_labels: &std::collections::HashMap<&'a str, usize>
             ) -> Result<Self, StatementParseError<'a>> {
@@ -209,6 +209,7 @@ macro_rules! gen_statements {
         use crate::parser::instructions::Argument;
         use crate::parser::errs::StatementParseError;
         use crate::parser::instructions::ConditionOp;
+        use crate::parser::statements::StatementType;
 
         gen_enum!{
             $enum
@@ -259,8 +260,34 @@ macro_rules! gen_statements {
                 }
             }
         }
+
+        // Not really worth making another enum for this
+        impl std::fmt::Display for $wproc_enum<'_> {
+            fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
+                match self {
+                    Self::Jump { index, cond, lhs: None, rhs: None } =>
+                        write!(f, "jump {} {}", index, cond),
+                    Self::Jump { index, cond, lhs: Some(lhs), rhs: Some(rhs) } =>
+                        write!(f, "jump {} {} {} {}", index, cond, lhs, rhs),
+                    $(
+                        Self::$ident {$($i),* $(,$o)*} => {
+                            gen_printer!($ty f ; $($name),* $($i),* -> $($o),*)
+                        },
+                    )*
+                    _ => unreachable!()
+                }
+            }
+        }
     }
 }}
+
+use std::collections::HashMap;
+use std::fmt::Display;
+use crate::parser::errs::StatementParseError;
+/// Trait for anything that can be used as a statement
+pub(super) trait StatementType<'a>: Display + Sized {
+    fn parse(tokens: &[&'a str], jump_labels: &HashMap<&'a str, usize>) -> Result<Self, StatementParseError<'a>>;
+}
 
 gen_statements! {
     normal_enum: Statement
@@ -399,7 +426,9 @@ gen_statements! {
         UCPayloadDrop:  "ucontrol" "payDrop"  (oi: ->)
         UCPayloadEnter: "ucontrol" "payEnter" (oi: ->)
     ---
-    wproc: ---
+    wproc: 
+    
+    ---
 }
 
 pub use thing::{Statement, WprocStatement};

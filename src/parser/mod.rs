@@ -1,5 +1,5 @@
 use regex::Regex;
-use std::{collections::HashMap, sync::LazyLock};
+use std::{collections::HashMap, marker::PhantomData, sync::LazyLock};
 
 /// Error handling
 pub mod errs;
@@ -11,11 +11,14 @@ pub mod statements;
 use errs::StatementParseError;
 use statements::Statement;
 
+use crate::parser::statements::StatementType;
+
 /// A lexer for mindustry logic.
-pub struct Lexer<'a> {
+pub struct Lexer<'a, T: StatementType<'a>> {
     lines: Vec<(usize, &'a str)>,
     jump_labels: HashMap<&'a str, usize>,
     index: usize,
+    _marker: PhantomData<T>
 }
 
 /// Parse a literal with a prefix (e.g. 0x05) with a given radix.
@@ -34,7 +37,7 @@ static JUMPLABEL_REGEX: LazyLock<Regex> =
     LazyLock::new(|| Regex::new(r"^\s*?[[:word:]]+:").unwrap());
 static COMMENT_REGEX: LazyLock<Regex> = LazyLock::new(|| Regex::new(r"^\s*#").unwrap());
 
-impl<'a> Lexer<'a> {
+impl<'a, T: StatementType<'a>> Lexer<'a, T> {
     fn do_renaming(tokens: &[&'a str]) -> Vec<&'a str> {
         match tokens {
             ["op", "and", rest @ ..] => {
@@ -68,12 +71,13 @@ impl<'a> Lexer<'a> {
             lines,
             jump_labels,
             index: 0,
+            _marker: PhantomData {}
         }
     }
 }
 
-impl<'s> Iterator for Lexer<'s> {
-    type Item = Result<Statement<'s>, StatementParseError<'s>>;
+impl<'a, T: StatementType<'a>> Iterator for Lexer<'a, T> {
+    type Item = Result<T, StatementParseError<'a>>;
 
     fn next(&mut self) -> Option<Self::Item> {
         let (_, line) = self.lines.get(self.index)?;
@@ -81,8 +85,8 @@ impl<'s> Iterator for Lexer<'s> {
 
         self.index += 1;
 
-        Some(Statement::parse(
-            &Lexer::do_renaming(&split),
+        Some(T::parse(
+            &Self::do_renaming(&split),
             &self.jump_labels,
         ))
     }
