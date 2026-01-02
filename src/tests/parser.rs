@@ -18,20 +18,20 @@ fn single_input() {
         lexer.map(|x| x.unwrap()).collect::<Vec<_>>(),
         vec![
             Statement::Set {
-                var: Some("test"),
+                var: "test",
                 value: Argument::String("12")
             },
             Statement::Set {
-                var: Some("testb"),
+                var: "testb",
                 #[expect(clippy::approx_constant)]
                 value: Argument::Number(3.14159)
             },
             Statement::Set {
-                var: Some("testc"),
+                var: "testc",
                 value: Argument::Number(0xDEADBEEFu32 as f64)
             },
             Statement::Set {
-                var: Some("testd"),
+                var: "testd",
                 value: Argument::Number(-85.0)
             }
         ]
@@ -53,22 +53,22 @@ fn operation() {
         lexer.map(|x| x.unwrap()).collect::<Vec<_>>(),
         [
             Statement::OpAdd {
-                c: Some("a"),
+                c: "a",
                 a: Argument::Number(12.0),
                 b: Argument::Number(-5.0)
             },
             Statement::OpSub {
-                c: Some("b"),
+                c: "b",
                 a: Argument::Number(-1.0),
                 b: Argument::Number(5.0)
             },
             Statement::OpMul {
-                c: Some("c"),
+                c: "c",
                 a: Argument::Number(8.0),
                 b: Argument::Variable("a")
             },
             Statement::OpDiv {
-                c: Some("d"),
+                c: "d",
                 a: Argument::Variable("b"),
                 b: Argument::Number(74.0)
             },
@@ -98,32 +98,32 @@ fn ops_with_jump() {
             Statement::Jump {
                 index: 2,
                 cond: ConditionOp::GreaterThan,
-                lhs: Some(Argument::Variable("a"),),
-                rhs: Some(Argument::Number(2.0),),
+                lhs: Some(Argument::Variable("a")),
+                rhs: Some(Argument::Number(2.0)),
             },
             Statement::Noop {},
             Statement::OpAdd {
-                c: Some("a"),
+                c: "a",
                 a: Argument::Number(12.0),
                 b: Argument::Number(-5.0)
             },
             Statement::OpSub {
-                c: Some("b"),
+                c: "b",
                 a: Argument::Number(-1.0),
                 b: Argument::Number(5.0)
             },
             Statement::OpMul {
-                c: Some("c"),
+                c: "c",
                 a: Argument::Number(8.0),
                 b: Argument::Variable("a")
             },
             Statement::OpDiv {
-                c: Some("d"),
+                c: "d",
                 a: Argument::Variable("b"),
                 b: Argument::Number(74.0)
             },
             Statement::OpDiv {
-                c: Some("d"),
+                c: "d",
                 a: Argument::Colour(Rgba {
                     r: 171,
                     g: 205,
@@ -138,7 +138,7 @@ fn ops_with_jump() {
                 })
             },
             Statement::Jump {
-                index: 1,
+                index: 0,
                 cond: ConditionOp::Always,
                 lhs: None,
                 rhs: None
@@ -193,7 +193,7 @@ fn all_opwidths() {
 #[test]
 fn display() {
     let tokens = [Statement::OpAdd {
-        c: Some("a"),
+        c: "a",
         a: Argument::Number(-5.0),
         b: Argument::Number(12.0),
     }];

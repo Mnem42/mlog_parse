@@ -1,4 +1,4 @@
-/// Instructions
+/// Arguments
 pub mod args;
 /// Error handling
 pub mod errs;

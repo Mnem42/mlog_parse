@@ -52,7 +52,7 @@ impl<'a, T: StatementType<'a>> Lexer<'a, T> {
         {
             if COMMENT_REGEX.is_match(line) {
             } else if JUMPLABEL_REGEX.is_match(line) {
-                jump_labels.insert(line.trim().strip_suffix(":").unwrap(), idx);
+                jump_labels.insert(line.trim().strip_suffix(":").unwrap(), idx - 1);
             } else {
                 lines.push((idx, line));
             }

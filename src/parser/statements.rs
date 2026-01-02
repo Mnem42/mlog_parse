@@ -24,10 +24,7 @@ macro_rules! gen_match_result {
         $($i:ident),* -> $($o:ident),*
     ) => {
         $enum::$ident {
-            $($o:
-                if let Argument::Variable(x) | Argument::GlobalConst(x) = Argument::from(*$o)
-                    { Some(x) } else { None },
-            )*
+            $($o,)*
             $($i: Argument::from(*$i)),*
         }
     }
@@ -74,7 +71,7 @@ macro_rules! gen_enum {
                 #[allow(missing_docs)]
                 $ident {
                     $($i: Argument<'a>,)*
-                    $($o: Option<&'a str>),*
+                    $($o: &'a str),*
                 }
             ),*,
         }
@@ -85,7 +82,7 @@ macro_rules! gen_printer {
     (oi $f:expr ; $($name:literal),* $($i:ident),* -> $($o:ident),*) => {
         (|| {
             $f.write_str(concat!("" $(, $name ,)" "*))?;
-            $(write!($f, " {}", $o.unwrap_or("0"))?;)*
+            $(write!($f, " {}", $o)?;)*
             $(write!($f, " {}", $i)?;)*
             Ok(())
         })()
@@ -94,7 +91,7 @@ macro_rules! gen_printer {
         (|| {
             $f.write_str(concat!("" $(, $name ,)" "*))?;
             $(write!($f, " {}", $i)?;)*
-            $(write!($f, " {}", $o.unwrap_or("0"))?;)*
+            $(write!($f, " {}", $o)?;)*
             Ok(())
         })()
     }};
