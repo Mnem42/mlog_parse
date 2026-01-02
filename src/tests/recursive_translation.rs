@@ -1,5 +1,4 @@
 use crate::parser::{lexer::Lexer, statements::WprocStatement};
-use pretty_assertions::assert_eq;
 
 /// Compare while ignoring extra trailing tokens
 fn compare_line(a: &str, b: &str) -> bool {

@@ -5,8 +5,5 @@ pub mod errs;
 /// The definition of the Statement type.
 pub mod statements;
 
+/// The lexer.
 pub mod lexer;
-
-use errs::StatementParseError;
-
-use crate::parser::statements::StatementType;
