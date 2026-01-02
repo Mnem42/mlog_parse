@@ -281,12 +281,23 @@ macro_rules! gen_statements {
                         write!(f, "jump {} {}", index, cond),
                     Self::Jump { index, cond, lhs: Some(lhs), rhs: Some(rhs) } =>
                         write!(f, "jump {} {} {} {}", index, cond, lhs, rhs),
+                    Self::Select { result, cond, lhs: None, rhs: None, true_option, false_option } =>
+                        write!(f, "select {} {} {} {}", result, cond, true_option, false_option),
+                    Self::Select { result, cond, lhs: Some(lhs), rhs: Some(rhs), true_option, false_option } =>
+                        write!(f, "select {} {} {} {} {} {}", result, cond, lhs, rhs, true_option, false_option),
+
+                    // Other combinations should be impossible
+                    Self::Jump {..} | Self::Select {..} => unreachable!(),
                     $(
                         Self::$ident {$($i),* $(,$o)*} => {
                             gen_printer!($ty f ; $($name),* $($i),* -> $($o),*)
                         },
                     )*
-                    _ => unreachable!()
+                    $(
+                        Self::$ident {$($i),* $(,$o)*} => {
+                            gen_printer!($ty f ; $($name),* $($i),* -> $($o),*)
+                        },
+                    )*
                 }
             }
         }
@@ -299,6 +310,13 @@ macro_rules! gen_statements {
                         write!(f, "jump {} {}", index, cond),
                     Self::Jump { index, cond, lhs: Some(lhs), rhs: Some(rhs) } =>
                         write!(f, "jump {} {} {} {}", index, cond, lhs, rhs),
+                    Self::Select { result, cond, lhs: None, rhs: None, true_option, false_option } =>
+                        write!(f, "select {} {} {} {}", result, cond, true_option, false_option),
+                    Self::Select { result, cond, lhs: Some(lhs), rhs: Some(rhs), true_option, false_option } =>
+                        write!(f, "select {} {} {} {} {} {}", result, cond, lhs, rhs, true_option, false_option),
+
+                    // Other combinations should be impossible
+                    Self::Jump {..} | Self::Select {..} => unreachable!(),
                     $(
                         Self::$ident {$($i),* $(,$o)*} => {
                             gen_printer!($ty f ; $($name),* $($i),* -> $($o),*)
@@ -309,7 +327,6 @@ macro_rules! gen_statements {
                             gen_printer!($wp_ty f ; $($wp_name),* $($wp_i),* -> $($wp_o),*)
                         },
                     )*
-                    _ => unreachable!()
                 }
             }
         }
@@ -395,14 +412,15 @@ gen_statements! {
         OpMod:     "op" "mod"  (oi: a, b -> c)
         OpTrueMod: "op" "emod" (oi: a, b -> c)
 
-        OpEq:            "op" "equal"         (oi: a, b -> result)
-        OpStrictEq:      "op" "strictEqual"   (oi: a, b -> result)
-        OpNotEqual:      "op" "notEqual"      (oi: a, b -> result)
-        OpLAnd:          "op" "land"          (oi: a, b -> result)
-        OpGreaterThan:   "op" "greaterThan"   (oi: a, b -> result)
-        OpLessThan:      "op" "lessThan"      (oi: a, b -> result)
-        OpGreaterThanEq: "op" "greaterThanEq" (oi: a, b -> result)
-        OpLessThanEq:    "op" "lessThanEq"    (oi: a, b -> result)
+        OpEq:             "op" "equal"          (oi: a, b -> result)
+        OpStrictEq:       "op" "strictEqual"    (oi: a, b -> result)
+        OpNotEqual:       "op" "notEqual"       (oi: a, b -> result)
+        OpStrictNotEqual: "op" "strictNotEqual" (oi: a, b -> result)
+        OpLAnd:           "op" "land"           (oi: a, b -> result)
+        OpGreaterThan:    "op" "greaterThan"    (oi: a, b -> result)
+        OpLessThan:       "op" "lessThan"       (oi: a, b -> result)
+        OpGreaterThanEq:  "op" "greaterThanEq"  (oi: a, b -> result)
+        OpLessThanEq:     "op" "lessThanEq"     (oi: a, b -> result)
 
         OpBAnd:    "op" "b-and" (oi: a, b -> result)
         OpOr:      "op" "or"    (oi: a, b -> result)
@@ -486,6 +504,7 @@ gen_statements! {
         FetchPlayerCount: "fetch" "playerCount" (oi: team -> result)
         FetchCore:        "fetch" "core"        (oi: team, number -> result)
         FetchCoreCount:   "fetch" "coreCount"   (oi: team -> result)
+        FetchBuild:       "fetch" "build"       (oi: team, number, block -> result)
         FetchBuildCount:  "fetch" "buildCount"  (oi: team, block -> result)
 
         PlaySoundPositional: "playsound" "false" (oi: sound, volume, pitch, x, y, _1, limit ->)
@@ -565,6 +584,11 @@ gen_statements! {
         EffectExplosion:      "effect" "explosion"      (oi: x, y, size ->)
         EffectSparkExplosion: "effect" "sparkExplosion" (oi: x, y, colour ->)
         EffectCrossExplosion: "effect" "crossExplosion" (oi: x, y, colour, size ->)
+
+        MakeMarkerShapeText: "makemarker" "shapeText" (oi: id, x, y, replace ->)
+        MakeMarkerPoint:     "makemarker" "point" (oi: id, x, y, replace ->)
+        MakeMarkerShape:     "makemarker" "shape" (oi: id, x, y, replace ->)
+        MakeMarkerText:      "makemarker" "text" (oi: id, x, y, replace ->)
 
         CutsceneStop: "cutscene" "stop" (oi: ->)
         CutsceneZoom: "cutscene" "zoom" (oi: level ->)

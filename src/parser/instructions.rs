@@ -91,6 +91,9 @@ pub enum ConditionOp {
     /// Inequality (!=)
     #[strum(serialize = "notEqual")]
     NotEqual,
+    /// Strict inequality (!=)
+    #[strum(serialize = "strictNotEqual")]
+    StrictNotEqual,
     /// Less than (<)
     #[strum(serialize = "lessThan")]
     LessThan,
@@ -119,6 +122,7 @@ impl fmt::Display for ConditionOp {
             match self {
                 Self::Equal => "equal",
                 Self::NotEqual => "notEqual",
+                Self::StrictNotEqual => "strictNotEqual",
                 Self::LessThan => "lessThan",
                 Self::LessThanEq => "lessThanEq",
                 Self::GreaterThan => "greaterThan",
