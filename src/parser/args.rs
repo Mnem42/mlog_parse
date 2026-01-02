@@ -1,3 +1,6 @@
+//! This module defines all things that can be passed in as arguments to a statement like colours,
+//! strings, and numbers. 
+
 use regex::RegexSet;
 use std::fmt::{self, Display, Write};
 use std::num::{IntErrorKind, ParseIntError};
@@ -5,7 +8,7 @@ use std::str::FromStr;
 use std::sync::LazyLock;
 use strum::EnumString;
 
-/// Parse a literal with a prefix (e.g. 0x05) with a given radix.
+/// Parses a literal with a prefix (e.g. 0x05) with a given radix..
 fn parse_nradix_literal(text: &str, radix: u32) -> i64 {
     let mut chars = text.chars();
 
@@ -17,21 +20,69 @@ fn parse_nradix_literal(text: &str, radix: u32) -> i64 {
     }
 }
 
-/// An argument
+/// An argument that can be passed into a statement
 #[derive(Debug, PartialEq, Copy, Clone, PartialOrd)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub enum Argument<'a> {
-    /// A numeric argument
+    /// A numeric argument (e.g. `5`, `0x2763`, `0b0011s`)
     Number(f64),
-    /// A literal string
+    /// A literal string (e.g. `"hello world"`)
     String(&'a str),
-    /// A variable usage
+    /// A variable usage. This is used for anything that doesn't match any of the other types,
+    /// which is also how the game handles it.
     Variable(&'a str),
-    /// A colour
+    /// A colour literal (e.g. `%01234567`, `%deadbeef`)
     Colour(Rgba),
     // _^ British spotted
-    /// A string starting in @
+    /// A global constant (e.g. `@counter`, `@thisx`, `@thisy`)
     GlobalConst(&'a str),
+}
+
+impl fmt::Display for Argument<'_> {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        match self {
+            Self::Number(x) => write!(f, "{x}"),
+            Self::String(x) => write!(f, "\"{x}\""),
+            Self::Variable(x) => write!(f, "{x}"),
+            Self::Colour(x) => write!(f, "%{x}"),
+            Self::GlobalConst(x) => write!(f, "@{x}"),
+        }
+    }
+}
+
+static ARG_PATTERNS: LazyLock<RegexSet> = LazyLock::new(|| {
+    RegexSet::new([
+        "^\".*\"$",
+        "^[%@][0-9a-fA-F]{6}(?:[0-9a-fA-F]{2})?$",
+        "^@",
+        r"^[+-]?\d+(?:\.\d+)?$",
+        "^[+-]?0x[0-9a-fA-F]+$",
+        "^[+-]?0b[01]+$",
+    ])
+    .unwrap()
+});
+
+impl<'s> From<&'s str> for Argument<'s> {
+    fn from(value: &'s str) -> Self {
+        let matches = ARG_PATTERNS.matches(value);
+        match () {
+            _ if matches.matched(0) => Argument::String(&value[1..value.len() - 1]),
+            _ if matches.matched(1) => Argument::Colour(value[1..].parse().unwrap()),
+            _ if matches.matched(2) => Argument::GlobalConst(&value[1..]),
+            _ if matches.matched(3) => {
+                let first = value.as_bytes().first().copied().unwrap_or_default();
+                let value = matches!(first, b'-' | b'+')
+                    .then(|| &value[1..])
+                    .unwrap_or(value);
+                Argument::Number(
+                    value.parse::<f64>().unwrap() * if first == b'-' { -1. } else { 1. },
+                )
+            }
+            _ if matches.matched(4) => Argument::Number(parse_nradix_literal(value, 16) as f64),
+            _ if matches.matched(5) => Argument::Number(parse_nradix_literal(value, 2) as f64),
+            _ => Argument::Variable(value),
+        }
+    }
 }
 
 /// A colour
@@ -94,7 +145,8 @@ impl FromStr for Rgba {
     }
 }
 
-/// A conditional. [reference](https://github.com/Anuken/Mindustry/blob/master/core/src/mindustry/logic/ConditionOp.java)
+/// A conditional. [reference](https://github.com/Anuken/Mindustry/blob/master/core/src/mindustry/logic/ConditionOp.java).
+/// This is used for the `select` and `jump` instructions.
 #[derive(Debug, PartialEq, Eq, EnumString, Clone, Copy)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub enum ConditionOp {
@@ -144,52 +196,5 @@ impl fmt::Display for ConditionOp {
                 Self::Always => "always",
             }
         )
-    }
-}
-
-impl fmt::Display for Argument<'_> {
-    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        match self {
-            Self::Number(x) => write!(f, "{x}"),
-            Self::String(x) => write!(f, "\"{x}\""),
-            Self::Variable(x) => write!(f, "{x}"),
-            Self::Colour(x) => write!(f, "%{x}"),
-            Self::GlobalConst(x) => write!(f, "@{x}"),
-        }
-    }
-}
-
-static ARG_PATTERNS: LazyLock<RegexSet> = LazyLock::new(|| {
-    RegexSet::new([
-        "^\".*\"$",
-        "^[%@][0-9a-fA-F]{6}(?:[0-9a-fA-F]{2})?$",
-        "^@",
-        r"^[+-]?\d+(?:\.\d+)?$",
-        "^[+-]?0x[0-9a-fA-F]+$",
-        "^[+-]?0b[01]+$",
-    ])
-    .unwrap()
-});
-
-impl<'s> From<&'s str> for Argument<'s> {
-    fn from(value: &'s str) -> Self {
-        let matches = ARG_PATTERNS.matches(value);
-        match () {
-            _ if matches.matched(0) => Argument::String(&value[1..value.len() - 1]),
-            _ if matches.matched(1) => Argument::Colour(value[1..].parse().unwrap()),
-            _ if matches.matched(2) => Argument::GlobalConst(&value[1..]),
-            _ if matches.matched(3) => {
-                let first = value.as_bytes().first().copied().unwrap_or_default();
-                let value = matches!(first, b'-' | b'+')
-                    .then(|| &value[1..])
-                    .unwrap_or(value);
-                Argument::Number(
-                    value.parse::<f64>().unwrap() * if first == b'-' { -1. } else { 1. },
-                )
-            }
-            _ if matches.matched(4) => Argument::Number(parse_nradix_literal(value, 16) as f64),
-            _ if matches.matched(5) => Argument::Number(parse_nradix_literal(value, 2) as f64),
-            _ => Argument::Variable(value),
-        }
     }
 }
