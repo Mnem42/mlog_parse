@@ -1,6 +1,6 @@
-use crate::parser::instructions::{Argument, ConditionOp, Rgba};
+use crate::parser::args::{Argument, ConditionOp, Rgba};
+use crate::parser::lexer::Lexer;
 use crate::parser::statements::Statement;
-use crate::parser::{self, Lexer};
 use pretty_assertions::assert_eq;
 
 #[test]
@@ -12,7 +12,7 @@ fn single_input() {
         set testd -0b01010101 # binary
     "#;
 
-    let lexer: Lexer<Statement> = parser::Lexer::new(SRC);
+    let lexer: Lexer<Statement> = Lexer::new(SRC);
 
     assert_eq!(
         lexer.map(|x| x.unwrap()).collect::<Vec<_>>(),
@@ -47,7 +47,7 @@ fn operation() {
         op div d b 0b1001010
     "#;
 
-    let lexer: Lexer<Statement> = parser::Lexer::new(SRC);
+    let lexer: Lexer<Statement> = Lexer::new(SRC);
 
     assert_eq!(
         lexer.map(|x| x.unwrap()).collect::<Vec<_>>(),
@@ -90,7 +90,7 @@ fn ops_with_jump() {
         jump jl1 always
     "#;
 
-    let lexer: Lexer<Statement> = parser::Lexer::new(SRC);
+    let lexer: Lexer<Statement> = Lexer::new(SRC);
 
     assert_eq!(
         lexer.map(|x| x.unwrap()).collect::<Vec<_>>(),

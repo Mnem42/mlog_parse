@@ -1,5 +1,5 @@
 use crate::parser::{
-    self, Lexer,
+    lexer::Lexer,
     statements::{Statement, WprocStatement},
 };
 
@@ -9,7 +9,7 @@ use crate::parser::{
 fn mandelbrot() {
     const SRC: &str = include_str!("../../mlog_files/golem/mandelbrot.mlog");
 
-    let lexer: Lexer<Statement> = parser::Lexer::new(SRC);
+    let lexer: Lexer<Statement> = Lexer::new(SRC);
     let _ = lexer.map(|x| x.unwrap()).collect::<Vec<_>>();
 }
 
@@ -17,7 +17,7 @@ fn mandelbrot() {
 fn odd_supply() {
     const SRC: &str = include_str!("../../mlog_files/golem/odd_supply.mlog");
 
-    let lexer: Lexer<Statement> = parser::Lexer::new(SRC);
+    let lexer: Lexer<Statement> = Lexer::new(SRC);
     let _ = lexer.map(|x| x.unwrap()).collect::<Vec<_>>();
 }
 
@@ -25,7 +25,7 @@ fn odd_supply() {
 fn base_builder() {
     const SRC: &str = include_str!("../../mlog_files/golem/base_builder.mlog");
 
-    let lexer: Lexer<Statement> = parser::Lexer::new(SRC);
+    let lexer: Lexer<Statement> = Lexer::new(SRC);
     let _ = lexer.map(|x| x.unwrap()).collect::<Vec<_>>();
 }
 
@@ -33,7 +33,7 @@ fn base_builder() {
 fn base_builder_wproc() {
     const SRC: &str = include_str!("../../mlog_files/golem/base_builder_wproc.mlog");
 
-    let lexer: Lexer<WprocStatement> = parser::Lexer::new(SRC);
+    let lexer: Lexer<WprocStatement> = Lexer::new(SRC);
     let _ = lexer.map(|x| x.unwrap()).collect::<Vec<_>>();
 }
 
@@ -41,7 +41,7 @@ fn base_builder_wproc() {
 fn power_plant() {
     const SRC: &str = include_str!("../../mlog_files/golem/power_plant.mlog");
 
-    let lexer: Lexer<Statement> = parser::Lexer::new(SRC);
+    let lexer: Lexer<Statement> = Lexer::new(SRC);
     let _ = lexer.map(|x| x.unwrap()).collect::<Vec<_>>();
 }
 
@@ -49,6 +49,6 @@ fn power_plant() {
 fn unit_transport() {
     const SRC: &str = include_str!("../../mlog_files/golem/unit_transport.mlog");
 
-    let lexer: Lexer<Statement> = parser::Lexer::new(SRC);
+    let lexer: Lexer<Statement> = Lexer::new(SRC);
     let _ = lexer.map(|x| x.unwrap()).collect::<Vec<_>>();
 }

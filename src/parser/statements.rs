@@ -236,9 +236,9 @@ macro_rules! gen_statements {
             )*
         ---
     } => {mod thing {
-        use crate::parser::instructions::Argument;
+        use crate::parser::args::Argument;
+        use crate::parser::args::ConditionOp;
         use crate::parser::errs::StatementParseError;
-        use crate::parser::instructions::ConditionOp;
         use crate::parser::statements::StatementType;
 
         gen_enum!{
@@ -580,7 +580,7 @@ gen_statements! {
 
         EffectDrill:          "effect" "drill"    (oi: x, y, colour ->)
         EffectDrillBig:       "effect" "drillBig" (oi: x, y, colour ->)
-        
+
         EffectExplosion:      "effect" "explosion"      (oi: x, y, size ->)
         EffectSparkExplosion: "effect" "sparkExplosion" (oi: x, y, colour ->)
         EffectCrossExplosion: "effect" "crossExplosion" (oi: x, y, colour, size ->)
@@ -595,6 +595,5 @@ gen_statements! {
         CutscenePan:  "cutscene" "pan"  (oi: x, y, speed ->)
     ---
 }
-
 
 pub use thing::{Statement, WprocStatement};

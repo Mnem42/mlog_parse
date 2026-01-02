@@ -5,7 +5,17 @@ use std::str::FromStr;
 use std::sync::LazyLock;
 use strum::EnumString;
 
-use super::parse_nradix_literal;
+/// Parse a literal with a prefix (e.g. 0x05) with a given radix.
+fn parse_nradix_literal(text: &str, radix: u32) -> i64 {
+    let mut chars = text.chars();
+
+    match chars.next().unwrap() {
+        sign @ ('+' | '-') => {
+            i64::from_str_radix(&text[3..], radix).unwrap() * if sign == '-' { -1 } else { 1 }
+        }
+        _ => i64::from_str_radix(&text[2..], radix).unwrap(),
+    }
+}
 
 /// An argument
 #[derive(Debug, PartialEq)]
