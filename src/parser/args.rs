@@ -18,7 +18,8 @@ fn parse_nradix_literal(text: &str, radix: u32) -> i64 {
 }
 
 /// An argument
-#[derive(Debug, PartialEq)]
+#[derive(Debug, PartialEq, Copy, Clone, PartialOrd)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub enum Argument<'a> {
     /// A numeric argument
     Number(f64),
@@ -33,8 +34,9 @@ pub enum Argument<'a> {
     GlobalConst(&'a str),
 }
 
-#[derive(Debug, PartialEq, Eq, PartialOrd, Ord)]
-/// A color
+/// A colour
+#[derive(Debug, PartialEq, Eq, PartialOrd, Clone, Copy, Ord)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct Rgba {
     /// Red
     pub r: u8,
@@ -93,7 +95,8 @@ impl FromStr for Rgba {
 }
 
 /// A conditional. [reference](https://github.com/Anuken/Mindustry/blob/master/core/src/mindustry/logic/ConditionOp.java)
-#[derive(Debug, PartialEq, Eq, EnumString)]
+#[derive(Debug, PartialEq, Eq, EnumString, Clone, Copy)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub enum ConditionOp {
     /// Equality (==)
     #[strum(serialize = "equal")]

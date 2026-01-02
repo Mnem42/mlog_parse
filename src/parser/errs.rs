@@ -1,6 +1,6 @@
 use std::{error::Error, fmt};
 
-/// An error when parsing a statement
+/// An error found when parsing a statement
 #[derive(Debug)]
 pub enum StatementParseError<'s> {
     /// Missing jump label

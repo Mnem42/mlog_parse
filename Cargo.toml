@@ -8,12 +8,23 @@ readme = "README.md"
 version = "0.1.0"
 edition = "2024"
 
+[features]
+default = []
+serde = ["dep:serde"]
+
 [dependencies]
 regex = "1.12.2"
+
+[dependencies.serde]
+version = "1.0.228"
+features = ["derive"]
+optional = true
+
 
 [dependencies.strum]
 version = "0.27.2"
 features = ["derive"]
+
 
 [dev-dependencies]
 pretty_assertions = "1.4.1"
