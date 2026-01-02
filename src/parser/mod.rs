@@ -44,18 +44,20 @@ impl<'a, T: StatementType<'a>> Lexer<'a, T> {
                 let mut vec = vec!["op", "b-and"];
                 vec.extend(rest);
                 vec
-            },
+            }
             ["op", "lor", rest @ ..] => {
                 let mut vec = vec!["op", "or"];
                 vec.extend(rest);
                 vec
-            },
+            }
             ["op", "not", rest @ ..] => {
                 let mut vec = vec!["op", "flip"];
                 vec.extend(rest);
                 vec
-            },
-            ["noop", ..] => { vec!["nop"] }
+            }
+            ["noop", ..] => {
+                vec!["nop"]
+            }
             x => x.into(),
         }
     }

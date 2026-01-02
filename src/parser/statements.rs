@@ -110,9 +110,9 @@ macro_rules! impl_statement {
     ) => {
         impl<'a> $enum<'a> {
             /// Gets the number of operands that can be passed to a statement.
-            /// 
+            ///
             /// # Panics
-            /// 
+            ///
             /// This function panics if a jump or select statement that is less than 3 items long is
             /// passed in that has less than 3 elements. This isn't validated since it couldn't
             /// possibly be matched.
@@ -469,9 +469,9 @@ gen_statements! {
 
     wproc:
         GetBlock:     "getblock"         (oi: x, y -> result)
-        SetBOre:      "setblock" "ore"   (oi: x, y, to ->)   
-        SetBFloor:    "setblock" "floor" (oi: x, y, to ->)   
-        SetBBlock:    "setblock" "block" (oi: x, y, to, team, rotation ->)     
+        SetBOre:      "setblock" "ore"   (oi: x, y, to ->)
+        SetBFloor:    "setblock" "floor" (oi: x, y, to ->)
+        SetBBlock:    "setblock" "block" (oi: x, y, to, team, rotation ->)
         SetProp:      "setprop"          (oi: prop, block, amount ->)
         ShowMessage:  "message"          (oi: msg_type, duration, success ->)
         WeatherSense: "weathersense"     (oi: weather -> result)
@@ -481,21 +481,21 @@ gen_statements! {
         ApplyStatus:  "status"       (oi: _padding, wet, unit, duration ->)
         SpawnWave:    "spawnwave"    (oi: natural, x, y ->)
 
-        SetRCurrentWaveTime:      "setrule" "currentWaveTime"      (oi: v ->) 
-        SetRWaveTimer:            "setrule" "waveTimer"            (oi: v ->) 
-        SetRWaves:                "setrule" "waves"                (oi: v ->) 
-        SetRWave:                 "setrule" "wave"                 (oi: v ->) 
-        SetRWaveSpacing:          "setrule" "waveSpacing"          (oi: v ->) 
-        SetRWaveSending:          "setrule" "waveSending"          (oi: v ->) 
-        SetRAttackMode:           "setrule" "attackMode"           (oi: v ->) 
-        SetREnemyCoreBuildRadius: "setrule" "enemyCoreBuildRadius" (oi: v ->) 
-        SetRDropZoneRadius:       "setrule" "dropZoneRadius"       (oi: v ->) 
+        SetRCurrentWaveTime:      "setrule" "currentWaveTime"      (oi: v ->)
+        SetRWaveTimer:            "setrule" "waveTimer"            (oi: v ->)
+        SetRWaves:                "setrule" "waves"                (oi: v ->)
+        SetRWave:                 "setrule" "wave"                 (oi: v ->)
+        SetRWaveSpacing:          "setrule" "waveSpacing"          (oi: v ->)
+        SetRWaveSending:          "setrule" "waveSending"          (oi: v ->)
+        SetRAttackMode:           "setrule" "attackMode"           (oi: v ->)
+        SetREnemyCoreBuildRadius: "setrule" "enemyCoreBuildRadius" (oi: v ->)
+        SetRDropZoneRadius:       "setrule" "dropZoneRadius"       (oi: v ->)
         SetRUnitCap:              "setrule" "unitCap"              (oi: v ->)
         SetRLighting:             "setrule" "lighting"             (oi: v ->)
         SetRCanGameOver:          "setrule" "canGameOver"          (oi: v ->)
-        SetRAmbientLight:         "setrule" "ambientLight"         (oi: v ->) 
-        SetRSolarMultiplier:      "setrule" "solarMultiplier"      (oi: multiplier ->) 
-        SetRDragMultiplier:       "setrule" "dragMultiplier"       (oi: multiplier ->) 
+        SetRAmbientLight:         "setrule" "ambientLight"         (oi: v ->)
+        SetRSolarMultiplier:      "setrule" "solarMultiplier"      (oi: multiplier ->)
+        SetRDragMultiplier:       "setrule" "dragMultiplier"       (oi: multiplier ->)
         SetRBan:                  "setrule" "ban"                  (oi: index ->)
         SetRUnban:                "setrule" "unban"                (oi: index ->)
 
@@ -513,10 +513,6 @@ gen_statements! {
 
         EffectWarn:        "effect" "warn"            (oi: x, y ->)
         EffectCross:       "effect" "cross"           (oi: x, y ->)
-        EffectBlockFall:   "effect" "blockFall"       (oi: x, y, data ->)
-        EffectPlaceBlock:  "effect" "placeBlock"      (oi: x, y, size ->)
-        EffectPlaceBlockS: "effect" "placeBlockSpark" (oi: x, y, size ->)
-        EffectBreakBlock:  "effect" "breakBlock"      (oi: x, y, size ->)
         EffectSpawn:       "effect" "spawn"           (oi: x, y ->)
         EffectTrail:       "effect" "trail"           (oi: x, y, colour, size ->)
         EffectBreakProp:   "effect" "breakProp"       (oi: x, y, colour, size ->)
@@ -524,8 +520,36 @@ gen_statements! {
         EffectVapour:      "effect" "vapor"           (oi: x, y, colour ->)
         EffectHit:         "effect" "hit"             (oi: x, y, colour ->)
         EffectHitSquare:   "effect" "hitSquare"       (oi: x, y, colour ->)
-        EffectShoot:       "effect" "shoot"           (oi: x, y, colour, rotation ->)
+        EffectWave:        "effect" "wave"            (oi: x, y, colour, size ->)
+        EffectBubble:      "effect" "bubble"          (oi: x, y ->)
+        EffectSmokePuff:   "effect" "smokePuff"       (oi: x, y, colour ->)
+
+        EffectBlockFall:   "effect" "blockFall"       (oi: x, y, data ->)
+        EffectPlaceBlock:  "effect" "placeBlock"      (oi: x, y, size ->)
+        EffectPlaceBlockS: "effect" "placeBlockSpark" (oi: x, y, size ->)
+        EffectBreakBlock:  "effect" "breakBlock"      (oi: x, y, size ->)
+        EffectLightBlock:  "effect" "lightBlock"      (oi: x, y, colour, size ->)
+
+        EffectShootBig:    "effect" "shootBig"        (oi: x, y, colour, rotation ->)
         EffectShootSmall:  "effect" "shootSmall"      (oi: x, y, colour, rotation ->)
+
+        EffectSmokeSmall:     "effect" "smokeSmall"      (oi: x, y, rotation ->)
+        EffectSmokeBig:       "effect" "smokeBig"        (oi: x, y, rotation ->)
+        EffectSmokeColour:    "effect" "smokeColor"      (oi: x, y, colour, rotation ->)
+        EffectSmokeSquare:    "effect" "smokeSquare"     (oi: x, y, colour, rotation ->)
+        EffectSmokeSquareBig: "effect" "smokeSquareBig"  (oi: x, y, colour, rotation ->)
+
+        EffectSpark:          "effect" "spark"           (oi: x, y, rotation ->)
+        EffectSparkBig:       "effect" "sparkBig"        (oi: x, y, rotation ->)
+        EffectSparkShoot:     "effect" "sparkShoot"      (oi: x, y, colour, rotation ->)
+        EffectSparkShootBig:  "effect" "sparkShootBig"   (oi: x, y, colour, rotation ->)
+
+        EffectDrill:          "effect" "drill"    (oi: x, y, colour ->)
+        EffectDrillBig:       "effect" "drillBig" (oi: x, y, colour ->)
+        
+        EffectExplosion:      "effect" "explosion"      (oi: x, y, size ->)
+        EffectSparkExplosion: "effect" "sparkExplosion" (oi: x, y, colour ->)
+        EffectCrossExplosion: "effect" "crossExplosion" (oi: x, y, colour, size ->)
 
         CutsceneStop: "cutscene" "stop" (oi: ->)
         CutsceneZoom: "cutscene" "zoom" (oi: level ->)

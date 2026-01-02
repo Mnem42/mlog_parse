@@ -10,6 +10,6 @@ fn sample_v7a() {
         .map(|x| x.unwrap().to_string())
         .collect::<Vec<String>>()
         .join("\n");
-    
+
     assert_eq!(SRC, statements)
 }
