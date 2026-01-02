@@ -521,6 +521,11 @@ gen_statements! {
         EffectTrail:       "effect" "trail"           (oi: x, y, colour, size ->)
         EffectBreakProp:   "effect" "breakProp"       (oi: x, y, colour, size ->)
         EffectSmokeCloud:  "effect" "smokeCloud"      (oi: x, y, colour ->)
+        EffectVapour:      "effect" "vapor"           (oi: x, y, colour ->)
+        EffectHit:         "effect" "hit"             (oi: x, y, colour ->)
+        EffectHitSquare:   "effect" "hitSquare"       (oi: x, y, colour ->)
+        EffectShoot:       "effect" "shoot"           (oi: x, y, colour, rotation ->)
+        EffectShootSmall:  "effect" "shootSmall"      (oi: x, y, colour, rotation ->)
 
         CutsceneStop: "cutscene" "stop" (oi: ->)
         CutsceneZoom: "cutscene" "zoom" (oi: level ->)
