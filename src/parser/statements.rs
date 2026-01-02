@@ -293,11 +293,6 @@ macro_rules! gen_statements {
                             gen_printer!($ty f ; $($name),* $($i),* -> $($o),*)
                         },
                     )*
-                    $(
-                        Self::$ident {$($i),* $(,$o)*} => {
-                            gen_printer!($ty f ; $($name),* $($i),* -> $($o),*)
-                        },
-                    )*
                 }
             }
         }
