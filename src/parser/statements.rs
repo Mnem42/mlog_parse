@@ -35,11 +35,12 @@ macro_rules! gen_match_result {
 
 macro_rules! gen_enum {
     (
-        $enum: ident
+        $enum:ident ($docs:literal)
         $($ident:ident $($i:ident),* -> $($o:ident),*);*
     ) => {
         /// A statement
         #[derive(Debug, PartialEq)]
+        #[doc = $docs]
         pub enum $enum<'a> {
             /// A jump statement
             Jump {
@@ -219,8 +220,8 @@ macro_rules! impl_statement {
 /// are *before* the outputs in the statement.
 macro_rules! gen_statements {
     {
-        normal_enum: $enum:ident
-        wproc_enum: $wproc_enum:ident
+        normal_enum: $enum:ident      $normal_docs:literal
+        wproc_enum: $wproc_enum:ident $wproc_docs:literal
         normal:
             $(
                 $ident:ident:
@@ -242,12 +243,12 @@ macro_rules! gen_statements {
         use crate::parser::statements::StatementType;
 
         gen_enum!{
-            $enum
+            $enum ($normal_docs)
             $($ident $($i),* -> $($o),*);*
         }
 
         gen_enum!{
-            $wproc_enum
+            $wproc_enum ($wproc_docs)
             $($ident $($i),* -> $($o),*);*;
             $($wp_ident $($wp_i),* -> $($wp_o),*);*
         }
@@ -342,8 +343,8 @@ pub trait StatementType<'a>: Display + Sized {
 }
 
 gen_statements! {
-    normal_enum: Statement
-    wproc_enum:  WprocStatement
+    normal_enum: Statement      "A statement for a normal logic processor."
+    wproc_enum:  WprocStatement "A statement for a world processor."
 
     normal:
         Noop: "nop"  (io: ->)
