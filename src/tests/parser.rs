@@ -83,8 +83,10 @@ fn ops_with_jump() {
             jump 2 greaterThan a 2
             nop
             op add a 12 -0x05
-            op sub b -0b01 5
-            op mul c  0x08 a
+            jl2:
+                op sub b -0b01 0b101
+                op mul a  0x08 a
+            jump jl2 lessThan a 71
             op div d b 0b1001010
             op div d %abcdef %01234567
         jump jl1 always
@@ -113,9 +115,15 @@ fn ops_with_jump() {
                 b: Argument::Number(5.0)
             },
             Statement::OpMul {
-                c: "c",
+                c: "a",
                 a: Argument::Number(8.0),
                 b: Argument::Variable("a")
+            },
+            Statement::Jump {
+                index: 4,
+                cond: ConditionOp::LessThan,
+                lhs: Some(Argument::Variable("a")),
+                rhs: Some(Argument::Number(71.))
             },
             Statement::OpDiv {
                 c: "d",
