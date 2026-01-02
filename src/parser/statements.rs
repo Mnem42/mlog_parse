@@ -329,6 +329,7 @@ gen_statements! {
         DrawLineRect: "draw" "lineRect" (io: x, y, w, h ->)
         DrawPoly:     "draw" "poly"     (io: x, y, w, h ->)
         DrawLinePoly: "draw" "linePoly" (io: x, y, w, h ->)
+        DrawLine:     "draw" "line"     (io: x, y, x2, y2 ->)
 
         DrawTri:   "draw" "triangle" (io: x1, y1, x2, y2, x3, y3 ->)
         DrawImage: "draw" "image"    (io: x, y, image, size, rot ->)

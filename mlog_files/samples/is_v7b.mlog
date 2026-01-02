@@ -1,0 +1,318 @@
+# From cardillan (https://discord.com/channels/391020510269669376/742769933926269069/1456568695340929066)
+
+noop
+read result processor1 name
+write value processor1 name
+draw clear r g b 0 0 0
+draw color r g b a 0 0
+draw col color 0 0 0 0 0
+draw stroke width 0 0 0 0 0
+draw line x y x2 y2 0 0
+draw rect x y width height 0 0
+draw lineRect x y width height 0 0
+draw poly x y sides radius rotation 0
+draw linePoly x y sides radius rotation 0
+draw triangle x y x2 y2 x3 y3
+draw image x y image size rotation 0
+draw print x y align 0 0 0
+draw translate x y 0 0 0 0
+draw scale x y 0 0 0 0
+draw rotate 0 0 degrees 0 0 0
+draw reset 0 0 0 0 0 0
+print what
+printchar value
+format value
+drawflush display1
+printflush message1
+getlink block linkNum
+control enabled block value 0 0 0
+control shoot block x y shoot 0
+control shootp block unit shoot 0 0
+control config block value 0 0 0
+control color block packedColor 0 0 0
+radar ally ally ally armor turret order result
+radar any any any distance turret order result
+radar attacker attacker attacker health turret order result
+radar boss boss boss maxHealth turret order result
+radar enemy enemy enemy shield turret order result
+radar flying flying flying armor turret order result
+radar ground ground ground distance turret order result
+radar player player player health turret order result
+sensor result object property
+set result value
+op add result a b
+op sub result a b
+op mul result a b
+op div result a b
+op idiv result a b
+op mod result a b
+op emod result a b
+op pow result a b
+op equal result a b
+op notEqual result a b
+op land result a b
+op lor result a b
+op lessThan result a b
+op lessThanEq result a b
+op greaterThan result a b
+op greaterThanEq result a b
+op strictEqual result a b
+op strictNotEqual result a b
+op shl result a b
+op shr result a b
+op ushr result a b
+op or result a b
+op and result a b
+op xor result a b
+op not result a 0
+op max result a b
+op min result a b
+op angle result a b
+op angleDiff result a b
+op len result a b
+op noise result a b
+op abs result a 0
+op sign result a 0
+op log result a 0
+op logn result a b
+op log10 result a 0
+op floor result a 0
+op ceil result a 0
+op round result a 0
+op sqrt result a 0
+op rand result a 0
+op sin result a 0
+op cos result a 0
+op tan result a 0
+op asin result a 0
+op acos result a 0
+op atan result a 0
+select result equal x y valueIfTrue ValueIfFalse
+select result lessThan x y valueIfTrue ValueIfFalse
+select result greaterThanEq x y valueIfTrue ValueIfFalse
+select result notEqual x y valueIfTrue ValueIfFalse
+select result lessThanEq x y valueIfTrue ValueIfFalse
+select result greaterThan x y valueIfTrue ValueIfFalse
+select result strictEqual x y valueIfTrue ValueIfFalse
+select result strictNotEqual x y valueIfTrue ValueIfFalse
+select result always valueIfTrue ValueIfFalse 0 0
+lookup block result index
+lookup item result index
+lookup liquid result index
+lookup team result index
+lookup unit result index
+packcolor result r g b a
+unpackcolor r g b a color
+wait sec
+stop
+end
+jump 0 equal x y
+jump 0 notEqual x y
+jump 0 lessThan x y
+jump 0 lessThanEq x y
+jump 0 greaterThan x y
+jump 0 greaterThanEq x y
+jump 0 strictEqual x y
+jump 0 strictNotEqual x y
+jump 0 always 0 0
+ubind type
+ucontrol idle 0 0 0 0 0
+ucontrol stop 0 0 0 0 0
+ucontrol move x y 0 0 0
+ucontrol approach x y radius 0 0
+ucontrol autoPathfind 0 0 0 0 0
+ucontrol pathfind x y 0 0 0
+ucontrol boost enable 0 0 0 0
+ucontrol target x y shoot 0 0
+ucontrol targetp unit shoot 0 0 0
+ucontrol itemDrop to amount 0 0 0
+ucontrol itemTake from item amount 0 0
+ucontrol payDrop 0 0 0 0 0
+ucontrol payTake takeUnits 0 0 0 0
+ucontrol payEnter 0 0 0 0 0
+ucontrol mine x y 0 0 0
+ucontrol flag value 0 0 0 0
+ucontrol build x y block rotation config
+ucontrol deconstruct x y 0 0 0
+ucontrol getBlock x y type building floor
+ucontrol within x y radius result 0
+ucontrol unbind 0 0 0 0 0
+uradar ally ally ally armor 0 order result
+uradar any any any distance 0 order result
+uradar attacker attacker attacker health 0 order result
+uradar boss boss boss maxHealth 0 order result
+uradar enemy enemy enemy shield 0 order result
+uradar flying flying flying armor 0 order result
+uradar ground ground ground distance 0 order result
+uradar player player player health 0 order result
+ulocate ore core true oreType outx outy found building
+ulocate building battery enemy @copper outx outy found building
+ulocate building core enemy @copper outx outy found building
+ulocate building drill enemy @copper outx outy found building
+ulocate building factory enemy @copper outx outy found building
+ulocate building generator enemy @copper outx outy found building
+ulocate building reactor enemy @copper outx outy found building
+ulocate building repair enemy @copper outx outy found building
+ulocate building shield enemy @copper outx outy found building
+ulocate building storage enemy @copper outx outy found building
+ulocate building turret enemy @copper outx outy found building
+ulocate spawn core true @copper outx outy found building
+ulocate damaged core true @copper outx outy found building
+getblock block result x y
+getblock building result x y
+getblock floor result x y
+getblock ore result x y
+setblock floor to x y 0 0
+setblock ore to x y 0 0
+setblock block to x y team rotation
+spawn unit x y rotation team result
+status false blasted unit duration
+status false boss unit duration
+status false burning unit duration
+status false corroded unit duration
+status false electrified unit duration
+status false freezing unit duration
+status false melting unit duration
+status false overclock unit duration
+status false overdrive unit duration
+status false sapped unit duration
+status false shocked unit duration
+status false spore-slowed unit duration
+status false tarred unit duration
+status false unmoving unit duration
+status false wet unit duration
+status true blasted unit 0
+status true boss unit 0
+status true burning unit 0
+status true corroded unit 0
+status true electrified unit 0
+status true freezing unit 0
+status true melting unit 0
+status true overclock unit 0
+status true overdrive unit 0
+status true sapped unit 0
+status true shocked unit 0
+status true spore-slowed unit 0
+status true tarred unit 0
+status true unmoving unit 0
+status true wet unit 0
+weathersense result weather
+weatherset weather active
+spawnwave x y natural
+setrule currentWaveTime value 0 0 0 0
+setrule waveTimer value 0 0 0 0
+setrule waves value 0 0 0 0
+setrule wave value 0 0 0 0
+setrule waveSpacing value 0 0 0 0
+setrule waveSending value 0 0 0 0
+setrule attackMode value 0 0 0 0
+setrule enemyCoreBuildRadius value 0 0 0 0
+setrule dropZoneRadius value 0 0 0 0
+setrule unitCap value 0 0 0 0
+setrule mapArea 0 x y width height
+setrule lighting value 0 0 0 0
+setrule canGameOver value 0 0 0 0
+setrule ambientLight value 0 0 0 0
+setrule solarMultiplier value 0 0 0 0
+setrule dragMultiplier value 0 0 0 0
+setrule ban value 0 0 0 0
+setrule unban value 0 0 0 0
+setrule buildSpeed value team 0 0 0
+setrule unitHealth value team 0 0 0
+setrule unitBuildSpeed value team 0 0 0
+setrule unitMineSpeed value team 0 0 0
+setrule unitCost value team 0 0 0
+setrule unitDamage value team 0 0 0
+setrule blockHealth value team 0 0 0
+setrule blockDamage value team 0 0 0
+setrule rtsMinWeight value team 0 0 0
+setrule rtsMinSquad value team 0 0 0
+message notify 0 success
+message mission 0 success
+message announce duration success
+message toast duration success
+cutscene pan x y speed 0
+cutscene zoom level 0 0 0
+cutscene stop 0 0 0 0
+effect warn x y 0 0 0
+effect cross x y 0 0 0
+effect blockFall x y 0 0 blocktype
+effect placeBlock x y size 0 0
+effect placeBlockSpark x y size 0 0
+effect breakBlock x y size 0 0
+effect spawn x y 0 0 0
+effect trail x y size color 0
+effect breakProp x y size color 0
+effect smokeCloud x y 0 color 0
+effect vapor x y 0 color 0
+effect hit x y 0 color 0
+effect hitSquare x y 0 color 0
+effect shootSmall x y rotation color 0
+effect shootBig x y rotation color 0
+effect smokeSmall x y 0 color 0
+effect smokeBig x y 0 color 0
+effect smokeColor x y rotation color 0
+effect smokeSquare x y rotation color 0
+effect smokeSquareBig x y rotation color 0
+effect spark x y 0 color 0
+effect sparkBig x y 0 color 0
+effect sparkShoot x y rotation color 0
+effect sparkShootBig x y rotation color 0
+effect drill x y 0 color 0
+effect drillBig x y 0 color 0
+effect lightBlock x y size color 0
+effect explosion x y size 0 0
+effect smokePuff x y 0 color 0
+effect sparkExplosion x y 0 color 0
+effect crossExplosion x y size color 0
+effect wave x y size color 0
+effect bubble x y 0 0 0
+explosion team x y radius damage air ground pierce effect
+setrate ipt
+fetch unitCount result team 0 type
+fetch playerCount result team 0 0
+fetch coreCount result team 0 0
+fetch buildCount result team 0 type
+fetch unit result team index type
+fetch player result team index 0
+fetch core result team index 0
+fetch build result team index type
+sync var
+getflag result flag
+setflag flag value
+setprop property object value
+playsound true sound volume pitch 0 x y limit
+playsound false sound volume pitch pan 0 0 limit
+setmarker remove id 0 0 0
+setmarker world id boolean 0 0
+setmarker minimap id boolean 0 0
+setmarker autoscale id boolean 0 0
+setmarker pos id x y 0
+setmarker endPos id x y 0
+setmarker drawLayer id layer 0 0
+setmarker color id color 0 0
+setmarker radius id radius 0 0
+setmarker stroke id stroke 0 0
+setmarker outline id outline 0 0
+setmarker rotation id rotation 0 0
+setmarker shape id sides fill outline
+setmarker arc id from to 0
+setmarker flushText id fetch 0 0
+setmarker fontSize id size 0 0
+setmarker textHeight id height 0 0
+setmarker textAlign id alignment 0 0
+setmarker lineAlign id alignment 0 0
+setmarker labelFlags id background outline 0
+setmarker texture id printFlush name 0
+setmarker textureSize id width height 0
+setmarker posi id index x y
+setmarker uvi id index x y
+setmarker colori id index color 0
+makemarker line id x y replace
+makemarker point id x y replace
+makemarker quad id x y replace
+makemarker shape id x y replace
+makemarker shapeText id x y replace
+makemarker text id x y replace
+makemarker texture id x y replace
+localeprint property
