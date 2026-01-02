@@ -1,5 +1,7 @@
 [package]
 name = "mlog_parse"
+description = "A parser for mindustry logic"
+repository = "https://github.com/Mnem42/mlog_parse"
 version = "0.1.0"
 edition = "2024"
 
