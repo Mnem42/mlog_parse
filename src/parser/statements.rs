@@ -1,3 +1,9 @@
+macro_rules! count_tts {
+    () => { 0 };
+    ($odd:tt $($a:tt $b:tt)*) => { (count_tts!($($a)*) << 1) | 1 };
+    ($($a:tt $even:tt)*) => { count_tts!($($a)*) << 1 };
+}
+
 macro_rules! gen_match_l {
     (
         oi
@@ -93,7 +99,7 @@ macro_rules! gen_printer {
     }};
 }
 
-macro_rules! impl_statement_parse {
+macro_rules! impl_statement {
     (
         $enum:ident
         $(
@@ -102,13 +108,38 @@ macro_rules! impl_statement_parse {
             ($ty:tt: $($i:ident),* -> $($o:ident),*)
         )*
     ) => {
+        impl<'a> $enum<'a> {
+            /// Gets the number of operands that can be passed to a statement.
+            /// 
+            /// # Panics
+            /// 
+            /// This function panics if a jump or select statement that is less than 3 items long is
+            /// passed in that has less than 3 elements. This isn't validated since it couldn't
+            /// possibly be matched.
+            fn operand_count(tokens: &[&'a str]) -> usize {
+                match tokens {
+                    // These are based on the longest possible invocation
+                    ["jump", ..]   => if tokens[2] == "always" { 3 } else { 5 },
+                    ["select", ..] => if tokens[2] == "always" { 5 } else { 7 },
+
+                    $(
+                        [$($name),*, ..] => { count_tts!($($name)* $($i:ident)* $($o:ident)*) }
+                    )*
+                    _ => 0
+                }
+            }
+        }
+
         impl<'a> StatementType<'a> for $enum<'a> {
             /// Parses a token
             fn try_parse(
                 tokens: &[&'a str],
                 jump_labels: &std::collections::HashMap<&'a str, usize>
             ) -> Result<Self, StatementParseError<'a>> {
-                match tokens {
+                let mut padded_tokens = tokens.to_vec();
+                padded_tokens.resize(Self::operand_count(tokens), "0");
+
+                match padded_tokens.as_slice() {
                     ["jump", index, cond_str, lhs, rhs, ..] if ConditionOp::try_from(*cond_str).is_ok() => {
                         if let Ok(index) = index.parse() {
                             Ok(Self::Jump {
@@ -222,7 +253,7 @@ macro_rules! gen_statements {
             $($wp_ident $($wp_i),* -> $($wp_o),*);*
         }
 
-        impl_statement_parse!{
+        impl_statement!{
             $enum
             $(
                 $ident:
@@ -230,7 +261,7 @@ macro_rules! gen_statements {
                 ($ty: $($i),* -> $($o),*)
             )*
         }
-        impl_statement_parse!{
+        impl_statement!{
             $wproc_enum
             $(
                 $ident:
@@ -274,6 +305,11 @@ macro_rules! gen_statements {
                             gen_printer!($ty f ; $($name),* $($i),* -> $($o),*)
                         },
                     )*
+                    $(
+                        Self::$wp_ident {$($wp_i),* $(,$wp_o)*} => {
+                            gen_printer!($wp_ty f ; $($wp_name),* $($wp_i),* -> $($wp_o),*)
+                        },
+                    )*
                     _ => unreachable!()
                 }
             }
@@ -306,8 +342,8 @@ gen_statements! {
         Wait: "wait" (io: time ->)
 
         GetLink: "getlink" (oi: index -> result)
-
-        Sensor: "sensor"   (oi: item -> result)
+        Radar:   "radar"   (io: m1, m2, m3, sort, block -> result)
+        Sensor:  "sensor"  (oi: item -> result)
 
         Read:  "read"  (oi: cell, index -> result)
         Write: "write" (io: value, cell, index ->)
@@ -407,6 +443,7 @@ gen_statements! {
 
         UBind:   "ubind"   (io: unit_type ->)
         ULocate: "ulocate" (io: find, group, enemy, outx, outy -> found, building)
+        URadar:  "uradar"  (io: m1, m2, m3, sort, block -> result)
 
         UCIdle:         "ucontrol" "idle"     (oi: ->)
         UCStop:         "ucontrol" "stop"     (oi: ->)
@@ -416,7 +453,7 @@ gen_statements! {
         UCBuild:        "ucontrol" "build"    (oi: x, y, block, rotation, config ->)
         UCMove:         "ucontrol" "move"         (oi: x, y ->)
         UCPathfind:     "ucontrol" "pathfind"     (oi: x, y ->)
-        UCAutoPathfind: "ucontrol" "autoPathFind" (oi: ->)
+        UCAutoPathfind: "ucontrol" "autoPathfind" (oi: ->)
         UCApproach:     "ucontrol" "approach"     (oi: x, y, radius ->)
         UCWithin:       "ucontrol" "within"       (oi: x, y, radius -> result)
         UCBoost:        "ucontrol" "boost"        (oi: boost ->)
@@ -431,12 +468,15 @@ gen_statements! {
     ---
 
     wproc:
-        GetBlock:     "getblock"     (oi: x, y -> result)
-        SetProp:      "setprop"      (oi: prop, block, amount ->)
-        FlushMessage: "message"      (oi: msg_type, duration, success ->)
-        WeatherSense: "weathersense" (oi: weather -> result)
-        WeatherSet:   "weatherset"   (oi: weather, state ->)
-        
+        GetBlock:     "getblock"         (oi: x, y -> result)
+        SetBOre:      "setblock" "ore"   (oi: x, y, to ->)   
+        SetBFloor:    "setblock" "floor" (oi: x, y, to ->)   
+        SetBBlock:    "setblock" "block" (oi: x, y, to, team, rotation ->)     
+        SetProp:      "setprop"          (oi: prop, block, amount ->)
+        ShowMessage:  "message"          (oi: msg_type, duration, success ->)
+        WeatherSense: "weathersense"     (oi: weather -> result)
+        WeatherSet:   "weatherset"       (oi: weather, state ->)
+
         SpawnUnit:    "spawn"        (io: unit_type, x, y, rotation, team -> result)
         ApplyStatus:  "status"       (oi: _padding, wet, unit, duration ->)
         SpawnWave:    "spawnwave"    (oi: natural, x, y ->)
@@ -470,6 +510,17 @@ gen_statements! {
         SetRRtsMinWeight:   "setrule" "rtsMinWeight"   (oi: team, v ->)
         SetRRtsMinSquad:    "setrule" "rtsMinSquad"    (oi: team, v ->)
         SetRMapArea:        "setrule" "mapArea"        (oi: x, y, w, h ->)
+
+        EffectWarn:        "effect" "warn"            (oi: x, y ->)
+        EffectCross:       "effect" "cross"           (oi: x, y ->)
+        EffectBlockFall:   "effect" "blockFall"       (oi: x, y, data ->)
+        EffectPlaceBlock:  "effect" "placeBlock"      (oi: x, y, size ->)
+        EffectPlaceBlockS: "effect" "placeBlockSpark" (oi: x, y, size ->)
+        EffectBreakBlock:  "effect" "breakBlock"      (oi: x, y, size ->)
+        EffectSpawn:       "effect" "spawn"           (oi: x, y ->)
+        EffectTrail:       "effect" "trail"           (oi: x, y, colour, size ->)
+        EffectBreakProp:   "effect" "breakProp"       (oi: x, y, colour, size ->)
+        EffectSmokeCloud:  "effect" "smokeCloud"      (oi: x, y, colour ->)
 
         CutsceneStop: "cutscene" "stop" (oi: ->)
         CutsceneZoom: "cutscene" "zoom" (oi: level ->)
