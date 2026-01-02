@@ -121,7 +121,6 @@ macro_rules! impl_statement {
                     // These are based on the longest possible invocation
                     ["jump", ..]   => if tokens[2] == "always" { 3 } else { 5 },
                     ["select", ..] => if tokens[2] == "always" { 5 } else { 7 },
-
                     $(
                         [$($name),*, ..] => { count_tts!($($name)* $($i:ident)* $($o:ident)*) }
                     )*
@@ -472,10 +471,26 @@ gen_statements! {
         SetBOre:      "setblock" "ore"   (oi: x, y, to ->)
         SetBFloor:    "setblock" "floor" (oi: x, y, to ->)
         SetBBlock:    "setblock" "block" (oi: x, y, to, team, rotation ->)
-        SetProp:      "setprop"          (oi: prop, block, amount ->)
+        SetProp:      "setprop"          (oi: prop, block, value ->)
         ShowMessage:  "message"          (oi: msg_type, duration, success ->)
         WeatherSense: "weathersense"     (oi: weather -> result)
         WeatherSet:   "weatherset"       (oi: weather, state ->)
+        SetRate:      "setrate"          (oi: rate ->)
+        Sync:         "sync"             (oi: var ->)
+        GetFlag:      "getflag"          (oi: flag -> value)
+        SetFlag:      "setflag"          (oi: value -> flag)
+
+        FetchUnit:        "fetch" "unit"        (oi: team, number, unit -> result)
+        FetchUnitCount:   "fetch" "unitCount"   (oi: team, unit -> result)
+        FetchPlayer:      "fetch" "player"      (oi: team, number -> result)
+        FetchPlayerCount: "fetch" "playerCount" (oi: team -> result)
+        FetchCore:        "fetch" "core"        (oi: team, number -> result)
+        FetchCoreCount:   "fetch" "coreCount"   (oi: team -> result)
+        FetchBuildCount:  "fetch" "buildCount"  (oi: team, block -> result)
+
+        PlaySoundPositional: "playsound" "false" (oi: sound, volume, pitch, x, y, _1, limit ->)
+        PlaySoundGlobal:     "playsound" "true"  (oi: sound, volume, pitch, _1, _2, pan, limit ->)
+        Explosion:           "explosion" (oi: team, x, y, radius, damage, air, ground, pierce, effect ->)
 
         SpawnUnit:    "spawn"        (io: unit_type, x, y, rotation, team -> result)
         ApplyStatus:  "status"       (oi: _padding, wet, unit, duration ->)
@@ -556,5 +571,6 @@ gen_statements! {
         CutscenePan:  "cutscene" "pan"  (oi: x, y, speed ->)
     ---
 }
+
 
 pub use thing::{Statement, WprocStatement};
