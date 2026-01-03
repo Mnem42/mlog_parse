@@ -8,11 +8,11 @@ mod num_parse;
 #[cfg(test)]
 mod test;
 
+use num_parse::parse_nradix_literal;
 use regex::RegexSet;
 use std::fmt;
 use std::sync::LazyLock;
 use strum::EnumString;
-use num_parse::parse_nradix_literal;
 
 pub use colour::Rgba;
 
@@ -66,10 +66,12 @@ impl<'s> From<&'s str> for Argument<'s> {
             _ if matches.matched(0) => Argument::String(&value[1..value.len() - 1]),
             _ if matches.matched(1) => Argument::Colour(Rgba::from_hex_literal_unchecked(value)),
             _ if matches.matched(2) => {
-                if let Some(colour) = Rgba::from_named_literal_unchecked(value)
-                    { Argument::Colour(colour) } 
-                else { Argument::Variable(value) }
-            },
+                if let Some(colour) = Rgba::from_named_literal_unchecked(value) {
+                    Argument::Colour(colour)
+                } else {
+                    Argument::Variable(value)
+                }
+            }
             _ if matches.matched(3) => Argument::GlobalConst(&value[1..]),
             _ if matches.matched(4) => {
                 let first = value.as_bytes().first().copied().unwrap_or_default();

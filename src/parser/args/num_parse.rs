@@ -17,8 +17,8 @@ pub(super) fn parse_hex_arcoid(text: &str) -> i64 {
     let mut total = 0i64;
 
     for (i, char) in text.chars().enumerate() {
-        total += i64::from_str_radix(&char.to_string(), 16).unwrap_or(-1)
-            * if i == 0 { 16 } else { 1 }
+        total +=
+            i64::from_str_radix(&char.to_string(), 16).unwrap_or(-1) * if i == 0 { 16 } else { 1 }
     }
 
     total
