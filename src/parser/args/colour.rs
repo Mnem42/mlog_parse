@@ -51,7 +51,7 @@ static COLOURS: LazyLock<HashMap<&str, Rgba>> = LazyLock::new(|| {
 // the input is valid
 
 /// An error from parsing a colour, created by the [`FromStr`] implementation
-#[derive(Debug, Error)]
+#[derive(Debug, Error, PartialEq)]
 pub enum ColourParseError {
     /// An invalid named colour
     #[error("The colour name {0} is invalid")]
