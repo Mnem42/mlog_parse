@@ -108,9 +108,9 @@ impl FromStr for Rgba {
     fn from_str(s: &str) -> Result<Self, Self::Err> {
         // %[name] syntax
         if s.starts_with("%[") && s.ends_with("]") {
-            let colour_name = &s[1 .. s.len()-1];
+            let colour_name = &s[1 .. s.len()-1].to_lowercase();
 
-            if let Some(colour) = COLOURS.get(colour_name) {
+            if let Some(colour) = COLOURS.get(colour_name.as_str()) {
                 Ok(*colour)
             }
             else {
@@ -138,8 +138,8 @@ impl Rgba {
     /// # Panics
     /// On any problem, at all.
     pub(super) fn from_named_literal_unchecked(literal: &str) -> Option<Self>{
-        let colour_name = &literal[1 .. literal.len()-1];
-        COLOURS.get(colour_name).copied()
+        let colour_name = &literal[1 .. literal.len()-1].to_lowercase();
+        COLOURS.get(colour_name.as_str()).copied()
     }
 
     /// Parses a colour literal in the format %RRGGBB or %RRGGBBAA. Only use this if the literal
