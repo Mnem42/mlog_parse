@@ -51,8 +51,6 @@
 
 /// The module for parsing
 pub mod parser;
-/// Utility functions
-mod util;
 
 #[cfg(test)]
 mod tests;
