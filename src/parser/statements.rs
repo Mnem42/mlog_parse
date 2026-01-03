@@ -35,7 +35,6 @@ macro_rules! gen_enum {
         $enum:ident ($docs:literal)
         $($ident:ident $($i:ident),* -> $($o:ident),*);*
     ) => {
-        /// A statement
         #[derive(Debug, PartialEq, Clone)]
         #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
         #[doc = $docs]
