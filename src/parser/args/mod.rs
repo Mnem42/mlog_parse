@@ -1,7 +1,11 @@
 //! This module defines all things that can be passed in as arguments to a statement like colours,
 //! strings, and numbers.
 
+/// Provides the [`Rgba`] type for colours.
 pub mod colour;
+
+#[cfg(test)]
+mod test;
 
 use regex::RegexSet;
 use std::fmt;
