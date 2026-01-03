@@ -1,5 +1,7 @@
 //! A parser for mindustry logic.
 //! 
+//! **NOTE:** All minor version updates are breaking changes for now (the API isn't stabilised)
+//! 
 //! # Examples
 //! 
 //! ```
