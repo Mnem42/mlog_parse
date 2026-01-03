@@ -55,7 +55,8 @@ impl fmt::Display for Argument<'_> {
 static ARG_PATTERNS: LazyLock<RegexSet> = LazyLock::new(|| {
     RegexSet::new([
         "^\".*\"$",
-        "^[%@][0-9a-fA-F]{6}(?:[0-9a-fA-F]{2})?$",
+        "^%[0-9a-fA-F]{6}(?:[0-9a-fA-F]{2})?$",
+        "^%[.*]",
         "^@",
         r"^[+-]?\d+(?:\.\d+)?$",
         "^[+-]?0x[0-9a-fA-F]+$",
@@ -69,9 +70,14 @@ impl<'s> From<&'s str> for Argument<'s> {
         let matches = ARG_PATTERNS.matches(value);
         match () {
             _ if matches.matched(0) => Argument::String(&value[1..value.len() - 1]),
-            _ if matches.matched(1) => Argument::Colour(value[1..].parse().unwrap()),
-            _ if matches.matched(2) => Argument::GlobalConst(&value[1..]),
-            _ if matches.matched(3) => {
+            _ if matches.matched(1) => Argument::Colour(Rgba::from_hex_literal_unchecked(value)),
+            _ if matches.matched(2) => {
+                if let Some(colour) = Rgba::from_named_literal_unchecked(value)
+                    { Argument::Colour(colour) } 
+                else { Argument::Variable(value) }
+            },
+            _ if matches.matched(3) => Argument::GlobalConst(&value[1..]),
+            _ if matches.matched(4) => {
                 let first = value.as_bytes().first().copied().unwrap_or_default();
                 let value = matches!(first, b'-' | b'+')
                     .then(|| &value[1..])
@@ -80,8 +86,8 @@ impl<'s> From<&'s str> for Argument<'s> {
                     value.parse::<f64>().unwrap() * if first == b'-' { -1. } else { 1. },
                 )
             }
-            _ if matches.matched(4) => Argument::Number(parse_nradix_literal(value, 16) as f64),
-            _ if matches.matched(5) => Argument::Number(parse_nradix_literal(value, 2) as f64),
+            _ if matches.matched(5) => Argument::Number(parse_nradix_literal(value, 16) as f64),
+            _ if matches.matched(6) => Argument::Number(parse_nradix_literal(value, 2) as f64),
             _ => Argument::Variable(value),
         }
     }
