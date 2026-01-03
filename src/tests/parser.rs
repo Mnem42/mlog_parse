@@ -1,3 +1,4 @@
+use crate::parser::{self, statements};
 use crate::parser::args::{Argument, ConditionOp, Rgba};
 use crate::parser::lexer::Lexer;
 use crate::parser::statements::Statement;
@@ -120,7 +121,7 @@ fn ops_with_jump() {
                 b: Argument::Variable("a")
             },
             Statement::Jump {
-                index: 4,
+                index: 3,
                 cond: ConditionOp::LessThan,
                 lhs: Some(Argument::Variable("a")),
                 rhs: Some(Argument::Number(71.))
@@ -155,48 +156,99 @@ fn ops_with_jump() {
     )
 }
 
-/*
-#[test]
-fn all_opwidths() {
-    const SRC: &str = r#"
-        nop
-        draw col %123456AF
-        draw translate 5 5
 
-        set a 1
-        op add b a 2
+#[test]
+fn errs() {
+    const SRC: &str = r#"
+        # Something
+        
+        jl1:
+            jump 2 greaterThan a 2
+            nop
+            op add a 12 -0x05
+            jl2:
+                op sub b -0b01 0b101
+                op mul a  0x08 a
+            jump jl2 lessThan a 71
+            op dv d b 0b1001010
+            op div d %abcdef %01234567
+        jump jlbl1 always
     "#;
 
-    let lexer = parser::Lexer::new(SRC);
+    let lexer: Lexer<Statement> = Lexer::new(SRC);
+
     assert_eq!(
-        lexer.map(|x| x.unwrap()).collect::<Vec<_>>(),
+        lexer.collect::<Vec<_>>(),
         [
-            Statement::Noop {},
-            Statement::DrawCol {
-                arg: Argument::Colour(Rgba {
-                    r: 18,
-                    g: 52,
-                    b: 86,
-                    a: 175
-                }),
-            },
-            Statement::DrawTranslate {
-                a: Argument::Number(5.0),
-                b: Argument::Number(5.0)
-            },
-            Statement::Set {
-                o: "a",
-                i: Argument::Number(1.0),
-            },
-            Statement::OpAdd {
+            Ok(Statement::Jump {
+                index: 2,
+                cond: ConditionOp::GreaterThan,
+                lhs: Some(Argument::Variable("a")),
+                rhs: Some(Argument::Number(2.0)),
+            }),
+            Ok(Statement::Noop {}),
+            Ok(Statement::OpAdd {
+                c: "a",
+                a: Argument::Number(12.0),
+                b: Argument::Number(-5.0)
+            }),
+            Ok(Statement::OpSub {
                 c: "b",
-                a: Argument::Variable("a"),
-                b: Argument::Number(2.0),
-            },
+                a: Argument::Number(-1.0),
+                b: Argument::Number(5.0)
+            }),
+            Ok(Statement::OpMul {
+                c: "a",
+                a: Argument::Number(8.0),
+                b: Argument::Variable("a")
+            }),
+            Ok(Statement::Jump {
+                index: 3,
+                cond: ConditionOp::LessThan,
+                lhs: Some(Argument::Variable("a")),
+                rhs: Some(Argument::Number(71.))
+            }),
+            Err(
+                parser::ParseError::Statement {
+                    line: 11,
+                    error: statements::ParseError::InvalidInstruction(
+                        vec![
+                            "op",
+                            "dv",
+                            "d",
+                            "b",
+                            "0b1001010",
+                        ]
+                    )
+                }
+            ),
+            Ok(Statement::OpDiv {
+                c: "d",
+                a: Argument::Colour(Rgba {
+                    r: 171,
+                    g: 205,
+                    b: 239,
+                    a: 255
+                }),
+                b: Argument::Colour(Rgba {
+                    r: 1,
+                    g: 35,
+                    b: 69,
+                    a: 103
+                })
+            }),
+            Err(
+                parser::ParseError::Statement {
+                    line: 13,
+                    error: parser::StatementParseErr::MissingJumpLabel(
+                        "jlbl1",
+                   ),
+               }
+            )
         ]
     )
 }
-*/
+
 
 #[test]
 fn display() {

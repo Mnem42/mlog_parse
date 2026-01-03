@@ -138,7 +138,7 @@ macro_rules! impl_statement {
             fn try_parse(
                 tokens: &[&'a str],
                 jump_labels: &std::collections::HashMap<&'a str, usize>
-            ) -> Result<Self, StatementParseError<'a>> {
+            ) -> Result<Self, super::ParseError<'a>> {
                 let mut padded_tokens = tokens.to_vec();
                 padded_tokens.resize(Self::operand_count(tokens), "0");
 
@@ -156,7 +156,7 @@ macro_rules! impl_statement {
                             Ok(Self::Jump {
                                 index: jump_labels
                                     .get(*index)
-                                    .ok_or(StatementParseError::MissingJumpLabel(index))?
+                                    .ok_or(super::ParseError::MissingJumpLabel(index))?
                                     .clone(),
                                 cond: ConditionOp::try_from(*cond_str).unwrap(),
                                 lhs: Some(Argument::from(*lhs)),
@@ -177,7 +177,7 @@ macro_rules! impl_statement {
                             Ok(Self::Jump {
                                 index: jump_labels
                                     .get(*index)
-                                    .ok_or(StatementParseError::MissingJumpLabel(index))?
+                                    .ok_or(super::ParseError::MissingJumpLabel(index))?
                                     .clone(),
                                 cond: ConditionOp::Always,
                                 lhs: None,
@@ -210,7 +210,7 @@ macro_rules! impl_statement {
                             /*if gen_match_guard!($($o)*)*/
                         => Ok(gen_match_result!($enum $ident $($i),* -> $($o),*)),
                     )*
-                    _ => Err(StatementParseError::InvalidInstruction(tokens.to_vec()))
+                    _ => Err(super::ParseError::InvalidInstruction(tokens.to_vec()))
                 }
             }
         }
@@ -242,7 +242,6 @@ macro_rules! gen_statements {
     } => {mod thing {
         use crate::parser::args::Argument;
         use crate::parser::args::ConditionOp;
-        use crate::parser::errs::StatementParseError;
         use crate::parser::statements::StatementType;
 
         gen_enum!{
@@ -331,10 +330,17 @@ macro_rules! gen_statements {
         }
     }
 }}
-
-use crate::parser::errs::StatementParseError;
 use std::collections::HashMap;
 use std::fmt::Display;
+
+/// An error found when parsing a statement
+#[derive(Debug, PartialEq)]
+pub enum ParseError<'s> {
+    /// Missing jump label
+    MissingJumpLabel(&'s str),
+    /// Invalid instruction
+    InvalidInstruction(Vec<&'s str>),
+}
 
 /// Trait for anything that can be used as a statement
 pub trait StatementType<'a>: Display + Sized {
@@ -342,7 +348,7 @@ pub trait StatementType<'a>: Display + Sized {
     fn try_parse(
         tokens: &[&'a str],
         jump_labels: &HashMap<&'a str, usize>,
-    ) -> Result<Self, StatementParseError<'a>>;
+    ) -> Result<Self, ParseError<'a>>;
 }
 
 gen_statements! {

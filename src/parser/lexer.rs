@@ -1,4 +1,4 @@
-use crate::parser::{errs::StatementParseError, statements::StatementType};
+use crate::parser::{errs::ParseError, statements::StatementType};
 use regex::Regex;
 use std::{collections::HashMap, marker::PhantomData, sync::LazyLock};
 
@@ -49,6 +49,7 @@ use std::{collections::HashMap, marker::PhantomData, sync::LazyLock};
 /// # }
 /// ```
 pub struct Lexer<'a, T: StatementType<'a>> {
+    /// (line number, line)
     lines: Vec<(usize, &'a str)>,
     jump_labels: HashMap<&'a str, usize>,
     index: usize,
@@ -90,17 +91,22 @@ impl<'a, T: StatementType<'a>> Lexer<'a, T> {
     pub fn new(str: &'a str) -> Self {
         let mut lines = Vec::new();
         let mut jump_labels = HashMap::new();
-        for (idx, line) in str
+        let mut statement_index = 0usize;
+
+        for (line_num, line) in str
             .lines()
             .enumerate()
             .filter(|(_, x)| x.contains(|x: char| !x.is_whitespace()))
         {
-            if COMMENT_REGEX.is_match(line) {
-            } else if JUMPLABEL_REGEX.is_match(line) {
-                jump_labels.insert(line.trim().strip_suffix(":").unwrap(), idx - 1);
+            if COMMENT_REGEX.is_match(line) {} 
+            else if JUMPLABEL_REGEX.is_match(line) {
+                jump_labels.insert(line.trim().strip_suffix(":").unwrap(), statement_index);
             } else {
-                lines.push((idx, line));
+                lines.push((line_num, line));
+                statement_index += 1;
             }
+
+            
         }
 
         Self {
@@ -113,14 +119,17 @@ impl<'a, T: StatementType<'a>> Lexer<'a, T> {
 }
 
 impl<'a, T: StatementType<'a>> Iterator for Lexer<'a, T> {
-    type Item = Result<T, StatementParseError<'a>>;
+    type Item = Result<T, ParseError<'a>>;
 
     fn next(&mut self) -> Option<Self::Item> {
-        let (_, line) = self.lines.get(self.index)?;
+        let (line_num, line) = self.lines.get(self.index)?;
         let split: Vec<_> = line.split_whitespace().collect();
 
         self.index += 1;
 
-        Some(T::try_parse(&Self::do_renaming(&split), &self.jump_labels))
+        Some(
+            T::try_parse(&Self::do_renaming(&split), &self.jump_labels)
+                .map_err(|e| ParseError::Statement { line: *line_num, error: e })
+        )
     }
 }

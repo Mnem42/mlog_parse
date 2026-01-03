@@ -7,3 +7,8 @@ pub mod statements;
 
 /// The lexer.
 pub mod lexer;
+
+pub use statements::Statement;
+pub use lexer::Lexer;
+pub use errs::ParseError;
+pub use statements::ParseError as StatementParseErr;
