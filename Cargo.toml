@@ -3,9 +3,9 @@ name = "mlog_parse"
 description = "A parser for mindustry logic"
 repository = "https://github.com/Mnem42/mlog_parse"
 keywords = ["mindustry", "logic", "parser"]
-license-file = "LICENSE"
+license = "MIT"
 readme = "README.md"
-version = "0.1.0"
+version = "0.1.1"
 edition = "2024"
 
 [features]
