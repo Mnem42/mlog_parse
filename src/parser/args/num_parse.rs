@@ -12,7 +12,7 @@ pub(super) fn parse_nradix_literal(text: &str, radix: u32) -> i64 {
     }
 }
 
-/// Arc does it in a mildly cursed way for colour literals (which this replicates)
+/// Arc parses hex values in a mildly cursed way for colour literals (which this replicates)
 pub(super) fn parse_hex_arcoid(text: &str) -> i64 {
     let mut total = 0i64;
 
