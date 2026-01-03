@@ -1,6 +1,8 @@
 use std::{collections::HashMap, fmt::{self, Display, Write}, num::ParseIntError, str::FromStr, sync::LazyLock};
 use thiserror::Error;
 
+use crate::parser::args::num_parse::{parse_hex_arcoid};
+
 static COLOURS: LazyLock<HashMap<&str, Rgba>> = LazyLock::new(|| {
     HashMap::from([
         ("white",     Rgba { r: 0xFF, g: 0xFF, b: 0xFF, a: 0xFF }),
@@ -153,7 +155,8 @@ impl Rgba {
                 let Some(Some(channel)) = channels.next() else {
                     return u8::from_str_radix("", 16);
                 };
-                u8::from_str_radix(channel, 16)
+
+                Ok(parse_hex_arcoid(channel) as u8)
             };
             let mut color = Self::default();
             let Self { r, g, b, a } = &mut color;
