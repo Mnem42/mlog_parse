@@ -49,7 +49,7 @@
 
 #![warn(missing_docs)]
 
-/// The main parser
+/// The module for parsing
 pub mod parser;
 /// Utility functions
 mod util;

@@ -1,3 +1,5 @@
+//! This module defines the [`Statement`] and [`WprocStatement`] types
+
 macro_rules! count_tts {
     () => { 0 };
     ($odd:tt $($a:tt $b:tt)*) => { (count_tts!($($a)*) << 1) | 1 };

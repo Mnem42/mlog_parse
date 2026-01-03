@@ -1,3 +1,5 @@
+//! This module implements error handling for the parser.
+
 use std::{error::Error, fmt};
 use crate::parser::statements;
 

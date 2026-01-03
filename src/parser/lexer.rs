@@ -1,3 +1,5 @@
+//! The "main" part of the parser. This handles parsing a file into statements.
+
 use crate::parser::{errs::ParseError, statements::StatementType};
 use regex::Regex;
 use std::{collections::HashMap, marker::PhantomData, sync::LazyLock};
