@@ -3,6 +3,7 @@
 
 /// Provides the [`Rgba`] type for colours.
 pub mod colour;
+mod num_parse;
 
 #[cfg(test)]
 mod test;
@@ -11,20 +12,9 @@ use regex::RegexSet;
 use std::fmt;
 use std::sync::LazyLock;
 use strum::EnumString;
+use num_parse::parse_nradix_literal;
 
 pub use colour::Rgba;
-
-/// Parses a literal with a prefix (e.g. 0x05) with a given radix..
-fn parse_nradix_literal(text: &str, radix: u32) -> i64 {
-    let mut chars = text.chars();
-
-    match chars.next().unwrap() {
-        sign @ ('+' | '-') => {
-            i64::from_str_radix(&text[3..], radix).unwrap() * if sign == '-' { -1 } else { 1 }
-        }
-        _ => i64::from_str_radix(&text[2..], radix).unwrap(),
-    }
-}
 
 /// An argument that can be passed into a statement
 #[derive(Debug, PartialEq, Copy, Clone, PartialOrd)]
