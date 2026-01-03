@@ -1,7 +1,7 @@
 //! This module implements error handling for the parser.
 
-use std::{error::Error, fmt};
 use crate::parser::statements;
+use std::{error::Error, fmt};
 
 /// An error found when parsing
 #[derive(Debug, PartialEq)]
@@ -11,8 +11,8 @@ pub enum ParseError<'s> {
         /// The line it occurred on (in the source)
         line: usize,
         /// The specific error that occurred
-        error: statements::ParseError<'s>
-    }
+        error: statements::ParseError<'s>,
+    },
 }
 
 impl fmt::Display for ParseError<'_> {
@@ -23,10 +23,13 @@ impl fmt::Display for ParseError<'_> {
             match self {
                 Self::Statement { line, error } => {
                     match error {
-                        statements::ParseError::MissingJumpLabel(x) => 
-                            format!("The jump label {x} is missing (used on line {line})"),
-                        statements::ParseError::InvalidInstruction(x) =>
-                            format!("The instruction \"{}\" is invalid  (line {line})", x.join(",")),
+                        statements::ParseError::MissingJumpLabel(x) => {
+                            format!("The jump label {x} is missing (used on line {line})")
+                        }
+                        statements::ParseError::InvalidInstruction(x) => format!(
+                            "The instruction \"{}\" is invalid  (line {line})",
+                            x.join(",")
+                        ),
                     }
                 }
             }

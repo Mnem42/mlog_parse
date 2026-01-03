@@ -1,7 +1,7 @@
-use crate::parser::{self, statements};
 use crate::parser::args::{Argument, ConditionOp, Rgba};
 use crate::parser::lexer::Lexer;
 use crate::parser::statements::Statement;
+use crate::parser::{self, statements};
 use pretty_assertions::assert_eq;
 
 #[test]
@@ -156,7 +156,6 @@ fn ops_with_jump() {
     )
 }
 
-
 #[test]
 fn errs() {
     const SRC: &str = r#"
@@ -208,20 +207,16 @@ fn errs() {
                 lhs: Some(Argument::Variable("a")),
                 rhs: Some(Argument::Number(71.))
             }),
-            Err(
-                parser::ParseError::Statement {
-                    line: 11,
-                    error: statements::ParseError::InvalidInstruction(
-                        vec![
-                            "op",
-                            "dv",
-                            "d",
-                            "b",
-                            "0b1001010",
-                        ]
-                    )
-                }
-            ),
+            Err(parser::ParseError::Statement {
+                line: 11,
+                error: statements::ParseError::InvalidInstruction(vec![
+                    "op",
+                    "dv",
+                    "d",
+                    "b",
+                    "0b1001010",
+                ])
+            }),
             Ok(Statement::OpDiv {
                 c: "d",
                 a: Argument::Colour(Rgba {
@@ -237,18 +232,13 @@ fn errs() {
                     a: 103
                 })
             }),
-            Err(
-                parser::ParseError::Statement {
-                    line: 13,
-                    error: parser::StatementParseErr::MissingJumpLabel(
-                        "jlbl1",
-                   ),
-               }
-            )
+            Err(parser::ParseError::Statement {
+                line: 13,
+                error: parser::StatementParseErr::MissingJumpLabel("jlbl1",),
+            })
         ]
     )
 }
-
 
 #[test]
 fn display() {

@@ -1,5 +1,5 @@
 //! This module defines all things that can be passed in as arguments to a statement like colours,
-//! strings, and numbers. 
+//! strings, and numbers.
 
 use regex::RegexSet;
 use std::fmt::{self, Display, Write};

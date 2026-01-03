@@ -131,9 +131,9 @@ macro_rules! impl_statement {
 
         impl<'a> StatementType<'a> for $enum<'a> {
             /// Tries to parse a token.
-            /// 
+            ///
             /// # Errors
-            /// 
+            ///
             /// If the jump label a `jump` statement points to isn't found in the jump_labels
             /// parameter or an invalid statement is passed in, an error variant is returned.
             fn try_parse(

@@ -1,9 +1,9 @@
 //! A parser for mindustry logic.
-//! 
+//!
 //! **NOTE:** All minor version updates are breaking changes for now (the API isn't stabilised)
-//! 
+//!
 //! # Examples
-//! 
+//!
 //! ```
 //! # fn main() {
 //! # use mlog_parse::parser::lexer::Lexer;
@@ -18,7 +18,7 @@
 //! "#;
 //!
 //! let lexer: Lexer<Statement> = Lexer::new(SRC);
-//! 
+//!
 //! let instructions: Vec<_> = lexer
 //!     .map(|x| x.unwrap())
 //!     .collect();

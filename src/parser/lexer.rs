@@ -5,9 +5,9 @@ use regex::Regex;
 use std::{collections::HashMap, marker::PhantomData, sync::LazyLock};
 
 /// A lexer for mindustry logic.
-/// 
+///
 /// # Examples
-/// 
+///
 /// ```
 /// # fn main() {
 /// # use mlog_parse::parser::lexer::Lexer;
@@ -22,7 +22,7 @@ use std::{collections::HashMap, marker::PhantomData, sync::LazyLock};
 /// "#;
 ///
 /// let lexer: Lexer<Statement> = Lexer::new(SRC);
-/// 
+///
 /// let instructions: Vec<_> = lexer
 ///     .map(|x| x.unwrap())
 ///     .collect();
@@ -100,15 +100,13 @@ impl<'a, T: StatementType<'a>> Lexer<'a, T> {
             .enumerate()
             .filter(|(_, x)| x.contains(|x: char| !x.is_whitespace()))
         {
-            if COMMENT_REGEX.is_match(line) {} 
-            else if JUMPLABEL_REGEX.is_match(line) {
+            if COMMENT_REGEX.is_match(line) {
+            } else if JUMPLABEL_REGEX.is_match(line) {
                 jump_labels.insert(line.trim().strip_suffix(":").unwrap(), statement_index);
             } else {
                 lines.push((line_num, line));
                 statement_index += 1;
             }
-
-            
         }
 
         Self {
@@ -130,8 +128,12 @@ impl<'a, T: StatementType<'a>> Iterator for Lexer<'a, T> {
         self.index += 1;
 
         Some(
-            T::try_parse(&Self::do_renaming(&split), &self.jump_labels)
-                .map_err(|e| ParseError::Statement { line: *line_num, error: e })
+            T::try_parse(&Self::do_renaming(&split), &self.jump_labels).map_err(|e| {
+                ParseError::Statement {
+                    line: *line_num,
+                    error: e,
+                }
+            }),
         )
     }
 }
