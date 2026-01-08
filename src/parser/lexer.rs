@@ -96,7 +96,7 @@ impl<'a, T: StatementType<'a>> Lexer<'a, T> {
         let mut statement_index = 0usize;
 
         for (line_num, line) in str
-            .lines()
+            .split(&['\n', ';'])
             .enumerate()
             .filter(|(_, x)| x.contains(|x: char| !x.is_whitespace()))
         {

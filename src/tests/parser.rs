@@ -40,6 +40,38 @@ fn single_input() {
 }
 
 #[test]
+fn semicolon() {
+    const SRC: &str = r#"
+        set test "12"; set testb 3.14159; set testc 0xDEADBEEF; set testd -0b01010101 # stuff here
+    "#;
+
+    let lexer: Lexer<Statement> = Lexer::new(SRC);
+
+    assert_eq!(
+        lexer.map(|x| x.unwrap()).collect::<Vec<_>>(),
+        vec![
+            Statement::Set {
+                var: "test",
+                value: Argument::String("12")
+            },
+            Statement::Set {
+                var: "testb",
+                #[expect(clippy::approx_constant)]
+                value: Argument::Number(3.14159)
+            },
+            Statement::Set {
+                var: "testc",
+                value: Argument::Number(0xDEADBEEFu32 as f64)
+            },
+            Statement::Set {
+                var: "testd",
+                value: Argument::Number(-85.0)
+            }
+        ]
+    )
+}
+
+#[test]
 fn operation() {
     const SRC: &str = r#"
         op add a 12 -0x05
