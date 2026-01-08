@@ -7,8 +7,6 @@ use std::{
 };
 use thiserror::Error;
 
-use crate::parser::args::num_parse::parse_hex_arcoid;
-
 #[rustfmt::skip]
 static COLOURS: LazyLock<HashMap<&str, Rgba>> = LazyLock::new(|| {
     HashMap::from([
@@ -163,7 +161,7 @@ impl Rgba {
                 return u8::from_str_radix("", 16);
             };
 
-            Ok(parse_hex_arcoid(channel) as u8)
+            Ok(i16::from_str_radix(channel, 16).unwrap() as u8)
         };
         let mut color = Self::default();
         let Self { r, g, b, a } = &mut color;

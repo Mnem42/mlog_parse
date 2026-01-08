@@ -84,3 +84,16 @@ fn colour_fromstr() {
         ))
     );
 }
+
+#[test]
+fn strange_literals() {
+    assert_eq!(
+        Rgba::from_hex_literal_unchecked("%-f-0-1-A"),
+        Rgba {
+            r: 241,
+            g: 0,
+            b: 255,
+            a: 246
+        }
+    )
+}
