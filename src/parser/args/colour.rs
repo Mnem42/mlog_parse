@@ -177,3 +177,15 @@ impl Rgba {
         color
     }
 }
+
+#[cfg(feature = "rgb_crate")]
+impl Into<rgb::RGBA8> for Rgba {
+    fn into(self) -> rgb::RGBA8 {
+        rgb::Rgba { 
+            r: self.r, 
+            g: self.g, 
+            b: self.b, 
+            a: self.a
+        }
+    }
+}

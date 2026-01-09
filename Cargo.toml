@@ -9,11 +9,13 @@ version = "0.1.1"
 edition = "2024"
 
 [features]
-default = []
+default = ["rgb_crate"]
 serde = ["dep:serde"]
+rgb_crate = ["dep:rgb"]
 
 [dependencies]
 regex = "1.12.2"
+
 thiserror = "2.0.17"
 
 [dependencies.serde]
@@ -21,6 +23,9 @@ version = "1.0.228"
 features = ["derive"]
 optional = true
 
+[dependencies.rgb]
+version = "0.8.52"
+optional = true
 
 [dependencies.strum]
 version = "0.27.2"
@@ -28,4 +33,5 @@ features = ["derive"]
 
 
 [dev-dependencies]
+approx = "0.5.1"
 pretty_assertions = "1.4.1"
