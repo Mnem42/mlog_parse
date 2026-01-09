@@ -7,6 +7,9 @@ use std::{
 };
 use thiserror::Error;
 
+#[cfg(feature = "rgb_crate")]
+use crate::parser;
+
 #[rustfmt::skip]
 static COLOURS: LazyLock<HashMap<&str, Rgba>> = LazyLock::new(|| {
     HashMap::from([
@@ -179,13 +182,13 @@ impl Rgba {
 }
 
 #[cfg(feature = "rgb_crate")]
-impl Into<rgb::RGBA8> for Rgba {
-    fn into(self) -> rgb::RGBA8 {
+impl From<Rgba> for rgb::RGBA8 {
+    fn from(v: parser::args::colour::Rgba) -> rgb::RGBA8 {
         rgb::Rgba { 
-            r: self.r, 
-            g: self.g, 
-            b: self.b, 
-            a: self.a
+            r: v.r, 
+            g: v.g, 
+            b: v.b, 
+            a: v.a
         }
     }
 }
