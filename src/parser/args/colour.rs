@@ -5,6 +5,8 @@ use std::{
     str::FromStr,
     sync::LazyLock,
 };
+#[cfg(feature = "rgb_crate")]
+use rgb::RGBA8;
 use thiserror::Error;
 
 #[cfg(feature = "rgb_crate")]
@@ -190,6 +192,18 @@ impl From<Rgba> for rgb::RGBA8 {
             g: v.g,
             b: v.b,
             a: v.a,
+        }
+    }
+}
+
+#[cfg(feature = "rgb_crate")]
+impl From<RGBA8> for Rgba {
+    fn from(v: RGBA8) -> Self {
+        Rgba {
+            r: v.r,
+            g: v.g,
+            b: v.b,
+            a: v.a
         }
     }
 }
