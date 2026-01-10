@@ -1,6 +1,8 @@
 use std::str::FromStr;
 
-use crate::parser::args::{Rgba, colour::ColourParseError};
+use rgb::Rgb;
+
+use crate::parser::args::{Argument, Rgba, colour::ColourParseError};
 
 #[test]
 fn colour_literal_unchecked() {
@@ -95,5 +97,37 @@ fn strange_literals() {
             b: 255,
             a: 246
         }
+    )
+}
+
+#[test]
+fn display(){
+    assert_eq!(
+        Argument::GlobalVar("counter").to_string(),
+        "@counter".to_string()
+    );
+
+    assert_eq!(
+        Argument::Number(12.345).to_string(),
+        "12.345".to_string()
+    );
+
+    assert_eq!(
+        Argument::String("test").to_string(),
+        "\"test\"".to_string()
+    );
+    assert_eq!(
+        Argument::Variable("thing").to_string(),
+        "thing".to_string()
+    );
+
+    assert_eq!(
+        Argument::Colour(Rgba {
+            r: 0xFF,
+            g: 0xFF,
+            b: 0xFF,
+            a: 0xFF
+        }).to_string(),
+        "%ffffffff".to_string()
     )
 }
