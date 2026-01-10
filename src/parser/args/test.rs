@@ -85,7 +85,16 @@ fn colour_fromstr() {
 }
 
 #[test]
-fn strange_literals() {
+fn strange_args() {
+    // Why would you ever want this
+    assert_eq!(
+        Argument::from("--1.+2"),
+        Argument::Number(1.02)
+    )
+}
+
+#[test]
+fn strange_colour_literals() {
     assert_eq!(
         Rgba::from_hex_literal_unchecked("%-f-0-1-A"),
         Rgba {
