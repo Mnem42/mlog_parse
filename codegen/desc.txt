@@ -1,0 +1,2 @@
+This folder contains the data from https://github.com/cardillan/mimex-data/tree/main and codegen
+based on it
