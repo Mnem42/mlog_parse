@@ -1,10 +1,10 @@
+#[cfg(feature = "rgb_crate")]
+use rgb::RGBA8;
 use std::{
     fmt::{self, Display, Write},
     num::ParseIntError,
     str::FromStr,
 };
-#[cfg(feature = "rgb_crate")]
-use rgb::RGBA8;
 use thiserror::Error;
 
 #[cfg(feature = "rgb_crate")]
@@ -155,7 +155,7 @@ impl From<RGBA8> for Rgba {
             r: v.r,
             g: v.g,
             b: v.b,
-            a: v.a
+            a: v.a,
         }
     }
 }
