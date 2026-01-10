@@ -101,25 +101,16 @@ fn strange_literals() {
 }
 
 #[test]
-fn display(){
+fn display() {
     assert_eq!(
         Argument::GlobalVar("counter").to_string(),
         "@counter".to_string()
     );
 
-    assert_eq!(
-        Argument::Number(12.345).to_string(),
-        "12.345".to_string()
-    );
+    assert_eq!(Argument::Number(12.345).to_string(), "12.345".to_string());
 
-    assert_eq!(
-        Argument::String("test").to_string(),
-        "\"test\"".to_string()
-    );
-    assert_eq!(
-        Argument::Variable("thing").to_string(),
-        "thing".to_string()
-    );
+    assert_eq!(Argument::String("test").to_string(), "\"test\"".to_string());
+    assert_eq!(Argument::Variable("thing").to_string(), "thing".to_string());
 
     assert_eq!(
         Argument::Colour(Rgba {
@@ -127,7 +118,8 @@ fn display(){
             g: 0xFF,
             b: 0xFF,
             a: 0xFF
-        }).to_string(),
+        })
+        .to_string(),
         "%ffffffff".to_string()
     )
 }
