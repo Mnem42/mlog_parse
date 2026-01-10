@@ -1,7 +1,4 @@
 use std::str::FromStr;
-
-use rgb::Rgb;
-
 use crate::parser::args::{Argument, Rgba, colour::ColourParseError};
 
 #[test]
