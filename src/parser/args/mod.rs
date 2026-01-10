@@ -43,7 +43,7 @@ impl fmt::Display for Argument<'_> {
             Self::Number(x) => write!(f, "{x}"),
             Self::String(x) => write!(f, "\"{x}\""),
             Self::Variable(x) => write!(f, "{x}"),
-            Self::Colour(x) => write!(f, "%{x}"),
+            Self::Colour(x) => write!(f, "{x}"),
             Self::GlobalVar(x) => write!(f, "@{x}"),
         }
     }
