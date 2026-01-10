@@ -10,7 +10,7 @@ edition = "2024"
 
 [features]
 default = ["rgb_crate"]
-serde = ["dep:serde"]
+serde = ["dep:serde", "rgb/serde"]
 rgb_crate = ["dep:rgb"]
 
 [dependencies]
