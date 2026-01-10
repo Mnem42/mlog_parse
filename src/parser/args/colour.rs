@@ -76,7 +76,8 @@ pub enum ColourParseError {
     InvalidColourLiteral(String),
 }
 
-/// A colour
+/// A colour. Use this instead of converting to [`rgb::RGBA8`] if you need to print it out in the
+/// format mindustry uses or need to parse from it.
 #[derive(Debug, PartialEq, Eq, PartialOrd, Clone, Copy, Ord)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct Rgba {
