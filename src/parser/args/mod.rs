@@ -3,6 +3,9 @@
 
 /// Provides the [`Rgba`] type for colours.
 pub mod colour;
+/// Definitions for mindustry's named colours (e.g. `red`, `blue`)
+pub mod named_colours;
+
 mod num_parse;
 
 #[cfg(test)]
