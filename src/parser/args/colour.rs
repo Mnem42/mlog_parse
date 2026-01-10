@@ -184,11 +184,11 @@ impl Rgba {
 #[cfg(feature = "rgb_crate")]
 impl From<Rgba> for rgb::RGBA8 {
     fn from(v: parser::args::colour::Rgba) -> rgb::RGBA8 {
-        rgb::Rgba { 
-            r: v.r, 
-            g: v.g, 
-            b: v.b, 
-            a: v.a
+        rgb::Rgba {
+            r: v.r,
+            g: v.g,
+            b: v.b,
+            a: v.a,
         }
     }
 }
